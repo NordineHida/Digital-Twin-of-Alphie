@@ -9,7 +9,7 @@
 #include <webots/robot.h>
 #include <webots/motor.h>
 
-#define MAX_SPEED 6.28  // angular speed in rad/s
+#define MAX_SPEED 6.28  // Max speed of the robot (NOT DEFINITIVE YET)
 #define NUM_MOTORS 5    // number of motors on each side of the robot
 
 // Arrays to store WbDeviceTag for left and right motors
