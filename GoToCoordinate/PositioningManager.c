@@ -73,11 +73,10 @@ double getBearingToCoordinate(WbDeviceTag compassTag, Coordinates targetCoordina
 *
 * @param WbDeviceTag compassTag
 * @param Coordinates destination The destination coordinates
+* @param double tolerance The tolerance to consider the destination reached
 */
-void RotateToDestination(WbDeviceTag compassTag, Coordinates destination)
+void RotateToDestination(WbDeviceTag compassTag, Coordinates destination, double tolerance)
 {
-    const double tolerance = 1;  // Tolerance to consider the destination reached
-
     // Get current compass values
     const double* compassValues = wb_compass_get_values(compassTag);
 
@@ -103,14 +102,14 @@ void RotateToDestination(WbDeviceTag compassTag, Coordinates destination)
     if (!(fabs(angleToDestination) < tolerance))
     {
         // Choose rotation direction based on the angle difference
-        if (angleToDestination > 0) 
+        if (angleToDestination > 0)
             MoveLeft();  // Rotate left
-        else 
+        else
             MoveRight();  // Rotate right
 
         // Update the simulation
         wb_robot_step(TIME_STEP);
-        RotateToDestination(compassTag, destination);  // Recursive call to continue rotation
+        RotateToDestination(compassTag, destination, tolerance);  // Recursive call to continue rotation
     }
     else
     {

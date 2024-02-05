@@ -45,8 +45,9 @@ double getBearingToCoordinate(WbDeviceTag compassTag, Coordinates targetCoordina
  *
  * @param WbDeviceTag compassTag The compass's tag of the robot
  * @param Coordinates destination The destination coordinates
+ * @param double tolerance The tolerance value for both X and Y coordinates
  */
-void RotateToDestination(WbDeviceTag compassTag, Coordinates destination);
+void RotateToDestination(WbDeviceTag compassTag, Coordinates destination, double tolerance);
 
 /*
  * Get the position of the robot.

@@ -62,6 +62,7 @@ int main(int argc, char **argv) {
     
     // Tolerance for isArrived
     double arrivalTolerance = 0.01;  // Adjust the tolerance as needed
+    double angleTolerance = 0.2; 
 
     /* main loop */
     while (wb_robot_step(TIME_STEP) != -1) 
@@ -79,7 +80,8 @@ int main(int argc, char **argv) {
             double angleToDestination = getBearingToCoordinate(compass, targetPosition);
 
             // Rotate the robot until it faces the target coordinates
-            RotateToDestination(compass, targetPosition);
+            RotateToDestination(compass, targetPosition, angleTolerance);
+
 
             // Move forward
             MoveForward();
