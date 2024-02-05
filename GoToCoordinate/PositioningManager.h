@@ -33,21 +33,29 @@ int GetTimeStep();
 /*
  * Get the bearing angle in degrees to reach a specific coordinate.
  *
- * @param WbDeviceTag compassTag The compass's tag of the robot
+ * @param Coordinates robotPosition The current position coordinates of the robot
  * @param Coordinates targetCoordinates The target coordinates
  *
  * @return double The bearing angle in degrees
  */
-double getBearingToCoordinate(WbDeviceTag compassTag, Coordinates targetCoordinates);
+double GetBearingToCoordinate(Coordinates robotPosition, Coordinates targetCoordinates);
 
 /*
- * Rotate the robot until it reaches the X, Y coordinate.
+ * Get the heading angle of the robot based on compass readings.
  *
  * @param WbDeviceTag compassTag The compass's tag of the robot
- * @param Coordinates destination The destination coordinates
- * @param double tolerance The tolerance value for both X and Y coordinates
+ * @return double The heading angle in degrees
  */
-void RotateToDestination(WbDeviceTag compassTag, Coordinates destination, double tolerance);
+double GetHeadingRobot(WbDeviceTag compassTag);
+
+/*
+ * Rotate the robot until it reaches the specified angle.
+ *
+ * @param WbDeviceTag compassTag The compass's tag of the robot
+ * @param double angleToDestination The angle to the destination coordinates in degrees
+ * @param double tolerance The tolerance to consider the destination reached
+ */
+void RotateToDestination(WbDeviceTag compassTag, double angleToDestination, double tolerance);
 
 /*
  * Get the position of the robot.

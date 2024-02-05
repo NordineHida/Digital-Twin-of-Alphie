@@ -77,10 +77,11 @@ int main(int argc, char **argv) {
             Coordinates goToVector = CalculateGoTo(currentPosition, targetPosition);
 
             // Get the bearing angle to the target coordinates
-            double angleToDestination = getBearingToCoordinate(compass, targetPosition);
+            double angleToDestination = GetBearingToCoordinate(currentPosition, targetPosition);
+            double angleHeadingRobot = GetHeadingRobot(compass);
 
             // Rotate the robot until it faces the target coordinates
-            RotateToDestination(compass, targetPosition, angleTolerance);
+            RotateToDestination(compass,angleToDestination, angleTolerance);
 
 
             // Move forward

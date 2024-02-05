@@ -45,18 +45,15 @@ int GetTimeStep()
 /*
  * Get the bearing angle in degrees to reach a specific coordinate.
  *
- * @param WbDeviceTag compassTag The compass's tag of the robot
+ * @param Coordinates robotPosition The current position coordinates of the robot
  * @param Coordinates targetCoordinates The target coordinates
- * 
+ *
  * @return double The bearing angle in degrees
  */
-double getBearingToCoordinate(WbDeviceTag compassTag, Coordinates targetCoordinates) 
+double GetBearingToCoordinate(Coordinates robotPosition, Coordinates targetCoordinates)
 {
-    // Get current compass values
-    const double* north = wb_compass_get_values(compassTag);
-
     // Calculate angle to the target coordinates in radians
-    double rad = atan2(targetCoordinates.y - north[1], targetCoordinates.x - north[0]);
+    double rad = atan2(targetCoordinates.y - robotPosition.y, targetCoordinates.x - robotPosition.x);
 
     // Convert angle to degrees
     double bearing = rad * 180.0 / M_PI;
@@ -69,54 +66,86 @@ double getBearingToCoordinate(WbDeviceTag compassTag, Coordinates targetCoordina
 }
 
 /*
-* Rotate the robot until it reaches the X, Y coordinate
-*
-* @param WbDeviceTag compassTag
-* @param Coordinates destination The destination coordinates
-* @param double tolerance The tolerance to consider the destination reached
-*/
-void RotateToDestination(WbDeviceTag compassTag, Coordinates destination, double tolerance)
+ * Get the heading angle of the robot based on compass readings.
+ *
+ * @param WbDeviceTag compassTag The compass's tag of the robot
+ * @return double The heading angle in degrees
+ */
+double GetHeadingRobot(WbDeviceTag compassTag)
 {
     // Get current compass values
     const double* compassValues = wb_compass_get_values(compassTag);
 
-    // Calculate current compass angle in radians
-    double currentAngleRad = atan2(compassValues[1], compassValues[0]);
-
-    // Calculate angle to destination in radians
-    double angleToDestinationRad = atan2(destination.y, destination.x);
-
-    // Calculate angle difference in radians
-    double angleDifferenceRad = angleToDestinationRad - currentAngleRad;
-
-    // Adjust angle difference to be in the range [-π, π)
-    if (angleDifferenceRad < -M_PI)
-        angleDifferenceRad += 2.0 * M_PI;
-    else if (angleDifferenceRad >= M_PI)
-        angleDifferenceRad -= 2.0 * M_PI;
+    // Calculate heading angle in radians
+    double rad = atan2(compassValues[0], compassValues[1]);
 
     // Convert angle to degrees
-    double angleToDestination = angleDifferenceRad * 180.0 / M_PI;
+    double headingAngleDegrees = rad * 180.0 / M_PI;
+
+    // Adjust angle to be in the range [0, 360)
+    if (headingAngleDegrees < 0.0)
+        headingAngleDegrees += 360.0;
+
+    // Rotate the angle to have 0 degrees at north and 90 degrees at east
+    headingAngleDegrees = 90.0 - headingAngleDegrees;
+
+    // Adjust angle again to be in the range [0, 360)
+    if (headingAngleDegrees < 0.0)
+        headingAngleDegrees += 360.0;
+
+    return headingAngleDegrees +180-270 ;
+}
+
+
+
+
+
+/*
+ * Rotate the robot until it reaches the specified angle.
+ *
+ * @param WbDeviceTag compassTag The compass's tag of the robot
+ * @param double angleToDestination The angle to the destination coordinates in degrees
+ * @param double tolerance The tolerance to consider the destination reached
+ */
+void RotateToDestination(WbDeviceTag compassTag, double angleToDestination, double tolerance)
+{
+    // Get the heading angle (where is looking) the robot
+    double headingRobotAngle = GetHeadingRobot(compassTag);
+
+    // Calculate the angle difference between the robot's heading and the destination angle
+    double angleDifference = angleToDestination - headingRobotAngle;
+
+    // Adjust angle difference to be in the range [-180, 180)
+    if (angleDifference < -180.0)
+        angleDifference += 360.0;
+    else if (angleDifference >= 180.0)
+        angleDifference -= 360.0;
+
+    printf("angle angleToDestination %f\n", angleToDestination);
+    printf("headingRobotAngle %f\n", headingRobotAngle);
+    printf("angle differnec %f\n \n \n", angleDifference);
 
     // Check tolerance to consider the destination reached
-    if (!(fabs(angleToDestination) < tolerance))
+    if (!(fabs(angleDifference) < tolerance))
     {
         // Choose rotation direction based on the angle difference
-        if (angleToDestination > 0)
-            MoveLeft();  // Rotate left
-        else
+        if (angleDifference < 0)
             MoveRight();  // Rotate right
+        else
+            MoveLeft();   // Rotate left
 
         // Update the simulation
         wb_robot_step(TIME_STEP);
-        RotateToDestination(compassTag, destination, tolerance);  // Recursive call to continue rotation
+        RotateToDestination(compassTag, angleToDestination, tolerance);  // Recursive call to continue rotation
     }
     else
     {
         printf("Angle reached!\n");
+        MoveForward();  // Move to the destination
         wb_robot_step(TIME_STEP);
     }
 }
+
 
 
 /*
