@@ -6,13 +6,16 @@
  * Modifications:
  */
 
+
+#define _BOOL_DEFINED
+
 /*
  * You may need to add include files like <webots/distance_sensor.h> or
  * <webots/motor.h>, etc.
  */
 #include <webots/robot.h>
-#include "PositioningManager.c"
-#include "MovementManager.c"
+#include "MovementManager.h"
+#include "PositioningManager.h"
 
 /*
  * You may want to add macros here.
@@ -58,7 +61,7 @@ int main(int argc, char **argv) {
     wb_compass_enable(compass, 10);
     
     // Tolerance for isArrived
-    double arrivalTolerance = 1.0;  // Adjust the tolerance as needed
+    double arrivalTolerance = 0.01;  // Adjust the tolerance as needed
 
     /* main loop */
     while (wb_robot_step(TIME_STEP) != -1) 

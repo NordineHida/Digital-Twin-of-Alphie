@@ -7,7 +7,7 @@
  */
 
 
-#include "MovementManager.c"
+#include "MovementManager.h"
 #include <stdbool.h>
 
 //Webots library
