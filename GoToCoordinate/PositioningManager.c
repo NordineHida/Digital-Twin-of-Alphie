@@ -43,20 +43,28 @@ int GetTimeStep()
 }
 
 /*
-* Get the bearing angle in degrees to 
-* @param char compassTag The compass's tag of the robot
-* @return double the angle to the coordinate in degrees
-* 
-* TODO AJOUTER COORDONNEE POUR AVOIR LE BEARING VERS LES COO EN INPUT
-*/ 
-double getBearingInDegrees(WbDeviceTag compassTag)
+ * Get the bearing angle in degrees to reach a specific coordinate.
+ *
+ * @param WbDeviceTag compassTag The compass's tag of the robot
+ * @param Coordinates targetCoordinates The target coordinates
+ * 
+ * @return double The bearing angle in degrees
+ */
+double getBearingToCoordinate(WbDeviceTag compassTag, Coordinates targetCoordinates) 
 {
+    // Get current compass values
     const double* north = wb_compass_get_values(compassTag);
-    double rad = atan2(north[1], north[0]);
-    double bearing = (rad - 1.5708) / M_PI * 180.0;
+
+    // Calculate angle to the target coordinates in radians
+    double rad = atan2(targetCoordinates.y - north[1], targetCoordinates.x - north[0]);
+
+    // Convert angle to degrees
+    double bearing = rad * 180.0 / M_PI;
+
+    // Ensure the angle is in the range [0, 360]
     if (bearing < 0.0)
         bearing += 360.0;
-    //printf("Angle du cap de la boussole : %f \n", bearing);
+
     return bearing;
 }
 
@@ -128,21 +136,20 @@ Coordinates GetPosition(WbDeviceTag gpsTag)
 }
 
 /*
-* Check if the robot has arrived at the target coordinates
-*
-* @param Coordinates current The current coordinates of the robot
-* @param Coordinates target The target coordinates
-* @return true if the robot has arrived, false otherwise
-*/
-bool isArrived(Coordinates current, Coordinates target) 
+ * Check if the robot has arrived at the target coordinates with a tolerance
+ *
+ * @param Coordinates current The current coordinates of the robot
+ * @param Coordinates target The target coordinates
+ * @param double tolerance The tolerance value for both X and Y coordinates
+ * 
+ * @return true if the robot has arrived, false otherwise
+ */
+bool isArrived(Coordinates current, Coordinates target, double tolerance)
 {
-    double tolerance = 0.5;
     double differenceX = fabs(current.x - target.x);
     double differenceY = fabs(current.y - target.y);
 
-    bool result = differenceX < tolerance && differenceY < tolerance;
-
-    return result;
+    return (differenceX < tolerance) && (differenceY < tolerance);
 }
 
 /*
