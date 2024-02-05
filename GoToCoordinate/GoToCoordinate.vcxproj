@@ -111,6 +111,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(WEBOTS_HOME)/include/controller/c</AdditionalIncludeDirectories>
+      <AdditionalOptions>/I"$(WEBOTS_HOME)/include/controller/c"
+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -121,6 +123,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GoToCoordinate.c" />
+    <ClCompile Include="MovementManager.c" />
+    <ClCompile Include="PositioningManager.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

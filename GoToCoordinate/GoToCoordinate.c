@@ -1,8 +1,8 @@
 /*
  * File:          GoToCoordinate.c
- * Date:
- * Description:
- * Author:
+ * Date:          February 2024
+ * Description:   The robot will turn on itself until it is facing the indicated coordinates, then it will move forward until it reaches the goal.
+ * Author:        Nordine HIDA 
  * Modifications:
  */
 
@@ -11,11 +11,26 @@
  * <webots/motor.h>, etc.
  */
 #include <webots/robot.h>
+#include "PositioningManager.c"
+#include "MovementManager.c"
 
 /*
  * You may want to add macros here.
  */
-#define TIME_STEP 64
+//#define TIME_STEP 64
+
+//Time step of the simulation
+int TIME_STEP;
+
+/*
+* Initialise attributs and robot settings
+*/
+void Initialisation()
+{
+    TIME_STEP = GetTimeStep();
+    //init motors of the MovementManager
+    MoveInit();
+}
 
 /*
  * This is the main program.
@@ -25,6 +40,7 @@
 int main(int argc, char **argv) {
   /* necessary to initialize webots stuff */
   wb_robot_init();
+  Initialisation();
 
   /*
    * You should declare here WbDeviceTag variables for storing
