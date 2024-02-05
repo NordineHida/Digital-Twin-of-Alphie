@@ -38,40 +38,61 @@ void Initialisation()
  * "controllerArgs" field of the Robot node
  */
 int main(int argc, char **argv) {
-  /* necessary to initialize webots stuff */
-  wb_robot_init();
-  Initialisation();
+    /* necessary to initialize webots stuff */
+    wb_robot_init();
+    Initialisation();
 
-  /*
-   * You should declare here WbDeviceTag variables for storing
-   * robot devices like this:
-   *  WbDeviceTag my_sensor = wb_robot_get_device("my_sensor");
-   *  WbDeviceTag my_actuator = wb_robot_get_device("my_actuator");
-   */
-
-  /* main loop
-   * Perform simulation steps of TIME_STEP milliseconds
-   * and leave the loop when the simulation is over
-   */
-  while (wb_robot_step(TIME_STEP) != -1) {
-    /*
-     * Read the sensors :
-     * Enter here functions to read sensor data, like:
-     *  double val = wb_distance_sensor_get_value(my_sensor);
-     */
-
-    /* Process sensor data here */
+    //Coordinates goal
+    Coordinates targetPosition = { 2.0, 2.0 };
 
     /*
-     * Enter here functions to send actuator commands, like:
-     * wb_motor_set_position(my_actuator, 10.0);
-     */
-  };
+     * You should declare here WbDeviceTag variables for storing
+     * robot devices like this:
+     *  WbDeviceTag my_sensor = wb_robot_get_device("my_sensor");
+     *  WbDeviceTag my_actuator = wb_robot_get_device("my_actuator");
+    */
 
-  /* Enter your cleanup code here */
+    WbDeviceTag compass = wb_robot_get_device("compass");;
+    WbDeviceTag gps = wb_robot_get_device("gps");
+    wb_gps_enable(gps, 10);
+    wb_compass_enable(compass, 10);
+    
+    // Tolerance for isArrived
+    double arrivalTolerance = 1.0;  // Adjust the tolerance as needed
 
-  /* This is necessary to cleanup webots resources */
-  wb_robot_cleanup();
+    /* main loop */
+    while (wb_robot_step(TIME_STEP) != -1) 
+    {
+        // Get current position
+        Coordinates currentPosition = GetPosition(gps);
 
-  return 0;
+        // Check if the robot has arrived at the target position
+        if (!isArrived(currentPosition, targetPosition, arrivalTolerance)) 
+        {
+            // Calculate the vector to go from the current position to the target position
+            Coordinates goToVector = CalculateGoTo(currentPosition, targetPosition);
+
+            // Get the bearing angle to the target coordinates
+            double angleToDestination = getBearingToCoordinate(compass, targetPosition);
+
+            // Rotate the robot until it faces the target coordinates
+            RotateToDestination(compass, targetPosition);
+
+            // Move forward
+            MoveForward();
+        }
+        else 
+        {
+            // Stop the robot when the target position is reached
+            MoveStop();
+            printf("Target position reached!\n");
+        }
+    }
+    
+    /* Enter your cleanup code here */
+    
+    /* This is necessary to cleanup webots resources */
+    wb_robot_cleanup();
+    
+    return 0;
 }
