@@ -80,23 +80,14 @@ double GetHeadingRobot(WbDeviceTag compassTag)
     double rad = atan2(compassValues[0], compassValues[1]);
 
     // Convert angle to degrees
-    double headingAngleDegrees = rad * 180.0 / M_PI;
+    double headingAngleDegrees = rad* 180.0 / M_PI;
 
     // Adjust angle to be in the range [0, 360)
     if (headingAngleDegrees < 0.0)
         headingAngleDegrees += 360.0;
 
-    // Rotate the angle to have 0 degrees at north and 90 degrees at east
-    headingAngleDegrees = 90.0 - headingAngleDegrees;
-
-    // Adjust angle again to be in the range [0, 360)
-    if (headingAngleDegrees < 0.0)
-        headingAngleDegrees += 360.0;
-
-    return headingAngleDegrees +180-270 ;
+    return headingAngleDegrees;
 }
-
-
 
 
 
