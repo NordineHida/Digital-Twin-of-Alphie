@@ -44,29 +44,25 @@ int main(int argc, char **argv) {
     /* necessary to initialize webots stuff */
     wb_robot_init();
     Initialisation();
+    bool targetAchieved = false;
 
     //Coordinates goal
     Coordinates targetPosition = { 2.0, 2.0 };
 
-    /*
-     * You should declare here WbDeviceTag variables for storing
-     * robot devices like this:
-     *  WbDeviceTag my_sensor = wb_robot_get_device("my_sensor");
-     *  WbDeviceTag my_actuator = wb_robot_get_device("my_actuator");
-    */
+    // Tolerance for isArrived
+    double arrivalTolerance = 0.01;  // Adjust the tolerance as needed
+    // Tolerance to get the right angle
+    double angleTolerance = 3.0;
 
+    //Declaration of WbDeviceTag variables for storing
     WbDeviceTag compass = wb_robot_get_device("compass");;
     WbDeviceTag gps = wb_robot_get_device("gps");
     wb_gps_enable(gps, 10);
     wb_compass_enable(compass, 10);
     
-    // Tolerance for isArrived
-    double arrivalTolerance = 0.01;  // Adjust the tolerance as needed
-    // Tolerance to get the right angle
-    double angleTolerance = 3.0; 
 
     /* main loop */
-    while (wb_robot_step(TIME_STEP) != -1) 
+    while (wb_robot_step(TIME_STEP) != -1 && !targetAchieved)
     {
         // Get current position
         Coordinates currentPosition = GetPosition(gps);
@@ -90,12 +86,14 @@ int main(int argc, char **argv) {
             // Move forward
             MoveForward();
         }
-        
         else 
         {
             // Stop the robot when the target position is reached
             MoveStop();
             printf("Target position reached!\n");
+
+            //Leaving the main loop
+            targetAchieved = true;
         }
     }
     
