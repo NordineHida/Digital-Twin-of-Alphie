@@ -62,7 +62,8 @@ int main(int argc, char **argv) {
     
     // Tolerance for isArrived
     double arrivalTolerance = 0.01;  // Adjust the tolerance as needed
-    double angleTolerance = 0.2; 
+    // Tolerance to get the right angle
+    double angleTolerance = 3.0; 
 
     /* main loop */
     while (wb_robot_step(TIME_STEP) != -1) 
@@ -73,20 +74,23 @@ int main(int argc, char **argv) {
         // Check if the robot has arrived at the target position
         if (!isArrived(currentPosition, targetPosition, arrivalTolerance)) 
         {
+            
             // Calculate the vector to go from the current position to the target position
             Coordinates goToVector = CalculateGoTo(currentPosition, targetPosition);
 
             // Get the bearing angle to the target coordinates
             double angleToDestination = GetBearingToCoordinate(currentPosition, targetPosition);
+            
             double angleHeadingRobot = GetHeadingRobot(compass);
 
             // Rotate the robot until it faces the target coordinates
-            RotateToDestination(compass,angleToDestination, angleTolerance);
+            RotateToDestination(compass, angleToDestination, angleTolerance);
 
 
             // Move forward
             MoveForward();
         }
+        
         else 
         {
             // Stop the robot when the target position is reached
