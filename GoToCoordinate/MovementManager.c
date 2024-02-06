@@ -20,8 +20,8 @@ static WbDeviceTag left_motors[NUM_MOTORS], right_motors[NUM_MOTORS];
  */
 void MoveInit() 
 {
-    const char* left_motor_names[NUM_MOTORS] = { "wheel_motor00", "wheel_motor01", "wheel_motor02", "wheel_motor03", "wheel_motor04" };
-    const char* right_motor_names[NUM_MOTORS] = { "wheel_motor05", "wheel_motor06", "wheel_motor07", "wheel_motor08", "wheel_motor09" };
+    const char* right_motor_names[NUM_MOTORS] = { "wheel_motor00", "wheel_motor01", "wheel_motor02", "wheel_motor03", "wheel_motor04" };
+    const char* left_motor_names[NUM_MOTORS] = { "wheel_motor05", "wheel_motor06", "wheel_motor07", "wheel_motor08", "wheel_motor09" };
 
     // Loop through each motor and initialize
     for (int i = 0; i < NUM_MOTORS; ++i) {
