@@ -112,10 +112,6 @@ void RotateToDestination(WbDeviceTag compassTag, double angleToDestination, doub
     else if (angleDifference >= 180.0)
         angleDifference -= 360.0;
 
-    printf("angle angleToDestination %f\n", angleToDestination);
-    printf("headingRobotAngle %f\n", headingRobotAngle);
-    printf("angle differnec %f\n \n \n", angleDifference);
-
     // Check tolerance to consider the destination reached
     if (!(fabs(angleDifference) < tolerance))
     {
