@@ -70,9 +70,6 @@ int main(int argc, char **argv) {
         // Check if the robot has arrived at the target position
         if (!isArrived(currentPosition, targetPosition, arrivalTolerance)) 
         {
-            
-            // Calculate the vector to go from the current position to the target position
-            Coordinates goToVector = CalculateGoTo(currentPosition, targetPosition);
 
             // Get the bearing angle to the target coordinates
             double angleToDestination = GetBearingToCoordinate(currentPosition, targetPosition);
