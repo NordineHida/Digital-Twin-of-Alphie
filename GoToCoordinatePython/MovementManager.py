@@ -1,4 +1,4 @@
-from controller import Robot
+from webots import Robot
 
 # Maximum speed of the robot (NOT DEFINITIVE YET)
 MAX_SPEED = 6.28
@@ -10,16 +10,17 @@ class MovementManager:
     """
     Manage the movement of the track robot (Forward, backward, right, left and stop moving)
     """
-    def __init__(self):
+    #AJOUTER ROBOT DANS LE CONSTRUCTEUR ICI CAR ON PEUT CONSTRUIRE QUUN ROBOT DANS LE CONTROLLER §§§!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def __init__(self,robot):
         """
         Initialize the motors.
 
         This function initializes the left and right motors of the robot.
         It sets their positions to INFINITY and velocities to 0.0.
         """
-        self.robot = Robot()
+        self.robot = robot
         self.left_motors = [self.robot.getDevice(f"wheel_motor0{i}") for i in range(5)]
-        self.right_motors = [self.robot.getDevice(f"wheel_motor1{i}") for i in range(5)]
+        self.right_motors = [self.robot.getDevice(f"wheel_motor0{i+5}") for i in range(5)]
 
         for motor in self.left_motors + self.right_motors:
             motor.setPosition(float('inf'))
