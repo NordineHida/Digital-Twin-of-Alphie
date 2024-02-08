@@ -70,15 +70,11 @@ int main(int argc, char **argv) {
         // Check if the robot has arrived at the target position
         if (!isArrived(currentPosition, targetPosition, arrivalTolerance)) 
         {
-
             // Get the bearing angle to the target coordinates
             double angleToDestination = GetBearingToCoordinate(currentPosition, targetPosition);
             
-            double angleHeadingRobot = GetHeadingRobot(compass);
-
             // Rotate the robot until it faces the target coordinates
             RotateToDestination(compass, angleToDestination, angleTolerance);
-
 
             // Move forward
             MoveForward();

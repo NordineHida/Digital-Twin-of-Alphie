@@ -126,8 +126,7 @@ void RotateToDestination(WbDeviceTag compassTag, double angleToDestination, doub
         RotateToDestination(compassTag, angleToDestination, tolerance);  // Recursive call to continue rotation
     }
     else
-    {
-        printf("Angle reached!\n");
+    {  
         MoveForward();  // Move to the destination
         wb_robot_step(TIME_STEP);
     }
