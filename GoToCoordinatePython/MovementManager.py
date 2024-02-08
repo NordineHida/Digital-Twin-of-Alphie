@@ -7,10 +7,10 @@ Modifications:
 """
 
 # CONSTANTS
-# Maximum speed of the robot (NOT DEFINITIVE YET)
-MAX_SPEED = 6.28
+# Maximum speed of the robot (Webots maximum speed is 50, but it creates bugs), 12 is a moderately fluid speed
+MAX_SPEED = 12
 
-# Number of motors on each side of the robot
+# Number of motors on each side of the track
 NUM_MOTORS = 5
 
 

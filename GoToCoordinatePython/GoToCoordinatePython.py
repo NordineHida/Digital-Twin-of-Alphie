@@ -1,7 +1,8 @@
 """
 File:          GoToCoordinate.py
 Date:          February 2024
-Description:   The robot will turn on itself until it is facing the indicated coordinates, then it will move forward until it reaches the goal.
+Description:   The robot will turn on itself until it is facing the indicated coordinates,
+               then it will move forward until it reaches the goal.
 Author:        Nordine HIDA
 Modifications:
 """
