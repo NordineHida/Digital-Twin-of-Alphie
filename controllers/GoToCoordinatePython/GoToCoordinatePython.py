@@ -40,8 +40,8 @@ target_achieved = False
 # endregion
 
 # Main loop:
-# - Perform simulation steps until Webots is stopping the controller
 while robot.step(timestep) != -1 and not target_achieved:
+
     # Get current position
     current_position = position_manager.get_position(gps)
 

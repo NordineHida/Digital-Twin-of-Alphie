@@ -3,12 +3,15 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/FlexibleAluminiumDuct.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/traffic/protos/TrafficCone.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.37537064004175247 0.16154611336746985 0.9126881920187803 2.407678262388965
-  position 4.2215413079317425 -0.1268120043848731 0.5139245975308986
+  orientation -0.30894497347717964 -0.14804108558414966 0.939487541344882 4.0055137878757385
+  position 4.003418990187223 0.38940311748435885 0.2115574442072981
+  exposure 0.3
   follow "AlphieBeta"
   followType "None"
   followSmoothness 1
@@ -259,6 +262,63 @@ DEF AlphieBeta Robot {
           children [
             DEF Composant Group {
               children [
+                DEF ANTENNEGPS Pose {
+                  translation -0.0427 -0.012 0.0118
+                  children [
+                    Solid {
+                      translation 0 0 0.0312
+                      children [
+                        TrafficCone {
+                          scale 0.03
+                        }
+                      ]
+                      name "GPSComposant"
+                      translationStep 0.0001
+                    }
+                    Solid {
+                      translation 0 0 0.0314
+                      children [
+                        Shape {
+                          appearance FlexibleAluminiumDuct {
+                          }
+                          geometry Cylinder {
+                            height 0.0005
+                            radius 0.02
+                          }
+                        }
+                      ]
+                      name "plaqueMetal"
+                      translationStep 0.0001
+                    }
+                    Solid {
+                      translation 0 0 0.0168
+                      children [
+                        Shape {
+                          appearance PBRAppearance {
+                            baseColor 1 0 0
+                            roughness 1
+                          }
+                          geometry Cylinder {
+                            height 0.03
+                            radius 0.006
+                          }
+                        }
+                      ]
+                      name "colonne"
+                      translationStep 0.0001
+                    }
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 0
+                        roughness 1
+                      }
+                      geometry Box {
+                        size 0.026 0.023 0.003
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
                 DEF CARTEMOTEUR Pose {
                   translation -0.1059 0.0112 0.0276
                   children [
@@ -723,7 +783,7 @@ DEF AlphieBeta Robot {
       ]
     }
     DEF ANTENNA_EMITTER Emitter {
-      translation 0.0324 0.017 0.0496
+      translation 0.0451 0.0118 0.037
       children [
         Pose {
           translation 0 0 -0.008
@@ -752,7 +812,7 @@ DEF AlphieBeta Robot {
       translationStep 0.0001
     }
     DEF ANTENNA_RECEIVER Receiver {
-      translation 0.0324 0.017 0.0496
+      translation 0.0451 0.0118 0.037
     }
     DEF FIRST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
@@ -1042,5 +1102,5 @@ DEF AlphieBeta Robot {
       0 -6.02166e-06 0
     ]
   }
-  controller "<extern>"
+  controller "GoToCoordinatePython"
 }
