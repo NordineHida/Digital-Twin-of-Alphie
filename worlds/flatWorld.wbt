@@ -9,8 +9,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.30894497347717964 -0.14804108558414966 0.939487541344882 4.0055137878757385
-  position 4.003418990187223 0.38940311748435885 0.2115574442072981
+  orientation -0.2662047545191887 -0.15970484657859751 0.9505942302847653 4.198989206645395
+  position 3.9972306136288376 0.4673931048191809 0.22150190226003622
   exposure 0.3
   follow "AlphieBeta"
   followType "None"
@@ -44,7 +44,7 @@ Solid {
   ]
   name "CIBLE"
 }
-DEF AlphieBeta Robot {
+DEF Alphie Robot {
   translation 3.85 0.180031 -4.37081e-05
   rotation 0.06719508621691139 -0.5522158867292101 -0.8309888295471691 0.000195699
   children [
