@@ -13,6 +13,9 @@ from controller import Robot
 
 # region Initialisation
 
+# Define target position (X,Y)            YOU CAN MODIFY TARGET'S COORDINATES HERE !!
+target_position = Coordinates(2, 2)
+
 # Create the Robot instance.
 robot = Robot()
 
@@ -28,9 +31,6 @@ timestep = int(robot.getBasicTimeStep())
 # Initialise PositionManager et MovementManager with the robot
 position_manager = PositionManager(robot)
 movement_manager = MovementManager(robot)
-
-# Define target position (X,Y)
-target_position = Coordinates(2, 2)
 
 # Tolerance values
 arrival_tolerance = 0.01

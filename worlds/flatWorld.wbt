@@ -9,10 +9,10 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.2662047545191887 -0.15970484657859751 0.9505942302847653 4.198989206645395
-  position 3.9972306136288376 0.4673931048191809 0.22150190226003622
+  orientation -0.53617431668709 0.5665376153190045 0.6257413463674808 1.9834476220097133
+  position 3.4432501829824056 -0.1817230195042659 4.21167841606951
   exposure 0.3
-  follow "AlphieBeta"
+  follow "Alphie"
   followType "None"
   followSmoothness 1
   ambientOcclusionRadius 0
@@ -44,9 +44,9 @@ Solid {
   ]
   name "CIBLE"
 }
-DEF Alphie Robot {
-  translation 3.85 0.180031 -4.37081e-05
-  rotation 0.06719508621691139 -0.5522158867292101 -0.8309888295471691 0.000195699
+Robot {
+  translation 3.8221068581071798 0.2044979601090756 -2.1050029204994214e-06
+  rotation 8.912355740746663e-05 -0.0002927329516030443 0.9999999531822042 2.3422386433092055
   children [
     Group {
     }
@@ -816,7 +816,7 @@ DEF Alphie Robot {
     }
     DEF FIRST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -737.196855775293
+        position -725.0673912382157
         axis 0 -1 0
         anchor 0.049 0.0394 0.014
       }
@@ -831,7 +831,7 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation 0.049 0.0394 0.014
-        rotation 0 -1 0 4.2190104718982155
+        rotation 0 -1 0 3.78210439461634
         name "first left wheel"
         contactMaterial "wheel"
         boundingObject DEF BOUNDING_WHEEL Pose {
@@ -847,11 +847,13 @@ DEF Alphie Robot {
           density -1
           mass 0.005
         }
+        linearVelocity -0.1148046241810163 0.12086372505406061 -0.0014367401300532266
+        angularVelocity -8.624617170920196 -8.344044332611253 -0.07239555617156367
       }
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position 1211.638548435351
+        position 1223.7680129230246
         axis 0 -1 0
         anchor 0.0245 0.0394 0.014
       }
@@ -866,16 +868,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation 0.0245 0.0394 0.014
-        rotation 0 -1 0 5.266969456870309
+        rotation 0 -1 0 4.830063330184794
         name "second left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11529802293094046 0.12145654304867454 -0.0014300931870550031
+        angularVelocity -8.6246171690493 -8.344044347368298 -0.0723955466009554
       }
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -710.1582623977923
+        position -698.0287979212894
         axis 0 -1 0
         anchor 0 0.0394 0.014
       }
@@ -890,7 +894,7 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation 0 0.0394 0.014
-        rotation 0 -1 0 6.12486262068053
+        rotation 0 -1 0 5.687956482824261
         name "third left wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -898,11 +902,13 @@ DEF Alphie Robot {
           density -1
           mass 0.005
         }
+        linearVelocity -0.11579067456421865 0.12204746483371151 -0.0014240872843792934
+        angularVelocity -8.624617161134402 -8.344044355333825 -0.07239553887799724
       }
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -710.1582634140583
+        position -698.0287989287904
         axis 0 -1 0
         anchor -0.0245 0.0394 0.014
       }
@@ -917,16 +923,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation -0.0245 0.0394 0.014
-        rotation 0 -1 0 6.124861604414561
+        rotation 0 -1 0 5.68795547532332
         name "fourth left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11628253302865431 0.12263781312069574 -0.0014176209632789304
+        angularVelocity -8.624617161663743 -8.344044355049103 -0.0723955266853172
       }
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -710.1582470482592
+        position -698.0287825477176
         axis 0 -1 0
         anchor -0.049 0.0394 0.014
       }
@@ -941,16 +949,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation -0.049 0.0394 0.014
-        rotation 0 -0.9999999999999999 0 6.124877970213632
+        rotation 0 -1 0 5.687971856396103
         name "last left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11677718461653462 0.12322770019665259 -0.0014109870136566095
+        angularVelocity -8.624617166588463 -8.344044350240779 -0.0723955350211536
       }
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -273.5157538837309
+        position -290.1978021332209
         axis 0 -1 0
         anchor 0.049 -0.0394 0.014
       }
@@ -965,16 +975,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation 0.049 -0.0394 0.014
-        rotation 0 -1 0 2.94439963217091
+        rotation 0 1 0 1.1712780029598975
         name "first right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11670355436797128 0.11928099722009668 -0.000968247460634055
+        angularVelocity -8.641912163241061 -8.326287457576603 -0.03251325623590582
       }
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -273.51575162235395
+        position -290.1977998539072
         axis 0 -1 0
         anchor 0.0245 -0.0394 0.014
       }
@@ -989,16 +1001,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation 0.0245 -0.0394 0.014
-        rotation 0 -0.9999999999999999 0 2.944401893547859
+        rotation 0 1 0 1.1712757236462354
         name "second right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11719179557271085 0.1198709931064126 -0.0009618364730749373
+        angularVelocity -8.641912166960022 -8.32628752793516 -0.03251322780582948
       }
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -273.5157546012087
+        position -290.1978028151689
         axis 0 -1 0
         anchor 0 -0.0394 0.014
       }
@@ -1013,16 +1027,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation 0 -0.0394 0.014
-        rotation 0 -1 0 2.9443989146931067
+        rotation 0 1 0 1.1712786849079493
         name "third right wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_CENTER_WHEEL
+        linearVelocity -0.11768557140496176 0.12046107568445924 -0.000955323637232505
+        angularVelocity -8.641912177709433 -8.326287543207334 -0.03251326392974259
       }
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -273.5157562187423
+        position -290.19780444920474
         axis 0 -1 0
         anchor -0.0245 -0.0394 0.014
       }
@@ -1037,16 +1053,18 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation -0.0245 -0.0394 0.014
-        rotation 0 -1 0 2.944397297159508
+        rotation 0 1 0 1.1712803189437608
         name "forth right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11817769516495617 0.12105283146175645 -0.0009487206620456084
+        angularVelocity -8.641912163500676 -8.326287557628307 -0.03251326573007133
       }
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -273.51574194009385
+        position -290.19779020568615
         axis 0 -1 0
         anchor -0.049 -0.0394 0.014
       }
@@ -1061,16 +1079,19 @@ DEF Alphie Robot {
       ]
       endPoint Solid {
         translation -0.049 -0.0394 0.014
-        rotation 0 -1 0 2.9444115758079583
+        rotation 0 1 0 1.171266075425169
         name "last right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity -0.11867044398284997 0.12163969322045239 -0.0009422421539543861
+        angularVelocity -8.641912269372193 -8.32628759421951 -0.03251319687462503
       }
     }
   ]
-  name "AlphieBeta"
-  model "SRV-1"
+  name "Alphie"
+  model "Alphie'sModel"
+  description "Simulation of the real robot Alphie"
   boundingObject Group {
     children [
       Pose {
@@ -1102,5 +1123,1090 @@ DEF Alphie Robot {
       0 -6.02166e-06 0
     ]
   }
-  controller "GoToCoordinatePython"
+  controller "<extern>"
+  linearVelocity -0.11690182779365466 0.12131884823586866 -0.0011884149580569615
+  angularVelocity 0.0039761630283947445 -0.004453987071705289 -0.0122724342556349
+}
+Robot {
+  translation 3.4200017501669935 0.18011801177595793 -3.069795336728062e-05
+  rotation 0.06702174449675531 -0.5554238661323656 -0.8288621204369202 0.00019619952560135368
+  children [
+    Group {
+    }
+    DEF BODY Group {
+      children [
+        DEF LEFT_TRACK Pose {
+          translation 0 0.0295 0.014
+          rotation 1 0 0 -1.57
+          children [
+            DEF TRACK Group {
+              children [
+                Pose {
+                  translation -0.049 0 0
+                  children [
+                    DEF TRACK_EXTRUSION Shape {
+                      appearance DEF BLACK PBRAppearance {
+                        baseColor 0 0 0
+                        roughness 0.7
+                        metalness 0
+                      }
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0 0.014 0
+                            -0.007 0.01212 0
+                            -0.01212 0.007 0
+                            -0.014 0 0
+                            -0.01212 -0.007 0
+                            -0.007 -0.01212 0
+                            0 -0.014 0
+                            0 0.014 0
+                            0 0.014 0.0198
+                            -0.007 0.01212 0.0198
+                            -0.01212 0.007 0.0198
+                            -0.014 0 0.0198
+                            -0.01212 -0.007 0.0198
+                            -0.007 -0.01212 0.0198
+                            0 -0.014 0.0198
+                            0 0.014 0.0198
+                          ]
+                        }
+                        coordIndex [
+                          7, 6, 5, 4, 3, 2, 1, 0, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, 0, 1, 9, 8, -1, 1, 2, 10, 9, -1, 2, 3, 11, 10, -1, 3, 4, 12, 11, -1, 4, 5, 13, 12, -1, 5, 6, 14, 13, -1, 6, 7, 15, 14, -1
+                        ]
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0.049 0 0
+                  rotation 0 0 1 3.14
+                  children [
+                    DEF TRACK_EXTRUSION Shape {
+                      appearance USE BLACK
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0 0.014 0
+                            -0.007 0.01212 0
+                            -0.01212 0.007 0
+                            -0.014 0 0
+                            -0.01212 -0.007 0
+                            -0.007 -0.01212 0
+                            0 -0.014 0
+                            0 0.014 0
+                            0 0.014 0.0198
+                            -0.007 0.01212 0.0198
+                            -0.01212 0.007 0.0198
+                            -0.014 0 0.0198
+                            -0.01212 -0.007 0.0198
+                            -0.007 -0.01212 0.0198
+                            0 -0.014 0.0198
+                            0 0.014 0.0198
+                          ]
+                        }
+                        coordIndex [
+                          7, 6, 5, 4, 3, 2, 1, 0, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, 0, 1, 9, 8, -1, 1, 2, 10, 9, -1, 2, 3, 11, 10, -1, 3, 4, 12, 11, -1, 4, 5, 13, 12, -1, 5, 6, 14, 13, -1, 6, 7, 15, 14, -1
+                        ]
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0.049 0 0.0101
+                  children [
+                    DEF TRACK_WHEEL Shape {
+                      appearance DEF GRAY PBRAppearance {
+                        roughness 0.2
+                      }
+                      geometry Cylinder {
+                        height 0.0205
+                        radius 0.011
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation -0.049 0 0.0101
+                  children [
+                    USE TRACK_WHEEL
+                  ]
+                }
+                Pose {
+                  translation 0 -0.0125 0.0099
+                  children [
+                    DEF TRACK_BOX Shape {
+                      appearance USE BLACK
+                      geometry Box {
+                        size 0.098 0.003 0.0198
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0 0.0125 0.0099
+                  children [
+                    USE TRACK_BOX
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+        DEF RIGHT_TRACK Pose {
+          translation 0 -0.0295 0.014
+          rotation 1 0 0 1.57
+          children [
+            USE TRACK
+          ]
+        }
+        DEF BASE Pose {
+          translation 0 0 0.014
+          children [
+            Pose {
+              translation -0.056 -5.91374e-08 0.02
+              rotation 0 0 1 -1.5707953071795862
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0 0 0
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Box {
+                    size 0.055 0.001 0.021
+                  }
+                }
+              ]
+              translationStep 0.001
+            }
+            Pose {
+              translation -0.0182 0.026 0.014
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0 0 0
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Box {
+                    size 0.075 0.001 0.034
+                  }
+                }
+              ]
+              translationStep 0.0001
+            }
+            Pose {
+              translation -0.019 -0.0266 0.0145
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0 0 0
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Box {
+                    size 0.075 0.001 0.034
+                  }
+                }
+              ]
+              translationStep 0.0001
+            }
+            Pose {
+              translation -0.0466 -0.016 0.00562
+              rotation 1 0 0 1.57
+              children [
+                DEF WHEEL_AXE Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.392157 0.392157 0.392157
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Cylinder {
+                    height 0.02
+                    radius 0.0035
+                  }
+                }
+              ]
+              translationStep 0.0001
+            }
+            Pose {
+              translation -0.0466 0.0159912 0.00562
+              rotation 1 0 0 1.57
+              children [
+                USE WHEEL_AXE
+              ]
+              translationStep 0.001
+            }
+          ]
+        }
+        DEF FRONT_SUPPORT Pose {
+          translation 0.0754 0 0.021
+          children [
+            DEF Composant Group {
+              children [
+                DEF ANTENNEGPS Pose {
+                  translation -0.0427 -0.012 0.0118
+                  children [
+                    Solid {
+                      translation 0 0 0.0312
+                      children [
+                        TrafficCone {
+                          scale 0.03
+                        }
+                      ]
+                      name "GPSComposant"
+                      translationStep 0.0001
+                    }
+                    Solid {
+                      translation 0 0 0.0314
+                      children [
+                        Shape {
+                          appearance FlexibleAluminiumDuct {
+                          }
+                          geometry Cylinder {
+                            height 0.0005
+                            radius 0.02
+                          }
+                        }
+                      ]
+                      name "plaqueMetal"
+                      translationStep 0.0001
+                    }
+                    Solid {
+                      translation 0 0 0.0168
+                      children [
+                        Shape {
+                          appearance PBRAppearance {
+                            baseColor 1 0 0
+                            roughness 1
+                          }
+                          geometry Cylinder {
+                            height 0.03
+                            radius 0.006
+                          }
+                        }
+                      ]
+                      name "colonne"
+                      translationStep 0.0001
+                    }
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 0
+                        roughness 1
+                      }
+                      geometry Box {
+                        size 0.026 0.023 0.003
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
+                DEF CARTEMOTEUR Pose {
+                  translation -0.1059 0.0112 0.0276
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColorMap ImageTexture {
+                          url [
+                            "../pictures/carte_moteur.png"
+                          ]
+                        }
+                        roughnessMap ImageTexture {
+                          url [
+                            ""
+                          ]
+                        }
+                        metalness 0
+                        metalnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_metalness.jpg"
+                          ]
+                        }
+                        normalMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_normal.jpg"
+                          ]
+                        }
+                      }
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0.017 -0.015 0.0031
+                            -0.019 -0.015 0.0031
+                            -0.019 0.015 0.0031
+                            0.017 0.0145 0.0031
+                          ]
+                        }
+                        texCoord TextureCoordinate {
+                          point [
+                            0 0
+                            1 0
+                            1 1
+                            0 1
+                          ]
+                        }
+                        coordIndex [
+                          0, 3, 2, 1, -1
+                        ]
+                        texCoordIndex [
+                          0, 1, 2, 3, -1
+                        ]
+                      }
+                    }
+                    Shape {
+                      appearance USE BLACK
+                      geometry Box {
+                        size 0.031 0.028 0.006
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
+                DEF BREADBOARD Pose {
+                  translation -0.0718 0.0177 0.0274
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColorMap ImageTexture {
+                          url [
+                            "../pictures/breadboard.jpg"
+                          ]
+                        }
+                        roughnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_roughness.jpg"
+                          ]
+                        }
+                        metalness 0
+                        metalnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_metalness.jpg"
+                          ]
+                        }
+                        normalMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_normal.jpg"
+                          ]
+                        }
+                      }
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0.0105 0.0075 0.00251
+                            0.0105 -0.0075 0.00251
+                            -0.0105 -0.0072 0.00251
+                            -0.0105 0.0072 0.00251
+                          ]
+                        }
+                        texCoord TextureCoordinate {
+                          point [
+                            0 0
+                            1 0
+                            1 1
+                            0 1
+                          ]
+                        }
+                        coordIndex [
+                          0, 3, 2, 1, -1
+                        ]
+                        texCoordIndex [
+                          0, 1, 2, 3, -1
+                        ]
+                      }
+                    }
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 0.870588 0.870588 0.870588
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Box {
+                        size 0.021 0.015 0.005
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
+                DEF RADIO Pose {
+                  translation -0.0344 0.0118 0.013
+                  rotation 0 0 1 3.14159
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColorMap ImageTexture {
+                          url [
+                            "../pictures/ModuleRadio.png"
+                          ]
+                        }
+                        roughnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_roughness.jpg"
+                          ]
+                        }
+                        metalnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_metalness.jpg"
+                          ]
+                        }
+                        normalMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_normal.jpg"
+                          ]
+                        }
+                      }
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0.01 -0.0035 0.0016
+                            -0.01 -0.0035 0.0016
+                            -0.01 0.0035 0.0016
+                            0.01 0.0035 0.0016
+                          ]
+                        }
+                        texCoord TextureCoordinate {
+                          point [
+                            0 0
+                            1 0
+                            1 1
+                            0 1
+                          ]
+                        }
+                        coordIndex [
+                          0, 3, 2, 1, -1
+                        ]
+                        texCoordIndex [
+                          0, 1, 2, 3, -1
+                        ]
+                      }
+                    }
+                    Shape {
+                      appearance USE BLACK
+                      geometry Box {
+                        size 0.02 0.007 0.003
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
+                DEF ARDUINOR4 Pose {
+                  translation -0.1044 -0.0158 0.0264
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColorMap ImageTexture {
+                          url [
+                            "../pictures/UnoR4Wifi.png"
+                          ]
+                          filtering 3
+                        }
+                        roughnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_roughness.jpg"
+                          ]
+                        }
+                        metalness 0
+                        metalnessMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_metalness.jpg"
+                          ]
+                        }
+                        normalMap ImageTexture {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_normal.jpg"
+                          ]
+                        }
+                      }
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            -0.0184 -0.01 0.00151
+                            -0.0183 0.01 0.00151
+                            0.0185 0.01 0.00151
+                            0.0185 -0.01 0.00151
+                          ]
+                        }
+                        texCoord TextureCoordinate {
+                          point [
+                            0 0
+                            1 0
+                            1 1
+                            0 1
+                          ]
+                        }
+                        coordIndex [
+                          0, 3, 2, 1, -1
+                        ]
+                        texCoordIndex [
+                          0, 1, 2, 3, -1
+                        ]
+                      }
+                    }
+                    Shape {
+                      appearance USE BLACK
+                      geometry Box {
+                        size 0.037 0.02 0.003
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF SUPPORT Group {
+              children [
+                Pose {
+                  translation -0.0364 0 -0.004
+                  children [
+                    Shape {
+                      appearance DEF BlackRobotAlphie PBRAppearance {
+                        baseColor 0 0 0
+                        roughness 1
+                        metalness 0
+                        name ""
+                      }
+                      geometry Box {
+                        size 0.04 0.0525 0.0011
+                      }
+                    }
+                  ]
+                  translationStep 0.001
+                }
+                Pose {
+                  translation -0.0433 0 0.0102
+                  children [
+                    Shape {
+                      appearance DEF BlackRobotAlphie PBRAppearance {
+                        baseColor 0 0 0
+                        roughness 1
+                        metalness 0
+                        name ""
+                      }
+                      geometry Box {
+                        size 0.03 0.0525 0.0011
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.85098 0.85098 0.85098
+                    baseColorMap ImageTexture {
+                      url [
+                        "../pictures/FrontAlphie.png"
+                      ]
+                      repeatS FALSE
+                      repeatT FALSE
+                    }
+                    roughness 1
+                    roughnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_roughness.jpg"
+                      ]
+                    }
+                    metalness 0
+                    metalnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_metalness.jpg"
+                      ]
+                    }
+                    normalMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_normal.jpg"
+                      ]
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        -0.059 0.026 0.011
+                        -0.028 0.026 0.011
+                        -0.028 -0.026 0.011
+                        -0.059 -0.026 0.011
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        0 0
+                        1 0
+                        1 1
+                        0 1
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+                Pose {
+                  translation -0.0227073 3.05188e-07 0.00330141
+                  rotation -0.6848107156457631 0.6848157156436869 -0.2491218965570118 2.65328
+                  children [
+                    Shape {
+                      appearance USE BlackRobotAlphie
+                      geometry Box {
+                        size 0.0525 0.0012 0.0185
+                      }
+                    }
+                  ]
+                  translationStep 0.0001
+                }
+              ]
+            }
+          ]
+        }
+        DEF TOP_PLATE Group {
+          children [
+            Pose {
+              translation -0.0186 0 0.0449
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0 0 0
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Box {
+                    size 0.076 0.053 0.0015
+                  }
+                }
+              ]
+              translationStep 0.001
+            }
+            DEF TOP Pose {
+              translation -0.006 -6.36861e-08 0.0477
+              rotation 0 0 1 3.14159
+              children [
+                GPS {
+                  rotation 0 0 1 3.14159
+                }
+                Compass {
+                  rotation 0 0 1 3.14159
+                }
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "../pictures/TopAlphie.png"
+                      ]
+                      repeatS FALSE
+                      repeatT FALSE
+                    }
+                    roughness 1
+                    roughnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_roughness.jpg"
+                      ]
+                    }
+                    metalness 0
+                    metalnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_metalness.jpg"
+                      ]
+                    }
+                    normalMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_normal.jpg"
+                      ]
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        0.05 -0.027 -0.002
+                        -0.026 -0.027 -0.002
+                        -0.026 0.027 -0.002
+                        0.05 0.027 -0.002
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        0 0
+                        1 0
+                        1 1
+                        0 1
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+              ]
+              translationStep 0.001
+            }
+          ]
+        }
+        DEF BATTERIES Group {
+          children [
+            Pose {
+              translation -0.0220079 -5.51926e-08 0.0270237
+              rotation 0.577656895078166 -0.5771968951617173 0.5771968951617173 2.09394
+              children [
+                DEF BATTERY Shape {
+                  appearance DEF BlackRobot PBRAppearance {
+                    baseColor 0.360784 0.360784 0.360784
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry Box {
+                    size 0.015 0.02 0.05
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    DEF ANTENNA_EMITTER Emitter {
+      translation 0.0451 0.0118 0.037
+      children [
+        Pose {
+          translation 0 0 -0.008
+          children [
+            Shape {
+              appearance USE BLACK
+              geometry Cylinder {
+                height 0.019
+                radius 0.0006
+              }
+            }
+          ]
+        }
+        Pose {
+          children [
+            Shape {
+              appearance USE BLACK
+              geometry Cylinder {
+                height 0.007
+                radius 0.0015
+              }
+            }
+          ]
+        }
+      ]
+      translationStep 0.0001
+    }
+    DEF ANTENNA_RECEIVER Receiver {
+      translation 0.0451 0.0118 0.037
+    }
+    DEF FIRST_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -737.1968557738461
+        axis 0 -1 0
+        anchor 0.049 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor00"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor00"
+        }
+      ]
+      endPoint Solid {
+        translation 0.049 0.0394 0.014
+        rotation 0 -1 0 4.219010473345108
+        name "first left wheel"
+        contactMaterial "wheel"
+        boundingObject DEF BOUNDING_WHEEL Pose {
+          rotation 1 0 0 -1.57
+          children [
+            Cylinder {
+              height 0.0198
+              radius 0.014
+            }
+          ]
+        }
+        physics DEF PHYSICS_FRONT_WHEEL Physics {
+          density -1
+          mass 0.005
+        }
+        linearVelocity 1.0292317139273527e-07 -6.336574455113977e-11 1.1914830883674188e-05
+        angularVelocity 3.2914223595531318e-09 7.077376814633191e-06 -6.472025310137953e-11
+      }
+    }
+    DEF SECOND_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position 1211.6385484336495
+        axis 0 -1 0
+        anchor 0.0245 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor01"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor01"
+        }
+      ]
+      endPoint Solid {
+        translation 0.0245 0.0394 0.014
+        rotation 0 -0.9999999999999999 0 5.266969455168872
+        name "second left wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 1.0120544765323192e-07 -8.857496500339734e-11 1.208864635466339e-05
+        angularVelocity 3.278392639999014e-09 7.0931407973033305e-06 -7.153248988319319e-11
+      }
+    }
+    DEF THIRD_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -710.1582624009383
+        axis 0 -1 0
+        anchor 0 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor02"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor02"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.0394 0.014
+        rotation 0 -0.9999999999999999 0 6.124862617534588
+        name "third left wheel"
+        contactMaterial "center_wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics DEF PHYSICS_CENTER_WHEEL Physics {
+          density -1
+          mass 0.005
+        }
+        linearVelocity 9.940591816943527e-08 -1.1057878846553906e-10 1.226246128534478e-05
+        angularVelocity 3.2731629397897983e-09 7.10034417019837e-06 -7.464519519006909e-11
+      }
+    }
+    DEF FOURTH_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -710.1582634171918
+        axis 0 -1 0
+        anchor -0.0245 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor03"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor03"
+        }
+      ]
+      endPoint Solid {
+        translation -0.0245 0.0394 0.014
+        rotation 0 -1 0 6.124861601281011
+        name "fourth left wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 9.75363191290829e-08 -1.2982237494922849e-10 1.243627682023316e-05
+        angularVelocity 3.2720437532879484e-09 7.1004111655967554e-06 -7.462206558214314e-11
+      }
+    }
+    DEF LAST_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -710.1582470513836
+        axis 0 -1 0
+        anchor -0.049 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor04"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor04"
+        }
+      ]
+      endPoint Solid {
+        translation -0.049 0.0394 0.014
+        rotation 0 -1 0 6.124877967089288
+        name "last left wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 9.566708597508176e-08 -1.4906760770003386e-10 1.2610092348862559e-05
+        angularVelocity 3.271153376838489e-09 7.100515674888166e-06 -7.460322415309147e-11
+      }
+    }
+    DEF FIRST_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -273.51575388374505
+        axis 0 -1 0
+        anchor 0.049 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor05"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor05"
+        }
+      ]
+      endPoint Solid {
+        translation 0.049 -0.0394 0.014
+        rotation 0 -1 0 2.944399632156756
+        name "first right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 1.0276429414339925e-07 -6.028897587125674e-11 1.1914798127649247e-05
+        angularVelocity 3.2977795200597883e-09 7.069299858450305e-06 -6.126083528348446e-11
+      }
+    }
+    DEF SECOND_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -273.51575162236014
+        axis 0 -1 0
+        anchor 0.0245 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor06"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor06"
+        }
+      ]
+      endPoint Solid {
+        translation 0.0245 -0.0394 0.014
+        rotation 0 -1 0 2.944401893541663
+        name "second right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 1.0089515790393823e-07 -7.9543053084296e-11 1.2088613661698388e-05
+        angularVelocity 3.2973140056895452e-09 7.0694134618056715e-06 -6.127738665941225e-11
+      }
+    }
+    DEF THIRD_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -273.5157546042608
+        axis 0 -1 0
+        anchor 0 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor07"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor07"
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.0394 0.014
+        rotation 0 -1 0 2.944398911641013
+        name "third right wheel"
+        contactMaterial "center_wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_CENTER_WHEEL
+        linearVelocity 9.931961767817189e-08 -9.884507194484618e-11 1.2262429191817464e-05
+        angularVelocity 3.3019348894712993e-09 7.099880044932489e-06 -6.089716063871912e-11
+      }
+    }
+    DEF FOURTH_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -273.5157562217822
+        axis 0 -1 0
+        anchor -0.0245 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor08"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor08"
+        }
+      ]
+      endPoint Solid {
+        translation -0.0245 -0.0394 0.014
+        rotation 0 -1 0 2.944397294119579
+        name "forth right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 9.745005943260403e-08 -1.1810144422189907e-10 1.2436244721341862e-05
+        angularVelocity 3.3017752430837252e-09 7.099951019314227e-06 -6.092135058613175e-11
+      }
+    }
+    DEF LAST_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        position -273.5157419431252
+        axis 0 -1 0
+        anchor -0.049 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor09"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor09"
+        }
+      ]
+      endPoint Solid {
+        translation -0.049 -0.0394 0.014
+        rotation 0 -1 0 2.9444115727766125
+        name "last right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+        linearVelocity 9.558088027815026e-08 -1.3735584164544314e-10 1.2610060250745112e-05
+        angularVelocity 3.3013774056368765e-09 7.100061211510807e-06 -6.093691080033249e-11
+      }
+    }
+  ]
+  name "Bettie"
+  model "Alphie'sModel"
+  description "Simulation of the real robot Alphie"
+  boundingObject Group {
+    children [
+      Pose {
+        translation 0 0 0.03
+        children [
+          Box {
+            size 0.114 0.0535 0.045
+          }
+        ]
+      }
+      Pose {
+        translation -0.0039 0 0.063
+        children [
+          Box {
+            size 0.087 0.08 0.017
+          }
+        ]
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 0.324
+    centerOfMass [
+      -0.005 0 0.028
+    ]
+    inertiaMatrix [
+      0.000267079 0.000473553 0.000418585
+      0 -6.02166e-06 0
+    ]
+  }
+  controller "<none>"
+  linearVelocity 1.978792130302156e-07 -1.4892660948298985e-10 1.2296995979086977e-05
+  angularVelocity 3.284918740649728e-09 7.084680283846946e-06 -6.816345930214764e-11
 }
