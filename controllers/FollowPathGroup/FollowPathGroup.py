@@ -16,12 +16,11 @@ from controller import Robot
 
 # Define the target coordinates path
 coordinates_path = [
-    Coordinates(2, 2),
-    Coordinates(1, 1),
-    Coordinates(0, 0),
-    Coordinates(1, 0),
-    Coordinates(-2, 3),
-    Coordinates(-1, 3)
+    Coordinates(-1, -1 ),
+    Coordinates(-1, 1 ),
+    Coordinates(1, 1 ),
+    Coordinates(1, -1 ),
+
 ]
 
 # Create the Robot instance.
@@ -50,7 +49,7 @@ arrival_tolerance = 0.01
 angle_tolerance = 3.0
 
 canMove = False
-if robot_name == "Alphie":
+if robot_name == "Robot1":
     canMove = True
 # endregion
 
@@ -60,8 +59,6 @@ print(robot_name, " go !")
 if canMove:
     # We simply go to each coordinate one by one
     for target_position in coordinates_path:
-        print(f"{robot_name} : Moving to coordinates: ({target_position.x}, {target_position.y})")
-
         # Call the go_to_coordinate method from GoToCoordinate class
         GoToCoordinate.go_to_coordinate(target_position.x, target_position.y, robot)
 

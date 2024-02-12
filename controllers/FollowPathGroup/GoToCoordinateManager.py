@@ -8,6 +8,8 @@ class GoToCoordinate:
         # Create the Robot instance.
         robot = robot
 
+        print(f"{robot.getName()} : Moving to coordinates: ({target_x}, {target_y})")
+
         # Get and enable measuring devices
         compass = robot.getDevice("compass")
         compass.enable(10)
