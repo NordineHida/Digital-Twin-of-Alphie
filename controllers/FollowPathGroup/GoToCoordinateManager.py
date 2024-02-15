@@ -1,14 +1,20 @@
+"""
+File:          GoToCoordinateManager.py
+Date:          February 2024
+Description:   Algorithm to move a robot to specified coordinates
+Author:        Nordine HIDA
+Modifications:
+"""
+
 from PositionManager import *
-from MovementManager import MovementManager
-from controller import Robot
 
 class GoToCoordinate:
     @staticmethod
-    def go_to_coordinate(target_x, target_y, robot):
+    def go_to_coordinate(target_coordinate, robot):
         # Create the Robot instance.
         robot = robot
 
-        print(f"{robot.getName()} : Moving to coordinates: ({target_x}, {target_y})")
+        print(f"{robot.getName()} : Moving to coordinates: ({target_coordinate.x}, {target_coordinate.y})")
 
         # Get and enable measuring devices
         compass = robot.getDevice("compass")
@@ -21,10 +27,7 @@ class GoToCoordinate:
 
         # Initialise PositionManager et MovementManager with the robot
         position_manager = PositionManager(robot)
-        movement_manager = MovementManager(robot)
-
-        # Define target position
-        target_position = Coordinates(target_x, target_y)
+        movement_manager = position_manager.get_movement_manager()
 
         # Tolerance values
         arrival_tolerance = 0.01
@@ -38,9 +41,9 @@ class GoToCoordinate:
             current_position = position_manager.get_position(gps)
 
             # Check if the robot has arrived at the target position
-            if not position_manager.is_arrived(current_position, target_position, arrival_tolerance):
+            if not position_manager.is_arrived(current_position, target_coordinate, arrival_tolerance):
                 # Get the bearing angle to the target coordinates
-                angle_to_destination = position_manager.get_bearing_to_coordinate(current_position, target_position)
+                angle_to_destination = position_manager.get_bearing_to_coordinate(current_position, target_coordinate)
 
                 # Rotate the robot until it faces the target coordinates
                 position_manager.rotate_to_destination(compass, angle_to_destination, angle_tolerance)

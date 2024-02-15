@@ -8,21 +8,7 @@ Modifications:
 
 import math
 from MovementManager import *
-
-
-class Coordinates:
-    """
-    Structure representing coordinates.
-    """
-
-    def __init__(self, x, y):
-        """
-        Initialize coordinates with x and y values.
-        :param x: X coordinate
-        :param y: Y coordinate
-        """
-        self.x = x
-        self.y = y
+from Coordinates import *
 
 
 class PositionManager:
@@ -32,12 +18,19 @@ class PositionManager:
 
     def __init__(self, robot):
         """
-        Initialize the PositionManager with a robot instance.
+        Initialize the PositionManager and the MovementManager with a robot instance.
         :param robot: The robot instance.
         """
         self.robot = robot
         self.time_step = int(self.robot.getBasicTimeStep())
         self.movement_manager = MovementManager(self.robot)
+
+    def get_movement_manager(self):
+        """
+        Get the MovementManager of the instance (To avoid the multiple creation of movementManager)
+        :return: the MovementManager of the PositionManager
+        """
+        return self.movement_manager
 
     def get_bearing_to_coordinate(self, robot_position, target_position):
         """
@@ -97,7 +90,7 @@ class PositionManager:
         :param gps: The GPS device of the robot.
         :return: Coordinates of the robot.
         """
-        position = gps.getValues()
+        position = self.robot.getDevice("gps").getValues()
         return Coordinates(position[0], position[1])
 
     def is_arrived(self, current, target, tolerance):
@@ -111,12 +104,3 @@ class PositionManager:
         difference_x = abs(current.x - target.x)
         difference_y = abs(current.y - target.y)
         return difference_x < tolerance and difference_y < tolerance
-
-    def calculate_go_to(self, actual, target):
-        """
-        Calculate the vector to go from the current position to the target position.
-        :param actual: The current coordinates of the robot.
-        :param target: The target coordinates.
-        :return: Coordinates representing the vector to go to the target.
-        """
-        return Coordinates(target.x - actual.x, target.y - actual.y)

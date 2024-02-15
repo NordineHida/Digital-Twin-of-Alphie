@@ -7,7 +7,6 @@ Modifications:
 """
 
 from PositionManager import *
-from MovementManager import MovementManager
 from GoToCoordinateManager import GoToCoordinate
 from controller import Robot
 
@@ -32,35 +31,27 @@ compass = robot.getDevice("compass")
 compass.enable(10)
 gps = robot.getDevice("gps")
 gps.enable(10)
-emitter = robot.getDevice("emitter")
-receiver = robot.getDevice("receiver")
-receiver.enable(10)
-
 
 # Get the time step of the current world.
 timestep = int(robot.getBasicTimeStep())
 
 # Initialise PositionManager et MovementManager with the robot
 position_manager = PositionManager(robot)
-movement_manager = MovementManager(robot)
+movement_manager = position_manager.get_movement_manager()
 
 # Tolerance values
 arrival_tolerance = 0.01
 angle_tolerance = 3.0
-
-canMove = False
-if robot_name == "Robot1":
-    canMove = True
 # endregion
 
 print(robot_name, " go !")
 
 # Main loop:
-if canMove:
+if robot_name == "Robot1":
     # We simply go to each coordinate one by one
     for target_position in coordinates_path:
         # Call the go_to_coordinate method from GoToCoordinate class
-        GoToCoordinate.go_to_coordinate(target_position.x, target_position.y, robot)
+        GoToCoordinate.go_to_coordinate(target_position, robot)
 
         # Send a message to other robots with the coordinates
         message = f"arrive {target_position.x} {target_position.y}"
@@ -68,7 +59,7 @@ if canMove:
 else:
     # Main loop for other robots
     while robot.step(timestep) != -1:
-        # Check for incoming messages
+        # Check for incoming messages (while the robot has a message to treat)
         while receiver.getQueueLength() > 0:
             # Get the received message
             message = receiver.getString()

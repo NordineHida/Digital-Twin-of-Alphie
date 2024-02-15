@@ -14,10 +14,8 @@ class NetworkManager:
 
     def create_mesh_network(self, num_robots):
         # Create a mesh network among the given number of robots
-        # Each robot is identified by its name (e.g., "Robot1", "Robot2", ...)
-        for i in range(1, num_robots + 1):
-            robot_name = f"Robot{i}"
-            self.network[robot_name] = []
+        # Each robot is identified by its name
+
 
         # Organize the mesh network topology (e.g., tree topology)
         # Assuming a simple tree topology where each robot has one parent except the root
