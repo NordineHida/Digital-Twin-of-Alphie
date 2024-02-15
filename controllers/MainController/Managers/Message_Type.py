@@ -35,7 +35,8 @@ class Message_Type:
             105: "REPORT_POSITION",
             106: "POSITION",
             107: "ABORT",
-            108: "HELLO",
+            108: "PRESENT",
+            109: "PRESENT_FREE",
 
             # Movement
             10: "FORWARD",
@@ -49,7 +50,8 @@ class Message_Type:
             # Tasks
             110: "TURN_TOWARDS",
             111: "GO_TO_COORDINATES",
-            112: "WHO_IS_PRESENT"
+            112: "WHO_IS_PRESENT",
+            113: "WHO_IS_PRESENT_AND_FREE"
         }
 
         # Dictionary to store message priorities
@@ -74,7 +76,9 @@ class Message_Type:
             "RAW": 1,
             "INVALID": 1,
             "WHO_IS_PRESENT": 1,
-            "PRESENT": 1
+            "PRESENT": 1,
+            "WHO_IS_PRESENT_AND_FREE": 1,
+            "PRESENT_FREE": 1
         }
 
     def get_message(self, id_message: int) -> str:

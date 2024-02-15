@@ -2,12 +2,12 @@
 File:           InitialisationManager.py
 Date:           February 2024
 Description:    Initialise all devices of the robot (gps, compass, receiver ...)
-                |!| Must be called right after the creation of the entity (robot, remote, ...)
 Author:         Nordine HIDA
 Modifications:
 """
 
 from controller.robot import *
+
 
 class InitialisationManager:
     """
@@ -31,3 +31,4 @@ class InitialisationManager:
             device = robot.devices[device_name]
             if hasattr(device, 'enable') and callable(getattr(device, 'enable')):
                 device.enable(time_step)
+                print(robot.getName(), " ", device_name, " has been enabled")

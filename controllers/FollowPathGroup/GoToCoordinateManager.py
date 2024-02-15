@@ -8,6 +8,15 @@ Modifications:
 
 from PositionManager import *
 
+# Distance from which we consider the robot has arrived
+ARRIVAL_TOLERANCE = 0.01
+
+# Angle difference from which we consider the robot is well oriented
+ANGLE_TOLERANCE = 3.0
+
+
+
+
 class GoToCoordinate:
     @staticmethod
     def go_to_coordinate(target_coordinate, robot):
@@ -29,10 +38,6 @@ class GoToCoordinate:
         position_manager = PositionManager(robot)
         movement_manager = position_manager.get_movement_manager()
 
-        # Tolerance values
-        arrival_tolerance = 0.01
-        angle_tolerance = 3.0
-
         target_achieved = False
         # Main loop:
         while robot.step(timestep) != -1 and not target_achieved:
@@ -41,12 +46,12 @@ class GoToCoordinate:
             current_position = position_manager.get_position(gps)
 
             # Check if the robot has arrived at the target position
-            if not position_manager.is_arrived(current_position, target_coordinate, arrival_tolerance):
+            if not position_manager.is_arrived(current_position, target_coordinate, ARRIVAL_TOLERANCE):
                 # Get the bearing angle to the target coordinates
                 angle_to_destination = position_manager.get_bearing_to_coordinate(current_position, target_coordinate)
 
                 # Rotate the robot until it faces the target coordinates
-                position_manager.rotate_to_destination(compass, angle_to_destination, angle_tolerance)
+                position_manager.rotate_to_destination(compass, angle_to_destination, ANGLE_TOLERANCE)
 
                 # Move forward
                 movement_manager.move_forward()
