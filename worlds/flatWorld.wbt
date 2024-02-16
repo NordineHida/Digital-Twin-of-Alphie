@@ -9,8 +9,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.5811915389183915 0.5952475901382179 0.5548844037493899 2.1174702923610864
-  position 0.45608662124664495 0.4700370250539129 9.707776814309353
+  orientation -0.5834431120261757 0.5857507578361396 0.5625746036959006 2.122739982506248
+  position 0.05058427914555874 0.1798893810196428 5.147186985399143
   exposure 0.3
   follow "Robot1"
   followType "None"
@@ -1146,7 +1146,7 @@ Robot {
       0 -6.02166e-06 0
     ]
   }
-  controller "FollowPathGroup"
+  controller "<extern>"
 }
 Robot {
   translation 3.420001750167021 0.18011801174284509 -2.9128768682454287e-05
@@ -2207,7 +2207,7 @@ Robot {
       0 -6.02166e-06 0
     ]
   }
-  controller "FollowPathGroup"
+  controller "<none>"
 }
 Robot {
   translation 3.170000000000055 0.18016099964979185 -2.9128591825411387e-05
@@ -3268,5 +3268,5 @@ Robot {
       0 -6.02166e-06 0
     ]
   }
-  controller "FollowPathGroup"
+  controller "<none>"
 }

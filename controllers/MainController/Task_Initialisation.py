@@ -7,7 +7,8 @@ Author:         Nordine HIDA
 Modifications:
 """
 
-from MainController.Managers.InitialisationManager import *
+from InitialisationManager import InitialisationManager
+from controller.robot import Robot
 
 
 class Task_Initialisation:

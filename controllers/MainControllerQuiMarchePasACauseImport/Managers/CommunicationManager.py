@@ -7,7 +7,7 @@ Author:         Nordine HIDA
 Modifications:
 """
 
-from Message import Message
+from Message import *
 from controller.robot import *
 
 
@@ -57,7 +57,7 @@ class CommunicationManager:
             id_sender, message_type, payload = incoming_msg.split(";")
 
             # Create and return a Message object with the extracted parts
-            return Message(id_sender, message_type, payload)
+            return Message(id_sender, Memessage_type, payload)
 
         except ValueError:
             # If there are not enough parts in the message, or it cannot be split properly

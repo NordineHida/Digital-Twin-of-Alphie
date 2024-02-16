@@ -7,7 +7,9 @@ Author:         Nordine HIDA
 Modifications:
 """
 
-from MainController.Managers.NetworkManager import *
+import sys
+sys.path.append("")
+from MainController.NetworkManager import *
 
 
 class Task_Communication:

@@ -1,5 +1,5 @@
 """
-File:           Message_Type.py
+File:           MESSAGE_TYPE_PRIORITY.py
 Date:           February 2024
 Description:    Dictionary of message types. Each message type is represented by an id_message
                 serving as the key, and the corresponding string represents the message type.

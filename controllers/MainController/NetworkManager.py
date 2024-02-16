@@ -39,7 +39,7 @@ class NetworkManager:
             list: A list of strings representing the IDs of the nearby robots.
         """
         # Send a message to inquire who is nearby
-        message = Message(self.robot.getName(), "WHO_IS_PRESENT", "")
+        message = Message(self.robot.getName(), MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT, "")
         self.communication_manager.send_message(message)
 
         # Listen for responses for up to 3 seconds
@@ -48,7 +48,7 @@ class NetworkManager:
         while time.time() - start_time < 3:
             received_message = self.communication_manager.receive_message()
             # If the message is of type "PRESENT" we add the sender to our list
-            if received_message.message_type == "PRESENT":
+            if received_message.message_type == MESSAGE_TYPE_PRIORITY.PRESENT:
                 responses.append(received_message.id_sender)
 
         # Update the list of accessible robots
@@ -67,7 +67,7 @@ class NetworkManager:
             list: A list of strings representing the IDs of the nearby free robots
         """
         # Send a message to inquire who is nearby
-        message = Message(self.robot.getName(), "WHO_IS_PRESENT_AND_FREE", "")
+        message = Message(self.robot.getName(), MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT_AND_FREE, "")
         self.communication_manager.send_message(message)
 
         # Listen for responses for up to 3 seconds
@@ -76,7 +76,7 @@ class NetworkManager:
         while time.time() - start_time < 3:
             received_message = self.communication_manager.receive_message()
             # If the message is of type "PRESENT" we add the sender to our list
-            if received_message.message_type == "PRESENT_FREE":
+            if received_message.message_type == MESSAGE_TYPE_PRIORITY.PRESENT_FREE:
                 responses.append(received_message.id_sender)
 
         # Update the list of accessible robots
