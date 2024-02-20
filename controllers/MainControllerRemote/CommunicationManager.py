@@ -59,7 +59,7 @@ class CommunicationManager:
 
         if self.receiver.getQueueLength() > 0:
             incoming_msg = self.receiver.getString()
-            print(self.robot.getName(), " : message recu : ", incoming_msg)
+            print(self.robot.getName()," : message recu : ", incoming_msg)
         try:
             if incoming_msg != "":
                 # Split the incoming message into its three parts
@@ -102,8 +102,7 @@ class CommunicationManager:
         """
 
         # Compare the priority of the message with the priority threshold
-
-        return MESSAGE_TYPE_PRIORITY.priority(msg.message_type) > MESSAGE_TYPE_PRIORITY.priority(str(current_task))
+        return getattr(msg.message_type, 'priority', float('inf')) < getattr(current_task, 'priority', float('inf'))
 
     def execute_message(self, msg: Message):
         """

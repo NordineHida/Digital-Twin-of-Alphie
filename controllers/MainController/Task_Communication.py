@@ -7,9 +7,7 @@ Author:         Nordine HIDA
 Modifications:
 """
 
-import sys
-sys.path.append("")
-from MainController.NetworkManager import *
+from NetworkManager import *
 
 
 class Task_Communication:
@@ -27,3 +25,4 @@ class Task_Communication:
         """
         self.robot = robot
         self.network_manager = NetworkManager(robot)
+

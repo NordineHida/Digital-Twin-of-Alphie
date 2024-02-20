@@ -39,12 +39,12 @@ class MESSAGE_TYPE_PRIORITY(Enum):
     WHO_IS_PRESENT_AND_FREE = auto()
 
     @staticmethod
-    def priority(msg_type: str) -> int:
+    def priority(msg_type: object) -> int:
         """
         Get the priority associated with a given message type.
 
         Args:
-            msg_type (str): The message type for which to get the priority.
+            msg_type (object): The message type for which to get the priority.
 
         Returns:
             int: The priority associated with the given message type.
@@ -66,27 +66,8 @@ class MESSAGE_TYPE_PRIORITY(Enum):
             MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT: 1,
             MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT_AND_FREE: 1
         }
+
         try:
-            return priority_mapping[MESSAGE_TYPE_PRIORITY.from_string(msg_type)]
+            return priority_mapping[msg_type]
         except KeyError:
             raise ValueError("Message type not found in priority mapping")
-
-    @staticmethod
-    def from_string(type_string: str):
-        """
-        Get MESSAGE_TYPE_PRIORITY enum object from string representation.
-
-        Args:
-            type_string (str): The string representation of the message type.
-
-        Returns:
-            MESSAGE_TYPE_PRIORITY: The corresponding enum object.
-
-        Raises:
-            ValueError: If the string representation does not match any enum member.
-        """
-        enum_name = type_string.split('.')[-1]  # Split by '.', take the last part
-        try:
-            return MESSAGE_TYPE_PRIORITY[enum_name]
-        except KeyError:
-            raise ValueError("Invalid message type string")

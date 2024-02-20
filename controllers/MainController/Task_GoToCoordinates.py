@@ -53,6 +53,7 @@ class Task_GoToCoordinates:
         # Main loop:
         while self.robot.step(timestep) != -1 and not target_achieved:
 
+            self.robot.step(timestep)
             # Check if a message has been sent and handle it before continuing the task.
             if communication_manager.receiver.getQueueLength() > 0:
                 communication_manager.check_messages(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)
@@ -67,6 +68,7 @@ class Task_GoToCoordinates:
 
                 # Move forward
                 self.movement_manager.move_forward()
+
             else:
                 # Stop the robot when the target position is reached
                 self.movement_manager.stop()

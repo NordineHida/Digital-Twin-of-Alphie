@@ -42,4 +42,3 @@ class Message:
         self.message_type = message_type
         self.payload = payload
 
-

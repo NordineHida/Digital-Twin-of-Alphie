@@ -102,7 +102,7 @@ class PositionManager:
         position = self.gps.getValues()
         return Coordinates(position[0], position[1])
 
-    def is_arrived(self, target, tolerance):
+    def is_arrived(self, target: Coordinates, tolerance: float):
         """
         Check if the robot has arrived at the target coordinates with a tolerance.
 

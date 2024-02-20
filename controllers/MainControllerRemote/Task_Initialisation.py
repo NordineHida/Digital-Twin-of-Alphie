@@ -45,12 +45,10 @@ class Task_Initialisation:
 
         # If the message isn't empty/none
         if message:
-            id_sender = message.id_sender
-            message_type = MESSAGE_TYPE_PRIORITY.from_string(message.message_type)
-            payload = message.payload
+            id_sender, message_type, payload = message.split(";")
             print("Message reçu : ", message.message_type)
 
-            match message_type:
+            match message.message_type:
                 case MESSAGE_TYPE_PRIORITY.REPORT_STATUS:
                     # to do
                     pass
@@ -79,11 +77,9 @@ class Task_Initialisation:
                     # to do
                     pass
                 case MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
-                    print("bien arrivé ici")
                     task_GTC = Task_GoToCoordinates(self.robot)
                     x, y = payload.split("-")
-                    task_GTC.go_to_coordinates(Coordinates(int(x), int(y)))
-                    print("fin du go to ?")
+                    task_GTC.go_to_coordinates(Coordinates(x, y))
                 case MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT:
                     # to do
                     pass
@@ -91,7 +87,6 @@ class Task_Initialisation:
                     # to do
                     pass
                 case _:
-                    print("Message recu inconnu")
                     pass
 
 

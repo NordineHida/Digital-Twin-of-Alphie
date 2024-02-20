@@ -6,7 +6,8 @@ Author:        Nordine HIDA
 Modifications:
 """
 
-from ..Managers.PositionManager import *
+from PositionManager import *
+from CommunicationManager import *
 from controller import Robot
 
 
@@ -34,15 +35,14 @@ class Task_GoToCoordinates:
         """
         print(f"{self.robot.getName()} : Moving to coordinates: ({target_coordinate.x}, {target_coordinate.y})")
 
-        # Get and enable measuring devices
-        compass = self.robot.getDevice("compass")
-        gps = self.robot.getDevice("gps")
-
         # Get the time step of the current world.
         timestep = int(self.robot.getBasicTimeStep())
 
         # Initialise PositionManager with the robot
         position_manager = PositionManager(self.robot)
+
+        # Initialise CommunicationManager to check if a message has been sent
+        communication_manager = CommunicationManager(self.robot)
 
         # Tolerance values
         arrival_tolerance = 0.01
@@ -53,8 +53,10 @@ class Task_GoToCoordinates:
         # Main loop:
         while self.robot.step(timestep) != -1 and not target_achieved:
 
-            # Get current position
-            current_position = position_manager.get_position()
+            self.robot.step(timestep)
+            # Check if a message has been sent and handle it before continuing the task.
+            if communication_manager.receiver.getQueueLength() > 0:
+                communication_manager.check_messages(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)
 
             # Check if the robot has arrived at the target position
             if not position_manager.is_arrived(target_coordinate, arrival_tolerance):
@@ -66,6 +68,7 @@ class Task_GoToCoordinates:
 
                 # Move forward
                 self.movement_manager.move_forward()
+
             else:
                 # Stop the robot when the target position is reached
                 self.movement_manager.stop()

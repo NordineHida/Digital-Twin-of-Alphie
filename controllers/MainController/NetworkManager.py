@@ -10,6 +10,7 @@ Modifications:
 
 from CommunicationManager import *
 import time
+import random
 
 
 class NetworkManager:
@@ -30,6 +31,7 @@ class NetworkManager:
         self.accessible_robots = []
         self.accessible_free_robots = []
         self.communication_manager = CommunicationManager(robot)
+        self.time_step = int(self.robot.getBasicTimeStep())
 
     def get_who_is_there(self) -> list:
         """
@@ -42,14 +44,15 @@ class NetworkManager:
         message = Message(self.robot.getName(), MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT, "")
         self.communication_manager.send_message(message)
 
-        # Listen for responses for up to 3 seconds
-        start_time = time.time()
         responses = []
-        while time.time() - start_time < 3:
+        for _ in range(50):
             received_message = self.communication_manager.receive_message()
-            # If the message is of type "PRESENT" we add the sender to our list
-            if received_message.message_type == MESSAGE_TYPE_PRIORITY.PRESENT:
-                responses.append(received_message.id_sender)
+
+            # If the message isn't empty
+            if received_message:
+                #  If the message is of type "PRESENT" we add the sender to our list
+                if received_message.message_type == MESSAGE_TYPE_PRIORITY.PRESENT:
+                    responses.append(received_message.id_sender)
 
         # Update the list of accessible robots
         self.accessible_robots = responses
