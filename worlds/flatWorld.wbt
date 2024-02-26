@@ -5,12 +5,13 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/FlexibleAluminiumDuct.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/traffic/protos/TrafficCone.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/ScuffedPlastic.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.00391507656960569 0.999986380445904 0.0034512458843168133 1.1277275446863344
-  position -4.445400329345971 -0.43505822474743866 9.101509743795575
+  orientation 0.00938234886346156 0.9999423094657435 -0.005229652963605469 1.0377373835633397
+  position -6.416939391310563 0.17316620768289445 10.482953586138432
   exposure 0.3
   followType "None"
   followSmoothness 1
@@ -88,9 +89,75 @@ Solid {
 }
 Robot {
   translation 0.1 0 0.1
+  rotation 0 1 0 0.523599
   children [
     Solid {
-      translation 0 0 0.34127781778756194
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance ScuffedPlastic {
+            colorOverride 0.32549 0.32549 0.32549
+          }
+          geometry Box {
+            size 0.05 0.1 0.1
+          }
+        }
+      ]
+      name "Body"
+      translationStep 0.0001
+    }
+    Solid {
+      translation -3.17901e-07 0 0.1198
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance ScuffedPlastic {
+            colorOverride 1 0 0
+          }
+          geometry Sphere {
+            radius 0.02
+            subdivision 4
+          }
+        }
+      ]
+      name "BouleAntenne"
+      translationStep 0.0001
+    }
+    Solid {
+      translation -1.82037e-07 0 0.0686
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance ScuffedPlastic {
+            colorOverride 0.32549 0.32549 0.32549
+          }
+          geometry Box {
+            size 0.01 0.01 0.1
+          }
+        }
+      ]
+      name "CorpsAntenne"
+      translationStep 0.0001
+    }
+    Solid {
+      translation -0.03 0 3.05886e-08
+      rotation 0 1 0 -1.5707953071795862
+      children [
+        Shape {
+          appearance ScuffedPlastic {
+            colorOverride 0.666667 0 0
+          }
+          geometry Cylinder {
+            height 0.025
+            radius 0.028
+            subdivision 37
+          }
+        }
+      ]
+      name "button"
+    }
+    Solid {
+      translation 0 0 0.118278
       children [
         Receiver {
         }
@@ -109,21 +176,14 @@ Robot {
             }
           ]
         }
-        Shape {
-          appearance FlexibleAluminiumDuct {
-          }
-          geometry Cone {
-            bottomRadius 0.13
-            height 0.5
-          }
-        }
       ]
-      name "body"
+      name "Antenne"
       boundingObject Box {
         size 0.3 0.3 0.5
       }
       physics Physics {
       }
+      translationStep 0.0001
     }
   ]
   name "Remote"
