@@ -8,20 +8,28 @@ Modifications:
 """
 
 from Task_Initialisation import *
-
+from RobotUp import *
 
 # INITIALIZATION ---------
 
 # The unique allowed creation of robot
-robot = Robot()
-robot_name = robot.getName()
+robot = RobotUp()
+time_step = robot.getBasicTimeStep()
+
 # Initialisation of robot devices
 task_Initialisation = Task_Initialisation(robot)
-task_Initialisation.init_devices()
-# ------------------------
 
-task_Comm = Task_Communication(robot)
-communication = task_Comm.network_manager.communication_manager
+# ---------------------------------
 
-# Here you can send messages
-communication.send_message(Message(robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "2-2"))
+# Main loop of simulation
+while True:
+    task_Initialisation.update()
+    robot.step(int(time_step))
+
+
+
+
+
+
+
+

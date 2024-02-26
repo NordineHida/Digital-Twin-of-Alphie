@@ -1,14 +1,14 @@
 """
 File:          PositioningManager.py
 Date:          February 2024
-Description:   Manage the position and orientation of the track robot. It allows you to rotate to coordinates.
+Description:   Manage the position and orientation of the remote to get it position and orientation
 Author:        Nordine HIDA
 Modifications:
 """
 
 import math
-from MovementManager import *
 from Coordinates import *
+from RobotUp import *
 
 
 class PositionManager:
@@ -16,27 +16,19 @@ class PositionManager:
     Manages the position and orientation of the track robot.
     """
 
-    def __init__(self, robot):
+    def __init__(self, robot: RobotUp):
         """
         Initialize the PositionManager and the MovementManager with a robot instance.
 
         |!| the gps of the robot should be called "gps" (default name in webots) \n
         |!| the compass of the robot should be called "compass" (default name in webots)
 
-        :param robot: The robot instance.
+        :param robot (RobotUp) : The robot instance.
         """
         self.robot = robot
         self.compass = robot.getDevice("compass")
         self.gps = robot.getDevice("gps")
         self.time_step = int(self.robot.getBasicTimeStep())
-        self.movement_manager = MovementManager(self.robot)
-
-    def get_movement_manager(self):
-        """
-        Get the MovementManager of the instance (To avoid the multiple creation of movementManager)
-        :return: the MovementManager of the PositionManager
-        """
-        return self.movement_manager
 
     def get_bearing_to_coordinate(self, target_position):
         """
@@ -70,29 +62,6 @@ class PositionManager:
 
         return heading_angle_degrees
 
-    def rotate_to_destination(self, angle_to_destination, tolerance):
-        """
-        Rotate the robot until it reaches the specified angle.
-        :param angle_to_destination: The angle to the destination coordinates in degrees.
-        :param tolerance: The tolerance to consider the destination reached.
-        """
-        heading_robot_angle = self.get_heading_robot()
-        angle_difference = angle_to_destination - heading_robot_angle
-        if angle_difference < -180.0:
-            angle_difference += 360.0
-        elif angle_difference >= 180.0:
-            angle_difference -= 360.0
-        if not abs(angle_difference) < tolerance:
-            if angle_difference < 0:
-                self.movement_manager.move_right()
-            else:
-                self.movement_manager.move_left()
-            self.robot.step(self.time_step)
-            self.rotate_to_destination(angle_to_destination, tolerance)
-        else:
-            self.movement_manager.move_forward()
-            self.robot.step(self.time_step)
-
     def get_position(self):
         """
         Get the position of the robot.
@@ -102,15 +71,3 @@ class PositionManager:
         position = self.gps.getValues()
         return Coordinates(position[0], position[1])
 
-    def is_arrived(self, target, tolerance):
-        """
-        Check if the robot has arrived at the target coordinates with a tolerance.
-
-        :param target: The target coordinates.
-        :param tolerance: The tolerance value for both X and Y coordinates.
-        :return: True if the robot has arrived, False otherwise.
-        """
-        current_robot_pos = self.get_position()
-        difference_x = abs(current_robot_pos.x - target.x)
-        difference_y = abs(current_robot_pos.y - target.y)
-        return difference_x < tolerance and difference_y < tolerance

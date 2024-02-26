@@ -3,8 +3,8 @@ File:           MESSAGE_TYPE_PRIORITY.py
 Date:           February 2024
 Description:    Enumeration of message types associated with their priority levels.
 Example of use:
-                (msg.message_type = MESSAGE_TYPE_PRIORITY.OK)
-                print(msg.message_type)                                   -> MESSAGE_TYPE_PRIORITY.OK -> name of the message
+                (msg.message_type = MESSAGE_TYPE_PRIORITY.STATUS_OK)
+                print(msg.message_type)                                   -> MESSAGE_TYPE_PRIORITY.STATUS_OK -> name of the message
                 print(MESSAGE_TYPE_PRIORITY.priority(msg.message_type))   -> 1                        -> priority level of the message
 
 Author:         Nordine HIDA
@@ -18,25 +18,23 @@ class MESSAGE_TYPE_PRIORITY(Enum):
     """
     Enum class representing message types along with their associated priority levels.
     """
-    # Question to ask
+
+    # Question to ask of information to share with others
     REPORT_STATUS = auto()
     REPORT_POSITION = auto()
-    POSITION = auto()
+    REPORT_WHO_IS_PRESENT = auto()
+    REPORT_WHO_IS_PRESENT_AND_FREE = auto()
+    REPORT_END_CALLROLL = auto()
 
-    # Current status asked
-    OK = auto()
+    # Current status asked by others
     STATUS_FREE = auto()
     STATUS_GOTOCOORDINATES = auto()
-    PRESENT = auto()
-    PRESENT_FREE = auto()
 
-    # Stop everything
-    STOP = auto()
-
-    # Tasks
+    # Tasks ordered by other
     GO_TO_COORDINATES = auto()
-    WHO_IS_PRESENT = auto()
-    WHO_IS_PRESENT_AND_FREE = auto()
+
+    # Stop current task
+    STOP = auto()
 
     @staticmethod
     def priority(msg_type: str) -> int:
@@ -55,17 +53,18 @@ class MESSAGE_TYPE_PRIORITY(Enum):
         priority_mapping = {
             MESSAGE_TYPE_PRIORITY.REPORT_STATUS: 1,
             MESSAGE_TYPE_PRIORITY.REPORT_POSITION: 1,
-            MESSAGE_TYPE_PRIORITY.POSITION: 1,
-            MESSAGE_TYPE_PRIORITY.OK: 2,
-            MESSAGE_TYPE_PRIORITY.STATUS_FREE: 1,
-            MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES: 1,
-            MESSAGE_TYPE_PRIORITY.PRESENT: 1,
-            MESSAGE_TYPE_PRIORITY.PRESENT_FREE: 1,
-            MESSAGE_TYPE_PRIORITY.STOP: 1,
-            MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES: 1,
-            MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT: 1,
-            MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT_AND_FREE: 1
+            MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT: 8,
+            MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT_AND_FREE: 8,
+            MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL: 8,
+
+            MESSAGE_TYPE_PRIORITY.STATUS_FREE: 7,
+            MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES: 6,
+
+            MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES: 6,
+
+            MESSAGE_TYPE_PRIORITY.STOP: 10
         }
+
         try:
             return priority_mapping[MESSAGE_TYPE_PRIORITY.from_string(msg_type)]
         except KeyError:

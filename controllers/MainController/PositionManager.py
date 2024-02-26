@@ -16,14 +16,14 @@ class PositionManager:
     Manages the position and orientation of the track robot.
     """
 
-    def __init__(self, robot):
+    def __init__(self, robot: RobotUp):
         """
         Initialize the PositionManager and the MovementManager with a robot instance.
 
         |!| the gps of the robot should be called "gps" (default name in webots) \n
         |!| the compass of the robot should be called "compass" (default name in webots)
 
-        :param robot: The robot instance.
+        :param robot (RobotUp) : The robot instance.
         """
         self.robot = robot
         self.compass = robot.getDevice("compass")

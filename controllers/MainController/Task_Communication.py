@@ -16,12 +16,12 @@ class Task_Communication:
     in the robot's network.
     """
 
-    def __init__(self, robot):
+    def __init__(self, robot: RobotUp):
         """
         Initialize the TaskCommunication.
 
         Args:
-            robot (Robot): The robot instance.
+            robot (RobotUp): The robot instance.
         """
         self.robot = robot
         self.network_manager = NetworkManager(robot)

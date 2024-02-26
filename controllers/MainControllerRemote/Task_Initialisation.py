@@ -10,8 +10,8 @@ Modifications:
 """
 
 from InitialisationManager import *
-from Task_Communication import *
-from Task_GoToCoordinates import *
+from CommunicationManager import *
+
 
 class Task_Initialisation:
     """
@@ -19,74 +19,179 @@ class Task_Initialisation:
     |!| Must be called right after the creation of the robot (or remote, ...)
     """
 
-    def __init__(self, robot: Robot):
+    def __init__(self, robot: RobotUp):
         """
-        Initialize of the robot
+        Initialize the Task_Initialisation instance.
 
         Args:
-            robot (Robot): The robot (or remote) to be initialized.
+            robot (RobotUp): The robot instance to be initialized.
         """
         self.robot = robot
+        self.robot_name = self.robot.getName()
 
-        # communication manager
-        self.communication = Task_Communication(robot).network_manager.communication_manager
-
-    def init_devices(self):
-        """
-        Call the manager to initialize all devices of the robot.
-        """
+        # Initialize devices
         InitialisationManager.init_devices(self.robot)
+
+        # Communication manager
+        self.communication = CommunicationManager(self.robot)
+
+        # Initialize the keyboard
+        self.keyboard = self.robot.getKeyboard()
+        self.keyboard.enable(10)
 
     def update(self):
         """
-        Receive
+        Check if there is message and handle it.
         """
-        message = self.communication.receive_message()
 
-        # If the message isn't empty/none
-        if message:
-            id_sender, message_type, payload = message.split(";")
-            print("Message reçu : ", message.message_type)
+        # Check if a key is pressed
+        key = self.keyboard.getKey()
+        if key != -1:
+            # Home -> REPORT_WHO_IS_PRESENT
+            if key == Keyboard.HOME:
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT, ""))
+                self.robot.is_callrolling = True
+            # END -> STOP
+            if key == Keyboard.END:
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, ""))
+            # Arrow keys -> GO_TO_COORDINATES ...
+            if key == Keyboard.RIGHT:
+                self.communication.send_message(
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "1:1"))
+            if key == Keyboard.UP:
+                self.communication.send_message(
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "1:-1"))
+            if key == Keyboard.LEFT:
+                self.communication.send_message(
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "-1:1"))
+            if key == Keyboard.DOWN:
+                self.communication.send_message(
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "-1:-1"))
+            if key == Keyboard.PAGEDOWN:
+                import math
 
-            match message.message_type:
+                # Center of the circle
+                center_x = 0
+                center_y = 0
+
+                # Radius of the circle
+                radius = 1.5
+
+                # Number of points to generate
+                num_points = 20
+
+                for i in range(num_points):
+                    # Calculate angle for each point
+                    angle = 2 * math.pi * i / num_points
+
+                    # Calculate coordinates for each point
+                    x = center_x + radius * math.cos(angle)
+                    y = center_y + radius * math.sin(angle)
+
+                    # Sending message to go to coordinates
+                    message = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, f"{x}:{y}")
+                    self.communication.send_message(message)
+
+        # try to receive a message and add it to the robot's list
+        self.communication.receive_message()
+
+        # Check if the list of messages is not empty
+        if self.robot.list_messages:
+            # Getting the first message and remove it from the list
+            message = self.robot.list_messages[0]
+            self.robot.list_messages.pop(0)
+
+            id_sender = message.id_sender
+            message_type = MESSAGE_TYPE_PRIORITY.from_string(message.message_type)
+            payload = message.payload
+
+            match message_type:
                 case MESSAGE_TYPE_PRIORITY.REPORT_STATUS:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.REPORT_POSITION:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.POSITION:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.OK:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.STATUS_FREE:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.PRESENT:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.PRESENT_FREE:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.STOP:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
-                    task_GTC = Task_GoToCoordinates(self.robot)
-                    x, y = payload.split("-")
-                    task_GTC.go_to_coordinates(Coordinates(x, y))
-                case MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT:
-                    # to do
-                    pass
-                case MESSAGE_TYPE_PRIORITY.WHO_IS_PRESENT_AND_FREE:
-                    # to do
-                    pass
-                case _:
-                    pass
+                    self.case_REPORT_STATUS(id_sender, payload)
 
+                case MESSAGE_TYPE_PRIORITY.REPORT_POSITION:
+                    self.case_REPORT_POSITION(id_sender, payload)
+
+                case MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES:
+                    self.case_STATUS_GOTOCOORDINATES(id_sender)
+
+                case MESSAGE_TYPE_PRIORITY.STATUS_FREE:
+                    self.case_STATUS_FREE(id_sender)
+
+                case MESSAGE_TYPE_PRIORITY.STOP:
+                    self.case_STOP()
+
+                case MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
+                    self.case_GO_TO_COORDINATES(id_sender, payload)
+
+                case MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT:
+                    self.case_REPORT_WHO_IS_PRESENT(id_sender, payload)
+
+                case MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL:
+                    self.case_REPORT_END_CALLROLL()
+
+                case MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT_AND_FREE:
+                    self.case_REPORT_WHO_IS_PRESENT_AND_FREE(id_sender, payload)
+
+                case _:
+                    print("Unknown message received")
+
+            self.update_prev_next_robot()
+
+    def update_prev_next_robot(self):
+        """
+        Update the previous and next robots based on the robot's name and known_robots dictionary.
+
+        This method looks into the known_robots dictionary to find the key (robot name) just before and just after
+        the current robot's name (self.robot_name). It then updates the prev_rob and next_rob attributes accordingly.
+        """
+        sorted_robots = sorted(self.robot.known_robots.keys())
+        current_index = sorted_robots.index(self.robot_name)
+
+        if current_index > 0:
+            self.robot.prev_rob = sorted_robots[current_index - 1]
+        else:
+            self.robot.prev_rob = None
+
+        if current_index < len(sorted_robots) - 1:
+            self.robot.next_rob = sorted_robots[current_index + 1]
+        else:
+            self.robot.next_rob = None
+
+    def case_REPORT_STATUS(self, id_sender, payload):
+        # TODO: Implement handling of REPORT_STATUS message
+        pass
+
+    def case_REPORT_POSITION(self, id_sender, payload):
+        # TODO: Implement handling of REPORT_POSITION message
+        pass
+
+    def case_STATUS_GOTOCOORDINATES(self, id_sender):
+        self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES
+
+    def case_STATUS_FREE(self, id_sender):
+        self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
+
+    def case_STOP(self):
+        # TODO: Implement handling of STOP message
+        pass
+
+    def case_GO_TO_COORDINATES(self, id_sender, payload):
+        # TODO: Implement handling of GO_TO_COORDINATES message
+        pass
+
+    def case_REPORT_WHO_IS_PRESENT(self, id_sender, payload):
+        if id_sender not in self.robot.known_robots:
+            self.robot.known_robots[id_sender] = payload
+        if self.robot.is_callrolling:
+            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL, ""))
+            self.robot.is_callrolling = False
+
+    def case_REPORT_END_CALLROLL(self):
+        if self.robot.is_callrolling:
+            self.robot.is_callrolling = False
+
+    def case_REPORT_WHO_IS_PRESENT_AND_FREE(self, id_sender, payload):
+        # TODO: Implement handling of REPORT_WHO_IS_PRESENT_AND_FREE message
+        pass
 

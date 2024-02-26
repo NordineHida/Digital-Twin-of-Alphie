@@ -7,70 +7,55 @@ Modifications:
 """
 
 from PositionManager import *
-from CommunicationManager import *
-from controller import Robot
+from NetworkManager import *
 
 
-class Task_GoToCoordinates:
+def go_to_coordinates(robot: RobotUp, target_coordinate: Coordinates):
     """
-    Algorithm to move a robot to specified coordinates.
+    Move the robot to the specified target coordinates.
+
+    Args:
+        robot (RobotUp) : The selected robot
+        target_coordinate (Coordinates): The target coordinates.
     """
+    print(f"{robot.getName()} : Moving to coordinates: ({target_coordinate.x}, {target_coordinate.y})")
 
-    def __init__(self, robot: Robot):
-        """
-        Initialize the GoToCoordinate algorithm.
+    # Get the time step of the current world.
+    timestep = int(robot.getBasicTimeStep())
 
-        Args:
-            robot (Robot): The robot instance.
-        """
-        self.robot = robot
-        self.movement_manager = MovementManager(robot)
+    # Initialise PositionManager with the robot
+    position_manager = PositionManager(robot)
+    movement_manager = MovementManager(robot)
+    network_manager = NetworkManager(robot)
 
-    def go_to_coordinates(self, target_coordinate: Coordinates):
-        """
-        Move the robot to the specified target coordinates.
+    # Tolerance values
+    arrival_tolerance = 0.01
+    angle_tolerance = 3.0
 
-        Args:
-            target_coordinate (Coordinates): The target coordinates.
-        """
-        print(f"{self.robot.getName()} : Moving to coordinates: ({target_coordinate.x}, {target_coordinate.y})")
+    target_achieved = False
+    priority_message = False
 
-        # Get the time step of the current world.
-        timestep = int(self.robot.getBasicTimeStep())
+    # Main loop:
+    while robot.step(timestep) != -1 and not target_achieved and not priority_message:
 
-        # Initialise PositionManager with the robot
-        position_manager = PositionManager(self.robot)
+        robot.step(timestep)
 
-        # Initialise CommunicationManager to check if a message has been sent
-        communication_manager = CommunicationManager(self.robot)
+        # Check if the robot has arrived at the target position
+        if not position_manager.is_arrived(target_coordinate, arrival_tolerance):
+            # Get the bearing angle to the target coordinates
+            angle_to_destination = position_manager.get_bearing_to_coordinate(target_coordinate)
 
-        # Tolerance values
-        arrival_tolerance = 0.01
-        angle_tolerance = 3.0
+            # Rotate the robot until it faces the target coordinates
+            position_manager.rotate_to_destination(angle_to_destination, angle_tolerance)
 
-        target_achieved = False
+            # Move forward
+            movement_manager.move_forward()
 
-        # Main loop:
-        while self.robot.step(timestep) != -1 and not target_achieved:
+        else:
+            # Stop the robot when the target position is reached
+            movement_manager.stop()
+            print("Target position reached!")
+            target_achieved = True
 
-            self.robot.step(timestep)
-            # Check if a message has been sent and handle it before continuing the task.
-            if communication_manager.receiver.getQueueLength() > 0:
-                communication_manager.check_messages(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)
-
-            # Check if the robot has arrived at the target position
-            if not position_manager.is_arrived(target_coordinate, arrival_tolerance):
-                # Get the bearing angle to the target coordinates
-                angle_to_destination = position_manager.get_bearing_to_coordinate(target_coordinate)
-
-                # Rotate the robot until it faces the target coordinates
-                position_manager.rotate_to_destination(angle_to_destination, angle_tolerance)
-
-                # Move forward
-                self.movement_manager.move_forward()
-
-            else:
-                # Stop the robot when the target position is reached
-                self.movement_manager.stop()
-                print("Target position reached!")
-                target_achieved = True
+        case_executed = network_manager.update()
+        priority_message = case_executed == MESSAGE_TYPE_PRIORITY.STOP.value

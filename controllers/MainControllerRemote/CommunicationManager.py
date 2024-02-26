@@ -7,8 +7,7 @@ Author:         Nordine HIDA
 Modifications:
 """
 
-from Message import *
-from controller.robot import Robot
+from RobotUp import *
 
 
 class CommunicationManager:
@@ -17,14 +16,14 @@ class CommunicationManager:
     Send, receive, order messages by priority.
     """
 
-    def __init__(self, robot: Robot):
+    def __init__(self, robot: RobotUp):
         """
         Initialize the CommunicationManager object with the specified robot. \n
         |!| the emitter of the robot should be called "emitter" (default name in webots) \n
         |!| the receiver of the robot should be called "receiver" (default name in webots)
 
         Args:
-            robot (Robot): The robot object (a remote can be considered as a robot)
+            robot (RobotUp): The robot object (a remote can be considered as a robot)
         """
         self.robot = robot
         self.emitter = robot.getDevice("emitter")
@@ -40,53 +39,33 @@ class CommunicationManager:
         """
         # Construct the message to be sent
         outgoing_msg = "{};{};{}".format(msg.id_sender, msg.message_type, msg.payload)
-        print(outgoing_msg, ": send")
+        print(self.robot.getName(), " : Send : ", outgoing_msg)
         self.emitter.send(outgoing_msg)
         self.robot.step(self.time_step)
 
-    def receive_message(self) -> Message|None:
+    def receive_message(self):
         """
-        Receive a message from the communication channel.\n
-        |!| The format should be : id_sender;MESSAGE_TYPE_PRIORITY;payload
-
-        Returns:
-            Message: The received message.
-            None: If no message was received
+        Receive a message from the communication channel and add it to the robot list of messages.
+        As soon as it has been read the message is deleted
         """
         self.robot.step(self.time_step)
-        print("start receiving")
         incoming_msg = ""
 
         if self.receiver.getQueueLength() > 0:
             incoming_msg = self.receiver.getString()
-            print(self.robot.getName()," : message recu : ", incoming_msg)
+            self.receiver.nextPacket()
+            print(self.robot.getName(), " : Receive : ", incoming_msg)
         try:
             if incoming_msg != "":
                 # Split the incoming message into its three parts
                 id_sender, message_type, payload = incoming_msg.split(";")
 
-                # Create and return a Message object with the extracted parts
-                return Message(id_sender, message_type, payload)
-            else:
-                return None
+                # Create and add the Message to the robots list
+                self.robot.list_messages.append(Message(id_sender, message_type, payload))
 
         except ValueError:
             # If there are not enough parts in the message, or it cannot be split properly
             raise ValueError("Invalid message format: '{}'".format(incoming_msg))
-
-    @staticmethod
-    def ordered_messages_by_priority(list_msg: list[Message]) -> list[Message]:
-        """
-        Order a list of messages by priority (in descending order).
-
-        Args:
-            list_msg (list[Message]): List of messages to be ordered.
-
-        Returns:
-            list[Message]: List of messages ordered by priority.
-        """
-        # Sort the list of messages by priority in descending order
-        return sorted(list_msg, key=lambda msg: getattr(msg.message_type, 'priority', float('inf')), reverse=True)
 
     @staticmethod
     def is_the_message_prioritary(msg: Message, current_task: MESSAGE_TYPE_PRIORITY) -> bool:
@@ -102,24 +81,14 @@ class CommunicationManager:
         """
 
         # Compare the priority of the message with the priority threshold
-        return getattr(msg.message_type, 'priority', float('inf')) < getattr(current_task, 'priority', float('inf'))
 
-    def execute_message(self, msg: Message):
+        return MESSAGE_TYPE_PRIORITY.priority(str(msg.message_type)) > MESSAGE_TYPE_PRIORITY.priority(str(current_task))
+
+    def clear_messages(self):
         """
-        Execute the message's request
-
-        Args:
-            msg (Message): The message to be executed.
-        # TODO
+        Clear all messages in the message's queue and robot's list
         """
-
-        pass
-
-    def check_messages(self, current_task: MESSAGE_TYPE_PRIORITY):
-        message = self.receive_message()
-        # If the message isn't empty
-        if message:
-            # If the robot receives a message that is more prioritized than its current task, it executes the message's task
-            if self.is_the_message_prioritary(message, current_task):
-                print(message, " is prioritized over ", current_task, " execution of", current_task, ".")
-                self.execute_message(message)
+        while self.receiver.getQueueLength() > 0:
+            self.receiver.nextPacket()
+        self.robot.list_messages.clear()
+        print(self.robot.getName(), " : All messages cleared")

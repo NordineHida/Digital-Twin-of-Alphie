@@ -6,6 +6,8 @@ Author:        Nordine HIDA
 Modifications:
 """
 
+from RobotUp import *
+
 # CONSTANTS
 # Maximum speed of the robot (Webots maximum speed is 50, but it creates bugs), 12 is a moderately fluid speed
 MAX_SPEED = 12
@@ -19,9 +21,11 @@ class MovementManager:
     Manage the movement of the track robot (Forward, backward, right, left and stop moving)
     """
 
-    def __init__(self, robot):
+    def __init__(self, robot: RobotUp):
         """
         Initializes the left and right motors of the robot.
+
+        :param robot (RobotUp) : Robot to init
         """
         self.robot = robot
         self.right_motors = [self.robot.getDevice(f"wheel_motor0{i}") for i in range(5)]
