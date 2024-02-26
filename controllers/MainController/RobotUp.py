@@ -91,3 +91,9 @@ class RobotUp:
         index = next((i for i, msg in enumerate(self.list_messages) if MESSAGE_TYPE_PRIORITY.priority(str(msg.message_type)) < priority),
                      len(self.list_messages))
         self.list_messages.insert(index, message)
+
+    def getKeyboard(self):
+        """
+        Get the keyboard device
+        """
+        return self.robot.getKeyboard()

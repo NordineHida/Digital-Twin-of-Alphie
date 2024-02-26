@@ -8,6 +8,8 @@ Modifications:
 
 from controller.robot import *
 from Message import *
+from Coordinates import *
+from typing import List
 
 
 class RobotUp:
@@ -20,7 +22,7 @@ class RobotUp:
         Constructor for RobotUp class. Init all attributes
         """
         self.robot = Robot()
-        self.list_messages = []
+        self.list_messages: List[Message] = []
 
         # current task of the robot (free by default)
         self.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
@@ -32,6 +34,9 @@ class RobotUp:
 
         # boolean to remember if the robot has already call rolled
         self.is_callrolling = False
+
+        # List of next coordinates
+        self.next_coordinates: List[Coordinates] = []
 
     def getDevice(self, name: str) -> Device:
         """

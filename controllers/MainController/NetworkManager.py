@@ -9,7 +9,6 @@ Modifications:
 """
 
 from MovementManager import *
-from Coordinates import *
 from CommunicationManager import *
 
 
