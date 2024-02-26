@@ -99,9 +99,11 @@ class NetworkManager:
         self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
         # if the previous robot tell's that it is free right after a GoToCoordinates task, I follow it
         if id_sender == self.robot.prev_rob and payload.startswith(str(MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES)):
+            msg, x, y = payload.split(":")
             if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
-                msg, x, y = payload.split(":")
                 self.go_to_coordinates(float(x), float(y))
+            else:
+                self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
 
         elif self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
             if payload == self.robot.robot_current_task:
