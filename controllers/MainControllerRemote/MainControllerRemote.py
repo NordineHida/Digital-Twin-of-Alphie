@@ -1,5 +1,5 @@
 """
-File:           MainControllerRemote.py
+File:           MainControllerInitialiseur.py
 Date:           February 2024
 Description:    Main program executed by the remote to send tasks to nearby robots.
                 Here you can build your algorithm by sending message task.

@@ -1,5 +1,5 @@
 """
-File:           NetworkManagerRemote.py
+File:           NetworkManager.py
 Date:           February 2024
 Description:    Manage the network of communication between robots,
                 facilitating the retrieval of nearby robots and
