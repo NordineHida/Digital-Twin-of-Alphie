@@ -29,7 +29,7 @@ def go_to_coordinates(robot: RobotUp, target_coordinate: Coordinates):
     network_manager = NetworkManager(robot)
 
     # Tolerance values
-    arrival_tolerance = 0.01
+    arrival_tolerance = 0.1
     angle_tolerance = 3.0
 
     target_achieved = False

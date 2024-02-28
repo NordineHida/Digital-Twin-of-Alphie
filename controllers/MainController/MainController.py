@@ -7,7 +7,7 @@ Author:         Nordine HIDA
 Modifications:
 """
 
-from Task_Initialisation import *
+from InitialisationManager import *
 from NetworkManager import *
 from RobotUp import *
 
@@ -17,7 +17,7 @@ from RobotUp import *
 robot = RobotUp()
 time_step = robot.getBasicTimeStep()
 # Initialisation of robot devices
-task_Initialisation = Task_Initialisation(robot)
+init_devices(robot)
 
 network_manager = NetworkManager(robot)
 # ------------------------

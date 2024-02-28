@@ -1,5 +1,5 @@
 """
-File:           NetworkManager.py
+File:           NetworkManagerRemote.py
 Date:           February 2024
 Description:    Manage the network of communication between the remote and robots
 Author:         Nordine HIDA
@@ -9,7 +9,7 @@ Modifications:
 from CommunicationManager import *
 
 
-class NetworkManager:
+class NetworkManagerRemote:
     """
     Manage the network of communication between the remote and robots.
     It sends messages bound to keys and reacts to incoming messages.
@@ -33,15 +33,15 @@ class NetworkManager:
 
     def update(self):
         """
-        Check if there is message and handle it.
+        Check if there is message or a pressed key and handle it.
         """
 
         # Check if a key is pressed
         key = self.keyboard.getKey()
         if key != -1:
-            # Home -> REPORT_WHO_IS_PRESENT
+            # Home -> REPORT_BEGIN_ROLLCALL
             if key == Keyboard.HOME:
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT, ""))
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, ""))
                 self.robot.is_callrolling = True
             # END -> STOP
             if key == Keyboard.END:
@@ -118,14 +118,11 @@ class NetworkManager:
                 case MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
                     self.case_GO_TO_COORDINATES(id_sender, payload)
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT:
-                    self.case_REPORT_WHO_IS_PRESENT(id_sender, payload)
+                case MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL:
+                    self.case_REPORT_BEGIN_ROLLCALL(id_sender, payload)
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL:
-                    self.case_REPORT_END_CALLROLL()
-
-                case MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT_AND_FREE:
-                    self.case_REPORT_WHO_IS_PRESENT_AND_FREE(id_sender, payload)
+                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
+                    self.case_REPORT_END_ROLLCALL()
 
                 case _:
                     print("Unknown message received")
@@ -174,17 +171,17 @@ class NetworkManager:
         # TODO: Implement handling of GO_TO_COORDINATES message
         pass
 
-    def case_REPORT_WHO_IS_PRESENT(self, id_sender, payload):
+    def case_REPORT_BEGIN_ROLLCALL(self, id_sender, payload):
         if id_sender not in self.robot.known_robots:
             self.robot.known_robots[id_sender] = payload
         if self.robot.is_callrolling:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL, ""))
+            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL, ""))
             self.robot.is_callrolling = False
 
-    def case_REPORT_END_CALLROLL(self):
+    def case_REPORT_END_ROLLCALL(self):
         if self.robot.is_callrolling:
             self.robot.is_callrolling = False
 
-    def case_REPORT_WHO_IS_PRESENT_AND_FREE(self, id_sender, payload):
-        # TODO: Implement handling of REPORT_WHO_IS_PRESENT_AND_FREE message
+    def case_REPORT_BEGIN_ROLLCALL_AND_FREE(self, id_sender, payload):
+        # TODO: Implement handling of REPORT_BEGIN_ROLLCALL_AND_FREE message
         pass

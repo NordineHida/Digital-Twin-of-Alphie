@@ -8,7 +8,7 @@ Modifications:
 """
 
 from Task_Initialisation import *
-from NetworkManager import *
+from NetworkManagerRemote import *
 from RobotUp import *
 
 # INITIALIZATION ---------
@@ -20,7 +20,7 @@ time_step = robot.getBasicTimeStep()
 # Initialisation of robot devices
 task_Initialisation = Task_Initialisation(robot)
 
-network_manager = NetworkManager(robot)
+network_manager = NetworkManagerRemote(robot)
 # ---------------------------------
 
 # Main loop of simulation

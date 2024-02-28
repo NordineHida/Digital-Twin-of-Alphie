@@ -1,5 +1,5 @@
 """
-File:           NetworkManager.py
+File:           NetworkManagerRemote.py
 Date:           February 2024
 Description:    Manage the network of communication between robots,
                 facilitating the retrieval of nearby robots and
@@ -35,18 +35,20 @@ class NetworkManager:
 
     def go_to_coordinates(self, x: float, y: float):
         """
-        Handle going to the specified coordinates.
+        If the robot is free, call the task to move the robot to coordinates
+        else it adds those coordinates to its list of next coordinates
 
+        When it reaches its goal, it sends a message to tell that it is free and where it stopped.
         Args:
             x (float): The x-coordinate.
             y (float): The y-coordinate.
         """
-        import Task_GoToCoordinates as gtc
+        import Task_GoToCoordinates as GTC
 
         # if i'm free I move
         if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
             self.robot.robot_current_task = str(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)
-            gtc.go_to_coordinates(self.robot, Coordinates(float(x), float(y)))
+            GTC.go_to_coordinates(self.robot, Coordinates(float(x), float(y)))
             self.robot.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
             self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_FREE, f"{MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES}:{x}:{y}"))
 
@@ -117,6 +119,7 @@ class NetworkManager:
         """
         Handle the STOP message.
 
+        Clear all messages and coordinates in the robot's memory
         Args:
             id_sender (str): The ID of the sender.
             payload (str): The payload of the message.
@@ -125,6 +128,7 @@ class NetworkManager:
         movement.stop()
         self.robot.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
         self.communication.clear_messages()
+        self.robot.next_coordinates.clear()
         # if I have a next I send a stop message
         if self.robot.next_rob:
             self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_FREE, "STOP"))
@@ -145,16 +149,16 @@ class NetworkManager:
             else:
                 self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
 
-    def case_REPORT_WHO_IS_PRESENT(self, id_sender: str, payload: str):
+    def case_REPORT_BEGIN_ROLLCALL(self, id_sender: str, payload: str):
         """
-        Handle the REPORT_WHO_IS_PRESENT message.
+        Handle the REPORT_BEGIN_ROLLCALL message.
 
         Args:
             id_sender (str): The ID of the sender.
             payload (str): The payload of the message.
         """
         if not self.robot.is_callrolling and id_sender not in self.robot.known_robots:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT,
+            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL,
                                                     str(self.robot.robot_current_task)))
             self.robot.is_callrolling = True
 
@@ -162,30 +166,14 @@ class NetworkManager:
             if id_sender != "Remote":
                 self.robot.known_robots[id_sender] = payload
 
-    def case_REPORT_END_CALLROLL(self):
+    def case_REPORT_END_ROLLCALL(self):
         """
-        Handle the REPORT_END_CALLROLL message.
+        Handle the REPORT_END_ROLLCALL message.
 
         """
         if self.robot.is_callrolling:
             self.robot.is_callrolling = False
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL, ""))
-
-    def case_REPORT_WHO_IS_PRESENT_AND_FREE(self, id_sender: str, payload: str):
-        """
-        Handle the REPORT_WHO_IS_PRESENT_AND_FREE message.
-
-        Args:
-            id_sender (str): The ID of the sender.
-            payload (str): The payload of the message.
-        """
-        if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
-            if id_sender not in self.robot.known_robots:
-                if id_sender != "Remote":
-                    self.robot.known_robots[id_sender] = payload
-                self.communication.send_message(
-                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT_AND_FREE,
-                            str(MESSAGE_TYPE_PRIORITY.STATUS_FREE)))
+            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL, ""))
 
     def update(self) -> int:
         """
@@ -231,17 +219,14 @@ class NetworkManager:
                 case MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
                     self.case_GO_TO_COORDINATES(id_sender, payload)
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT:
-                    self.case_REPORT_WHO_IS_PRESENT(id_sender, payload)
+                case MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL:
+                    self.case_REPORT_BEGIN_ROLLCALL(id_sender, payload)
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL:
-                    self.case_REPORT_END_CALLROLL()
+                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
+                    self.case_REPORT_END_ROLLCALL()
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_WHO_IS_PRESENT_AND_FREE:
-                    self.case_REPORT_WHO_IS_PRESENT_AND_FREE(id_sender, payload)
-
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_CALLROLL:
-                    self.case_REPORT_END_CALLROLL()
+                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
+                    self.case_REPORT_END_ROLLCALL()
 
                 case _:
                     print("Unknown message received")
