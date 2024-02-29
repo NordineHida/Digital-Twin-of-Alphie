@@ -1,7 +1,7 @@
 """
 File:           NetworkManagerInitialiseur.py
 Date:           February 2024
-Description:    Manage the network of communication between the remote and robots
+Description:    Call the roll in order to get all robot's name in the simulation.
 Author:         Nordine HIDA
 Modifications:
 """

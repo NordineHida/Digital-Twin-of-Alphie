@@ -157,14 +157,22 @@ class NetworkManager:
             id_sender (str): The ID of the sender.
             payload (str): The payload of the message.
         """
-        if not self.robot.is_callrolling and id_sender not in self.robot.known_robots:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL,
-                                                    str(self.robot.robot_current_task)))
-            self.robot.is_callrolling = True
+        # If the list of known_robot has been initialized
+        if self.robot.is_initialized:
+            if id_sender != "Remote" and id_sender != "Initializer":
+                if not self.robot.is_callrolling and self.robot.known_robots[id_sender] == MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
+                    self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
+                    self.robot.is_callrolling = True
 
-        if id_sender not in self.robot.known_robots:
-            if id_sender != "Remote":
-                self.robot.known_robots[id_sender] = payload
+                if self.robot.known_robots[id_sender] == MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
+                    self.robot.known_robots[id_sender] = payload
+            else:
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
+                self.robot.is_callrolling = True
+        else:
+            if not self.robot.is_callrolling:
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
+                self.robot.is_callrolling = True
 
     def case_REPORT_END_ROLLCALL(self):
         """
@@ -174,6 +182,18 @@ class NetworkManager:
         if self.robot.is_callrolling:
             self.robot.is_callrolling = False
             self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL, ""))
+
+    def case_STATUS_OUT_RANGE(self, payload: str):
+        """
+        Get the complete list of robots in the simulation and add it to the robot's known_robot
+
+        Args:
+            payload (str): The payload of the message composed of all robot's name concatenated and separated by a ':'.
+        """
+        all_known_robots = payload.split(":")
+        self.robot.known_robots = {name: MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE for name in all_known_robots}
+        self.robot.getDevice("emitter").setRange(self.robot.range_emitter)
+        self.robot.is_initialized = True
 
     def update(self) -> int:
         """
@@ -228,6 +248,9 @@ class NetworkManager:
                 case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
                     self.case_REPORT_END_ROLLCALL()
 
+                case MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
+                    self.case_STATUS_OUT_RANGE(payload)
+
                 case _:
                     print("Unknown message received")
                     pass
@@ -238,7 +261,8 @@ class NetworkManager:
             self.robot.next_coordinates.pop(0)
             self.go_to_coordinates(x, y)
 
-        self.update_prev_next_robot()
+        if self.robot.is_initialized:
+            self.update_prev_next_robot()
         return case_executed
 
     def update_prev_next_robot(self):

@@ -9,26 +9,20 @@ Modifications:
 from RobotUp import *
 
 
-class InitialisationManager:
+def init_devices(robot: RobotUp):
     """
-    Initialize all devices of the robot (gps, compass, ...)
-    Must be called right after the creation of the entity (robot, remote, ...)
+    Enable all devices of the robot with a simulation time_step of 10 (ms).
+    time_step value can be modified.
+
+    Args:
+        robot (RobotUp): The robot to initialize
     """
+    time_step = 10
 
-    @staticmethod
-    def init_devices(robot: RobotUp):
-        """
-        Enable all devices of the robot with a simulation time_step of 10 (ms).
-        time_step value can be modified.
+    # Loop through each device and attempt to enable it if the enable method exists
+    for device_name in robot.robot.devices:
+        device = robot.robot.devices[device_name]
+        if hasattr(device, 'enable') and callable(getattr(device, 'enable')):
+            device.enable(time_step)
 
-        Args:
-            robot (RobotUp): The robot to initialize
-        """
-        time_step = 10
-
-        # Loop through each device and attempt to enable it if the enable method exists
-        for device_name in robot.robot.devices:
-            device = robot.robot.devices[device_name]
-            if hasattr(device, 'enable') and callable(getattr(device, 'enable')):
-                device.enable(time_step)
-                print(robot.getName(), " ", device_name, " has been enabled")
+    print(robot.getName()," has been enabled")

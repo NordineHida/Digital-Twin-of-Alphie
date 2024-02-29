@@ -1,19 +1,22 @@
 """
 File:           MainControllerInitialiseur.py
 Date:           February 2024
-Description:    Main program executed by the remote to send tasks to nearby robots.
-                Here you can build your algorithm by sending message task.
+Description:    This method initializes the robots' known_robots dictionary.
+                It retrieves the roster and then distributes all robot names to populate their lists.
+
+                |!| YOU MUST MODIFY THE NUMBER_ROBOT CONSTANT TO INCLUDE ALL ROBOTS IN YOUR SIMULATION
 Author:         Nordine HIDA
 Modifications:
 """
 
-from Task_Initialisation import *
+from InitialisationManager import *
 from NetworkManagerInitialiseur import *
 from RobotUpInitializer import *
 
 # INITIALIZATION ---------
 
 # Number of robot in the simulation (without the remote)
+# |!| MUST BE MODIFIED ACCORDING TO THE NUMBER OF ROBOTS IN THE SIMULATION |!|
 NUMBER_ROBOT = 3
 
 # The unique allowed creation of robot
@@ -21,7 +24,7 @@ robot = RobotUpInitializer()
 time_step = robot.getBasicTimeStep()
 
 # Initialisation of robot devices
-task_Initialisation = Task_Initialisation(robot)
+init_devices(robot)
 
 network_manager = NetworkManagerInitialiseur(robot)
 # ---------------------------------
@@ -37,8 +40,11 @@ for robot_name, current_task in robot.known_robots.items():
     print(f"Robot : {robot_name}, Current task : {current_task}")
 print("---------------------------------------------------------")
 
-# Ici send la liste known_robot a tout les robots et que chaque robot les initialise a un nouvelle etat (MESSAGE_TYPE_PRIORITY)
-# du style "STATUS_DOWN, ou OUT OF RANGE ou INACTIVE
+# We send all the robot names in a concatenation separated by ':'
+all_known_robots = ":".join(robot.known_robots.keys())
+message = Message(robot.getName(), MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE, all_known_robots)
+network_manager.communication.send_message(message)
+
 
 
 

@@ -24,11 +24,17 @@ class RobotUp:
         self.robot = Robot()
         self.list_messages: List[Message] = []
 
+        # Range of the emitter (can be modified)
+        self.range_emitter = 1.5
+
+        # boolean to know if the known_robots list has been initialized by the initializer.
+        self.is_initialized = False
+
         # current task of the robot (free by default)
         self.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
-        # list of nearby robots + self
-        self.known_robots = {self.robot.getName(): self.robot_current_task}
+        # list of nearby robots + self (initialized by the initializer)
+        self.known_robots = None
         self.next_rob = None
         self.prev_rob = None
 

@@ -24,4 +24,5 @@ def init_devices(robot: RobotUp):
         device = robot.robot.devices[device_name]
         if hasattr(device, 'enable') and callable(getattr(device, 'enable')):
             device.enable(time_step)
-            print(robot.getName(), " ", device_name, " has been enabled")
+
+    print(robot.getName(), " has been enabled")

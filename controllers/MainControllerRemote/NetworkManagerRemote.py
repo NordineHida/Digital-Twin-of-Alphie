@@ -124,6 +124,9 @@ class NetworkManagerRemote:
                 case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
                     self.case_REPORT_END_ROLLCALL()
 
+                case MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
+                    pass
+
                 case _:
                     print("Unknown message received")
 
