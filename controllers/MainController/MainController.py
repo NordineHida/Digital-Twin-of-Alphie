@@ -19,6 +19,10 @@ time_step = robot.getBasicTimeStep()
 # Initialisation of robot devices
 init_devices(robot)
 
+# Set an infinite range to initialize robot's "known_robot" list
+# After this init, the range will be set at the robot's range_emitter value.
+robot.getDevice("emitter").setRange(-1)
+
 network_manager = NetworkManager(robot)
 # ------------------------
 

@@ -103,3 +103,28 @@ class RobotUp:
         Get the keyboard device
         """
         return self.robot.getKeyboard()
+
+    def reset(self):
+        """
+        Reset all data collected by the robot
+        """
+        # Clear the list of messages
+        self.list_messages.clear()
+
+        # Reset robot_current_task to default value
+        self.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
+
+        # Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
+        if self.known_robots is not None:
+            for key in self.known_robots:
+                self.known_robots[key] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
+
+        # Reset prev_rob and next_rob to None
+        self.prev_rob = None
+        self.next_rob = None
+
+        # Reset is_callrolling flag
+        self.is_callrolling = False
+
+        # Clear the list of next coordinates
+        self.next_coordinates.clear()

@@ -86,6 +86,10 @@ class NetworkManagerRemote:
                     message = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, f"{x}:{y}")
                     self.communication.send_message(message)
 
+            else:
+                # Help menu with all commands and their key
+                self.print_help_commands()
+
         # try to receive a message and add it to the robot's list
         self.communication.receive_message()
 
@@ -185,6 +189,20 @@ class NetworkManagerRemote:
         if self.robot.is_callrolling:
             self.robot.is_callrolling = False
 
-    def case_REPORT_BEGIN_ROLLCALL_AND_FREE(self, id_sender, payload):
-        # TODO: Implement handling of REPORT_BEGIN_ROLLCALL_AND_FREE message
-        pass
+    @staticmethod
+    def print_help_commands():
+        """
+        Print all commands and their keys
+        """
+        print("------------------------------------------ COMMANDS ---------------------------------------")
+        print("Any key     : Show all commands")
+        print("\n")
+        print("HOME        : Call the roll (should be used before any tasks)")
+        print("END         : Stop everything and reset robot's data ")
+        print("\n")
+        print("PAGEDOWN    : Go to coordinates (Circle around the (0;0)) ")
+        print("RIGHT       : Go to coordinates (1;1) ")
+        print("LEFT        : Go to coordinates (-1;1) ")
+        print("UP          : Go to coordinates (1;-1) ")
+        print("DOWN        : Go to coordinates (-1;-1) ")
+        print("-------------------------------------------------------------------------------------------")

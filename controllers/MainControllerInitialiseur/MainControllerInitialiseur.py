@@ -34,17 +34,13 @@ while len(robot.known_robots) < NUMBER_ROBOT:
     network_manager.update()
     robot.step(int(time_step))
 
-print("----------------- INITIALIZATION DONE ! -----------------")
+print("---------------------------------- INITIALIZATION DONE ! ----------------------------------")
 print(NUMBER_ROBOT, "robots found :")
 for robot_name, current_task in robot.known_robots.items():
     print(f"Robot : {robot_name}, Current task : {current_task}")
-print("---------------------------------------------------------")
+print("-------------------------------------------------------------------------------------------")
 
 # We send all the robot names in a concatenation separated by ':'
 all_known_robots = ":".join(robot.known_robots.keys())
 message = Message(robot.getName(), MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE, all_known_robots)
 network_manager.communication.send_message(message)
-
-
-
-
