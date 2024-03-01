@@ -19,11 +19,9 @@ from RobotUpInitializer import *
 # The unique allowed creation of robot
 robot = RobotUpInitializer()
 
-# Number of robot in the simulation (without the remote)
-# |!| MUST BE MODIFIED ACCORDING TO THE NUMBER OF ROBOTS IN THE SIMULATION |!|
+# Number of robot in the simulation (without the remote and the initializer)
 NUMBER_ROBOT = robot.getNumberOfRobots()
 
-print("---------------------------------------------------- ", NUMBER_ROBOT)
 time_step = robot.getBasicTimeStep()
 
 # Initialisation of robot devices

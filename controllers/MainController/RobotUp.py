@@ -25,7 +25,7 @@ class RobotUp:
         self.list_messages: List[Message] = []
 
         # Range of the emitter (can be modified)
-        self.range_emitter = 1.5
+        self.range_emitter = 2
 
         # boolean to know if the known_robots list has been initialized by the initializer.
         self.is_initialized = False
