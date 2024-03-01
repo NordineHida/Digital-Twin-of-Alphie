@@ -12,6 +12,7 @@ Author:         Nordine HIDA
 Modifications:
 """
 
+from controller import Supervisor
 from controller.robot import *
 from Message import *
 from typing import List
@@ -26,7 +27,7 @@ class RobotUpInitializer:
         """
         Constructor for RobotUp class. Init all attributes
         """
-        self.robot = Robot()
+        self.robot = Supervisor()
         self.list_messages: List[Message] = []
 
         # list of all robots
@@ -34,6 +35,31 @@ class RobotUpInitializer:
 
         # boolean to remember if the robot has already call rolled
         self.is_callrolling = False
+
+    def getNumberOfRobots(self) -> int:
+        """
+        Get the number of robots in the simulation.
+        |!| (WITHOUT THE INITIALIZER AND THE REMOTE)
+
+        Returns:
+            int: Number of robots in the simulation.
+        """
+        root_node = self.robot.getRoot()
+        if not root_node:
+            print("Error: Root node is None.")
+            return 0
+
+        children = root_node.getField('children')
+        if not children:
+            print("Error: Children nodes are None.")
+            return 0
+
+        number_of_robots = 0
+        for i in range(children.getCount()):
+            child_node = children.getMFNode(i)
+            if child_node.getTypeName() == "Robot":
+                number_of_robots += 1
+        return number_of_robots - 2
 
     def getDevice(self, name: str) -> Device:
         """

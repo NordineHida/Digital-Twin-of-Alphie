@@ -15,12 +15,15 @@ from RobotUpInitializer import *
 
 # INITIALIZATION ---------
 
-# Number of robot in the simulation (without the remote)
-# |!| MUST BE MODIFIED ACCORDING TO THE NUMBER OF ROBOTS IN THE SIMULATION |!|
-NUMBER_ROBOT = 3
 
 # The unique allowed creation of robot
 robot = RobotUpInitializer()
+
+# Number of robot in the simulation (without the remote)
+# |!| MUST BE MODIFIED ACCORDING TO THE NUMBER OF ROBOTS IN THE SIMULATION |!|
+NUMBER_ROBOT = robot.getNumberOfRobots()
+
+print("---------------------------------------------------- ", NUMBER_ROBOT)
 time_step = robot.getBasicTimeStep()
 
 # Initialisation of robot devices
