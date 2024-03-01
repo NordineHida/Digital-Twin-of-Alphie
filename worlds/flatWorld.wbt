@@ -11,7 +11,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.05111295402255204 0.9950442436077502 0.08529020573412097 1.1838649998058068
-  position -4.525524550779466 -1.5289011403723471 8.811912992710003
+  position -3.1686012907496917 -0.5135624820579224 7.371628555585523
   exposure 0.3
   followType "None"
   followSmoothness 1
@@ -354,7 +354,7 @@ Robot {
   controller "MainControllerRemote"
 }
 Robot {
-  translation -1.040019999978639 -0.6061360004763763 -3.233521558682062e-05
+  translation 1.18975 -0.392598 -6.9171e-05
   rotation -6.103740279886215e-05 -4.898419251527482e-05 -0.9999999969374921 1.4753222527676717
   children [
     Group {
@@ -1167,8 +1167,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity 3.2495032624351396e-14 -7.434804979444294e-12 3.108623653201117e-16
-        angularVelocity 8.48618316808431e-13 1.535441254745522e-13 7.480912563610601e-13
       }
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
@@ -1193,8 +1191,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 1.260096139368533e-14 -7.436395651415047e-12 -9.325875139762077e-16
-        angularVelocity -3.5576946031084347e-12 -2.3838310365072065e-13 7.523883547022416e-13
       }
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
@@ -1222,8 +1218,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity -5.654612602185073e-15 -7.438472532156003e-12 -1.287858778064224e-15
-        angularVelocity 1.908571581641431e-12 -6.978759000053573e-14 7.494361174932208e-13
       }
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
@@ -1248,8 +1242,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -2.4154612354547642e-14 -7.439999637692212e-12 -3.9968021350597814e-16
-        angularVelocity 1.885333681640433e-12 1.6811967977901707e-13 7.49188624217012e-13
       }
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
@@ -1274,8 +1266,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -4.201630848664545e-14 -7.441160661009646e-12 -4.13002914909226e-15
-        angularVelocity 1.9149576872481054e-12 -1.3775633243930471e-13 7.4842073601276e-13
       }
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
@@ -1300,8 +1290,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 3.828093272155202e-14 -7.492276171691733e-12 6.661338640267319e-16
-        angularVelocity -3.0525153461655353e-12 -2.472648844546063e-13 7.428504532181705e-13
       }
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
@@ -1326,8 +1314,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 2.0359721321811658e-14 -7.495149163453244e-12 -1.820765720459442e-15
-        angularVelocity -3.0612283685695227e-12 -1.453306336610697e-13 7.496446526489251e-13
       }
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
@@ -1352,8 +1338,6 @@ Robot {
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_CENTER_WHEEL
-        linearVelocity 2.5607313263777513e-15 -7.495644839341285e-12 3.108626026806389e-16
-        angularVelocity -3.0518219173070847e-12 -1.7943240163279957e-13 7.495580254002018e-13
       }
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
@@ -1378,8 +1362,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -1.7447466147038412e-14 -7.498923700153137e-12 -1.4654948524838059e-15
-        angularVelocity -3.043109668806187e-12 -2.813667320712301e-13 7.496823237221563e-13
       }
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
@@ -1404,8 +1386,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -3.1957629397230834e-14 -7.499196818134284e-12 -3.597122476019583e-15
-        angularVelocity -3.0541337325181123e-12 -1.4546542875233417e-13 7.39282573209491e-13
       }
     }
   ]
@@ -1436,11 +1416,9 @@ Robot {
     ]
   }
   controller "MainController"
-  linearVelocity -3.771737952465167e-15 -7.467331183026118e-12 -5.26327952414889e-16
-  angularVelocity -1.1323777864986249e-14 8.462059477655125e-15 7.481506113067986e-13
 }
 Robot {
-  translation -0.9668680000182577 -1.655420000346175 -3.6615166058729526e-05
+  translation 1.32862 -1.22878 3.31724e-05
   rotation 4.945419783650849e-05 -6.084120599688925e-05 0.999999996926315 1.6084068748323352
   children [
     Group {
@@ -2254,8 +2232,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity 1.1002433485734507e-14 -7.442293100692e-12 -7.549515148356013e-16
-        angularVelocity 2.5694572589561e-12 8.275687380431778e-14 -2.8470743387678644e-13
       }
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
@@ -2280,8 +2256,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 3.625635823005756e-15 -7.442905499075421e-12 1.554312606377212e-15
-        angularVelocity 1.8815369707665986e-12 8.808783430020078e-14 -2.7642957619333114e-13
       }
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
@@ -2309,8 +2283,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity -2.197330421956385e-15 -7.446475359750426e-12 -4.44087488551235e-17
-        angularVelocity -3.4014116422204248e-12 -1.1078399719622125e-13 -2.773474665129563e-13
       }
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
@@ -2335,8 +2307,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -9.857711750086631e-15 -7.448669088008796e-12 1.1990411227971018e-15
-        angularVelocity -3.4022968259522492e-12 -1.107774578554476e-13 -2.7580735899329366e-13
       }
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
@@ -2361,8 +2331,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -1.4897785227710995e-14 -7.448577984871963e-12 8.437698885903445e-16
-        angularVelocity -3.401202086652832e-12 -1.4476127567568712e-13 -2.7306213274840963e-13
       }
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
@@ -2387,8 +2355,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 1.4667327447476322e-14 -7.469326576654341e-12 -1.465494427113708e-15
-        angularVelocity -2.6668630124369113e-12 7.061194902862168e-14 -2.742076512757515e-13
       }
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
@@ -2413,8 +2379,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 3.8727288546926585e-15 -7.469854347298377e-12 -1.6431295719775838e-15
-        angularVelocity -2.6486820777779297e-12 -4.391588658046974e-13 -2.7689805239607253e-13
       }
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
@@ -2439,8 +2403,6 @@ Robot {
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_CENTER_WHEEL
-        linearVelocity 1.3984697634533921e-15 -7.469616201613567e-12 -9.325874125089458e-16
-        angularVelocity -2.6630088923178345e-12 1.9619857447984468e-14 -2.7762664756494046e-13
       }
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
@@ -2465,8 +2427,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -8.059179079851658e-15 -7.469622844384767e-12 -7.549520270570852e-16
-        angularVelocity -2.65113284003372e-12 -1.8432238544664864e-13 -2.769021351467463e-13
       }
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
@@ -2491,8 +2451,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -1.590221011486893e-14 -7.470056889816707e-12 2.087219722567184e-15
-        angularVelocity -2.6421213544107314e-12 -3.5426772632739533e-13 -2.7484134867464117e-13
       }
     }
   ]
@@ -2523,11 +2481,9 @@ Robot {
     ]
   }
   controller "MainController"
-  linearVelocity -2.1862876574716167e-15 -7.457074203486142e-12 -2.631639762074445e-16
-  angularVelocity 1.5165447421158912e-14 1.3218421141433985e-14 -2.7793775826220175e-13
 }
 Robot {
-  translation -0.854754999999786 -1.0069200004676213 -3.3970684209769925e-05
+  translation 0.774913 -1.04003 -0.000210233
   rotation 5.385871386764767e-05 -2.1304393594053733e-05 0.9999999983226809 3.1212724383347195
   children [
     Group {
@@ -3341,8 +3297,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity -4.1501032315442985e-13 -6.916775965458584e-12 -1.820765915062085e-15
-        angularVelocity 6.607662187939965e-14 -3.6209181003987095e-12 -1.1468211922429975e-11
       }
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
@@ -3367,8 +3321,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -4.2177007243085837e-13 -7.192497544612429e-12 2.2648545171646297e-15
-        angularVelocity -4.04567626570967e-14 1.5999208171020611e-12 -1.1464348818404187e-11
       }
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
@@ -3396,8 +3348,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity -4.2656428784256223e-13 -7.47678269936904e-12 -1.6431298157811115e-15
-        angularVelocity 1.9276196861179968e-13 2.835549711306323e-12 -1.1465071898940293e-11
       }
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
@@ -3422,8 +3372,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -4.3211608800027503e-13 -7.755491035618325e-12 2.6201261234332585e-15
-        angularVelocity 9.080299790863575e-14 2.8385383785754914e-12 -1.1462877798875351e-11
       }
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
@@ -3448,8 +3396,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity -4.388546025643826e-13 -8.037656858036725e-12 1.3322665108781879e-16
-        angularVelocity 9.080473618798602e-14 2.8380958599364597e-12 -1.1462270049546074e-11
       }
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
@@ -3474,8 +3420,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 4.873671686845238e-13 -6.933001625258188e-12 -3.996800679537321e-16
-        angularVelocity 2.517389893086304e-14 2.1874594510803255e-12 -1.1456944925339309e-11
       }
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
@@ -3500,8 +3444,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 4.805233872625727e-13 -7.21372103863041e-12 -1.2878584230139165e-15
-        angularVelocity 5.915129927390107e-14 2.1886722722200208e-12 -1.1467455841523538e-11
       }
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
@@ -3526,8 +3468,6 @@ Robot {
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_CENTER_WHEEL
-        linearVelocity 4.768112319504814e-13 -7.49423227739287e-12 1.3766768031959365e-15
-        angularVelocity 5.915840407375095e-14 2.186902265351818e-12 -1.1465228970568987e-11
       }
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
@@ -3552,8 +3492,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 4.700363935748653e-13 -7.774970304822377e-12 -2.2204482956722344e-16
-        angularVelocity -8.812431272308448e-15 2.188457060582154e-12 -1.1466584716103528e-11
       }
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
@@ -3578,8 +3516,6 @@ Robot {
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
         physics USE PHYSICS_FRONT_WHEEL
-        linearVelocity 4.644818152364378e-13 -8.053728786438583e-12 -1.8207657654906898e-15
-        angularVelocity -1.4474697688646272e-13 2.189797114916812e-12 -1.1463244058727463e-11
       }
     }
   ]
@@ -3610,6 +3546,4 @@ Robot {
     ]
   }
   controller "MainController"
-  linearVelocity 2.2918693731991462e-14 -7.541102619294019e-12 9.210739167260557e-16
-  angularVelocity -1.2034546993467975e-14 -1.851932604027368e-14 -1.146371862201438e-11
 }

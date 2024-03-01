@@ -79,8 +79,8 @@ class NetworkManagerRemote:
                     angle = 2 * math.pi * i / num_points
 
                     # Calculate coordinates for each point
-                    x = center_x + radius * math.cos(angle)
-                    y = center_y + radius * math.sin(angle)
+                    x = round(center_x + radius * math.cos(angle), 3)
+                    y = round(center_y + radius * math.sin(angle), 3)
 
                     # Sending message to go to coordinates
                     message = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, f"{x}:{y}")

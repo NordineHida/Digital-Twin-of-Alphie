@@ -44,6 +44,9 @@ class RobotUp:
         # List of next coordinates
         self.next_coordinates: List[Coordinates] = []
 
+        # boolean to know if the robot has been stopped
+        self.is_stopped = False
+
     def getDevice(self, name: str) -> Device:
         """
         Get a device by its name.

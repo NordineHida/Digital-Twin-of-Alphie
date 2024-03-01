@@ -32,7 +32,6 @@ class NetworkManager:
         # Communication manager
         self.communication = CommunicationManager(self.robot)
         self.movement = MovementManager(self.robot)
-        self.is_stopped = False
 
         self.compteur = 0
 
@@ -53,10 +52,11 @@ class NetworkManager:
             self.robot.robot_current_task = str(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES) + ":" + str(x) + ":" + str(y)
             GTC.go_to_coordinates(self.robot, Coordinates(float(x), float(y)))
 
-            # Here the robot reached its goal, or it has been stopped -> Status free.
+            # Here the robot has reached its goal, or it has been stopped -> Status free.
             self.robot.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
+
             # If it hasn't been stopped, it sends a message to tell where it were going.
-            if not self.is_stopped:
+            if not self.robot.is_stopped:
                 self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_FREE, f"{MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES}:{x}:{y}"))
 
         # if I'm already moving, I add new Coordinates to move
@@ -114,7 +114,7 @@ class NetworkManager:
         context_value = MESSAGE_TYPE_PRIORITY.STATUS_FREE.value
         if payload != "STOP":
             # Sets the sender as a STATUS_FREE
-            self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
+            self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
         # If the previous robot just finished going to coordinates, I follow it
         if id_sender == self.robot.prev_rob and payload.startswith(str(MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES)):
@@ -154,7 +154,7 @@ class NetworkManager:
             self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, "STOP"))
 
         self.robot.reset()
-        self.is_stopped = True
+        self.robot.is_stopped = True
 
     def case_GO_TO_COORDINATES(self, id_sender: str, payload: str):
         """
@@ -164,8 +164,8 @@ class NetworkManager:
             id_sender (str): The ID of the sender.
             payload (str): The payload of the message.
         """
-        self.is_stopped = False
-            
+        self.robot.is_stopped = False
+
         x, y = payload.split(":")
         if not self.robot.prev_rob:
             if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
@@ -182,8 +182,8 @@ class NetworkManager:
             payload (str): The payload of the message.
         """
         # If the list of known_robot has been initialized
-        if id_sender == "Remote" or id_sender == "Initializer":
-            self.robot.reset()
+
+        self.robot.is_stopped = False
 
         if self.robot.is_initialized:
             if id_sender != "Remote" and id_sender != "Initializer":
@@ -290,19 +290,20 @@ class NetworkManager:
         if self.robot.is_initialized:
             self.update_prev_next_robot()
 
-
+            """
             if self.compteur > 25:
                 print("-----------------------------------", self.robot.getName(), " :  IT KNOWS ----------------------------")
                 for key, value in self.robot.known_robots.items():
                     print(f"{key}: {value}")
                 print("NEXT :", self.robot.next_rob)
                 print("PREV :", self.robot.prev_rob)
-                print("IS CALLROLING : ", self.robot.is_callrolling)
+                print("IS CALLROLLING : ", self.robot.is_callrolling)
+                print("IS STOPPED : ", self.robot.is_stopped)
                 print("-----------------------------------", self.robot.getName(), "------------------------------------- \n ")
                 self.compteur = 0
             else:
                 self.compteur += 1
-
+            """
 
         return case_executed
 

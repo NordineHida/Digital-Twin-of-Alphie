@@ -63,7 +63,7 @@ class CommunicationManager:
                 print(self.robot.getName(), " : Receive : ", id_sender, ";", print_message_type, ";", payload)
 
                 # Create and add the Message to the robots list
-                self.robot.list_messages.append(Message(id_sender, message_type, payload))
+                self.robot.append(Message(id_sender, message_type, payload)) # ICI G CHANGER
 
         except ValueError:
             # If there are not enough parts in the message, or it cannot be split properly
