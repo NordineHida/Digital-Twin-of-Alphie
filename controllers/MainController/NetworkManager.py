@@ -188,7 +188,7 @@ class NetworkManager:
         if self.robot.is_initialized:
             if id_sender != "Remote" and id_sender != "Initializer":
                 if not self.robot.is_callrolling:
-                    if self.robot.known_robots[id_sender] != MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
+                    if self.robot.known_robots[id_sender] == MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
                         self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
                         self.robot.is_callrolling = True
                 self.robot.known_robots[id_sender] = payload
@@ -290,7 +290,6 @@ class NetworkManager:
         if self.robot.is_initialized:
             self.update_prev_next_robot()
 
-            """
             if self.compteur > 25:
                 print("-----------------------------------", self.robot.getName(), " :  IT KNOWS ----------------------------")
                 for key, value in self.robot.known_robots.items():
@@ -299,11 +298,12 @@ class NetworkManager:
                 print("PREV :", self.robot.prev_rob)
                 print("IS CALLROLLING : ", self.robot.is_callrolling)
                 print("IS STOPPED : ", self.robot.is_stopped)
+                print("IS Initialiszed : ", self.robot.is_initialized)
                 print("-----------------------------------", self.robot.getName(), "------------------------------------- \n ")
                 self.compteur = 0
             else:
                 self.compteur += 1
-            """
+
 
         return case_executed
 
