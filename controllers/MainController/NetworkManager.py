@@ -125,9 +125,6 @@ class NetworkManager:
                  otherwise, it returns STATUS_FREE.value
         """
         context_value = MESSAGE_TYPE_PRIORITY.STATUS_FREE.value
-        if payload != "STOP":
-            # Sets the sender as a STATUS_FREE
-            self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
         # If the previous robot just finished going to coordinates, I follow it
         if payload.startswith(str(MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES)):
@@ -138,7 +135,7 @@ class NetworkManager:
                 self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
 
         # If self robot is already on its way to coordinates, check if the sender has already been there
-        elif str(self.robot.robot_current_task).startswith(str(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)):
+        if str(self.robot.robot_current_task).startswith(str(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)):
             msg, x, y = payload.split(":")
             me_msg, me_x, me_y = str(self.robot.robot_current_task).split(":")
             # If a robot has already reached my coordinates, I stop myself
@@ -148,7 +145,7 @@ class NetworkManager:
 
         # If the payload is STOP, execute the case_STOP
         elif payload == "STOP":
-            self.case_STOP(id_sender, payload)
+            self.case_STOP(0)
 
         return context_value
 
@@ -305,6 +302,8 @@ class NetworkManager:
                 self.timer_asking_neighbor = 0
             else:
                 self.timer_asking_neighbor += 1
+
+
 
         return case_executed
 
