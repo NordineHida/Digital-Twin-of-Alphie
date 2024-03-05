@@ -296,7 +296,7 @@ class NetworkManager:
 
             self.update_prev_next_firstfree_robot()
 
-            if self.timer_asking_neighbor > 20:
+            if self.timer_asking_neighbor > 50:
                 # Ask who is nearby and send it own current task
                 self.communication.send_message_all(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_STATUS, 0, self.robot.robot_current_task)
                 self.timer_asking_neighbor = 0
