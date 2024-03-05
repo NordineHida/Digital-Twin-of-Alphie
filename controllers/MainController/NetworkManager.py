@@ -33,7 +33,8 @@ class NetworkManager:
         self.communication = CommunicationManager(self.robot)
         self.movement = MovementManager(self.robot)
 
-        self.compteur = 0
+        # Timer at the end of which we call nearby neighbors.
+        self.timer_asking_neighbor = 0
 
     def go_to_coordinates(self, x: float, y: float):
         """
@@ -58,9 +59,11 @@ class NetworkManager:
             # If it hasn't been stopped, it sends a message to the first free robot to tell where it should go.
             if not self.robot.is_stopped:
                 self.update_prev_next_firstfree_robot()
-                recipient = ""
-                if self.robot.first_free_rob:
-                    recipient = self.robot.first_free_rob
+                recipient = "toto"
+                if self.robot.next_rob:
+                    recipient = self.robot.next_rob
+                # if self.robot.first_free_rob:
+                    # recipient = self.robot.first_free_rob
                 self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_FREE, 0,
                                                         f"{MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES}:{x}:{y}",
                                                         recipient))
@@ -69,16 +72,20 @@ class NetworkManager:
         elif self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES:
             self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
 
-    def case_REPORT_STATUS(self, id_sender: str, payload: str):
+    def case_REPORT_STATUS(self, id_sender: str):
         """
-        Handle the REPORT_STATUS message.
+        Answer to the status' question by sending my current task.
 
         Args:
             id_sender (str): The ID of the sender.
-            payload (str): The payload of the message.
         """
-        # TODO: Handle the REPORT_STATUS message
-        pass
+        self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_CURRENT_TASK, 0, self.robot.robot_current_task,id_sender))
+
+    def case_STATUS_CURRENT_TASK(self, id_sender, payload):
+        """
+        Getting the current task of the neighbor
+        """
+        self.robot.known_robots[id_sender] = payload
 
     def case_REPORT_POSITION(self, id_sender: str, payload: str):
         """
@@ -190,9 +197,6 @@ class NetworkManager:
 
         # unstopped the robot
         self.robot.is_stopped = False
-        # If it's the first iteration of the message, I reset the list of known robot to forget old neighbor
-        if send_counter == 0:
-            self.robot.reset_known_robot()
 
         message_rollcall = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, send_counter, str(self.robot.robot_current_task))
 
@@ -216,6 +220,7 @@ class NetworkManager:
         self.robot.reset()
         self.communication.clear_messages()
         self.robot.known_robots = {name: MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE for name in all_known_robots}
+        self.robot.neighbors_last_com = {name: 0 for name in all_known_robots}
         self.robot.getDevice("emitter").setRange(self.robot.range_emitter)
 
         self.robot.is_initialized = True
@@ -228,6 +233,7 @@ class NetworkManager:
             int : case that was executed (-1 if no messages was handled)
         """
         case_executed = -1
+        neighbors_updated = False
 
         # try to receive a message and add it to the robot's list
         self.communication.receive_message()
@@ -248,7 +254,10 @@ class NetworkManager:
 
             match message_type:
                 case MESSAGE_TYPE_PRIORITY.REPORT_STATUS:
-                    self.case_REPORT_STATUS(id_sender, payload)
+                    self.case_REPORT_STATUS(id_sender)
+
+                case MESSAGE_TYPE_PRIORITY.STATUS_CURRENT_TASK:
+                    self.case_STATUS_CURRENT_TASK(id_sender, payload)
 
                 case MESSAGE_TYPE_PRIORITY.REPORT_POSITION:
                     self.case_REPORT_POSITION(id_sender, payload)
@@ -274,6 +283,9 @@ class NetworkManager:
                 case _:
                     print("Unknown message received")
                     pass
+            if self.robot.is_initialized:
+                self.update_neighbors_last_com(id_sender)
+                neighbors_updated = True
 
         if self.robot.next_coordinates and self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
             x = self.robot.next_coordinates[0].x
@@ -282,22 +294,17 @@ class NetworkManager:
             self.go_to_coordinates(x, y)
 
         if self.robot.is_initialized:
+            if not neighbors_updated:
+                self.update_neighbors_last_com()
+
             self.update_prev_next_firstfree_robot()
 
-            if self.compteur > 100:
-                print("-----------------------------------", self.robot.getName(), " :  IT KNOWS ----------------------------")
-                for key, value in self.robot.known_robots.items():
-                    print(f"{key}: {value}")
-                print("NEXT :", self.robot.next_rob)
-                print("PREV :", self.robot.prev_rob)
-                print("FIRST FREE :", self.robot.first_free_rob)
-                print("IS CALLROLLING : ", self.robot.is_callrolling)
-                print("IS STOPPED : ", self.robot.is_stopped)
-                print("IS Initialized : ", self.robot.is_initialized)
-                print("-----------------------------------", self.robot.getName(), "------------------------------------- \n ")
-                self.compteur = 0
+            if self.timer_asking_neighbor > 20:
+                # Ask who is nearby and send it own current task
+                self.communication.send_message_all(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_STATUS, 0, self.robot.robot_current_task)
+                self.timer_asking_neighbor = 0
             else:
-                self.compteur += 1
+                self.timer_asking_neighbor += 1
 
         return case_executed
 
@@ -345,3 +352,23 @@ class NetworkManager:
                 # Update first_rob with the robot's name
                 self.robot.first_free_rob = key
             i += 1
+
+    def update_neighbors_last_com(self, id_sender: str = None):
+        """
+        Update the last communication time for neighboring robots.
+
+        Args:
+            id_sender (str): The ID of the sender robot.
+        """
+        # Reset the last communication time for the sender robot
+        if id_sender:
+            self.robot.neighbors_last_com[id_sender] = 0
+
+        # Increment the last communication time for all neighbors
+        # and mark the robot as OUT OF RANGE if it hasn't communicated for 400 times (400 update loop)
+        for neighbor_id, last_com_time in self.robot.neighbors_last_com.items():
+            if id_sender is None or id_sender != neighbor_id:
+                self.robot.neighbors_last_com[neighbor_id] += 1
+                if last_com_time > 400:
+                    self.robot.known_robots[neighbor_id] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
+

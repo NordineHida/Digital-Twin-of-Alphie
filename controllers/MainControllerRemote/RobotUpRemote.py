@@ -26,11 +26,16 @@ class RobotUpRemote:
         # list of nearby robots
         self.known_robots = {}
 
+        # dictionary of nearby robots and the last time I received a communication from it (updated in networkManager)
+        self.neighbors_last_com = None
+
         # First free remote in known_robots. Messages will be sent to it
         self.first_rob = ""
 
         # boolean to remember if the remote has already call rolled
         self.is_callrolling = False
+
+        self.is_initialized = False
 
     def getDevice(self, name: str) -> Device:
         """
@@ -91,3 +96,11 @@ class RobotUpRemote:
         Get the keyboard device
         """
         return self.remote.getKeyboard()
+
+    def reset_known_robot(self):
+        """
+        Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
+        """
+        if self.known_robots is not None:
+            for key in self.known_robots:
+                self.known_robots[key] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE

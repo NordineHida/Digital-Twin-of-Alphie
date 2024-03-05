@@ -75,15 +75,12 @@ class CommunicationManager:
                 # Split the incoming message into its three parts
                 id_sender, message_type, send_counter, payload, recipient = incoming_msg.split(";")
 
-                # If there is no recipient, or I'm the recipient or the counter is < Max, I consider the message
-                if recipient == "" or recipient == self.remote.getName() and send_counter < self.max_send_counter:
+                # Print of the message (just to check if everything is fine)
+                print_message_type = message_type.replace("MESSAGE_TYPE_PRIORITY.", "")
+                print(self.remote.getName(), " : Receive : ", id_sender, ";", print_message_type, ";", send_counter, ";", payload, ";", recipient)
 
-                    # Print of the message (just to check if everything is fine)
-                    print_message_type = message_type.replace("MESSAGE_TYPE_PRIORITY.", "")
-                    print(self.remote.getName(), " : Receive : ", id_sender, ";", print_message_type, ";", send_counter, ";", payload, ";", recipient)
-
-                    # Create and add the Message to the robots list
-                    self.remote.append(Message(id_sender, message_type, send_counter, payload, recipient))
+                # Create and add the Message to the robots list
+                self.remote.append(Message(id_sender, message_type, send_counter, payload, recipient))
 
         except ValueError:
             # If there are not enough parts in the message, or it cannot be split properly

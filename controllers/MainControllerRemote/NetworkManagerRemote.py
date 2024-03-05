@@ -31,14 +31,19 @@ class NetworkManagerRemote:
         self.keyboard = self.remote.getKeyboard()
         self.keyboard.enable(10)
 
+        self.timer_reset_neighbor = 150
+
     def update(self):
         """
         Check if there is message or a pressed key and handle it.
         """
+        neighbors_updated = False
 
         # Check if a key is pressed
         key = self.keyboard.getKey()
         if key != -1:
+            self.update_first_rob()
+
             # Home -> REPORT_BEGIN_ROLLCALL and reset known_robot
             if key == Keyboard.HOME:
                 # Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
@@ -78,7 +83,7 @@ class NetworkManagerRemote:
                 radius = 1.5
 
                 # Number of points to generate
-                num_points = 20
+                num_points = 10
 
                 for i in range(num_points):
                     # Calculate angle for each point
@@ -113,6 +118,9 @@ class NetworkManagerRemote:
                 case MESSAGE_TYPE_PRIORITY.REPORT_STATUS:
                     self.case_REPORT_STATUS(id_sender, payload)
 
+                case MESSAGE_TYPE_PRIORITY.STATUS_CURRENT_TASK:
+                    self.case_STATUS_CURRENT_TASK(id_sender,payload)
+
                 case MESSAGE_TYPE_PRIORITY.REPORT_POSITION:
                     self.case_REPORT_POSITION(id_sender, payload)
 
@@ -137,7 +145,33 @@ class NetworkManagerRemote:
                 case _:
                     print("Unknown message received")
 
+            if self.remote.is_initialized:
+                self.update_neighbors_last_com(id_sender)
+                neighbors_updated = True
+
+        if self.remote.is_initialized:
             self.update_first_rob()
+            if not neighbors_updated:
+                self.update_neighbors_last_com()
+
+    def update_neighbors_last_com(self, id_sender: str = None):
+        """
+        Update the last communication time for neighboring robots.
+
+        Args:
+            id_sender (str): The ID of the sender robot.
+        """
+        # Reset the last communication time for the sender robot
+        if id_sender:
+            self.remote.neighbors_last_com[id_sender] = 0
+
+        # Increment the last communication time for all neighbors
+        # and mark the robot as OUT OF RANGE if it hasn't communicated for 75 times (75 update loop)
+        for neighbor_id, last_com_time in self.remote.neighbors_last_com.items():
+            if id_sender is None or id_sender != neighbor_id:
+                self.remote.neighbors_last_com[neighbor_id] += 1
+                if last_com_time > 75:
+                    self.remote.known_robots[neighbor_id] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
 
     def update_first_rob(self):
         """
@@ -163,6 +197,12 @@ class NetworkManagerRemote:
     def case_REPORT_STATUS(self, id_sender, payload):
         # TODO: Implement handling of REPORT_STATUS message
         pass
+
+    def case_STATUS_CURRENT_TASK(self, id_sender, payload):
+        """
+        Add the sender as a neighbor with it current task
+        """
+        self.remote.known_robots[id_sender] = payload
 
     def case_REPORT_POSITION(self, id_sender, payload):
         # TODO: Implement handling of REPORT_POSITION message
@@ -194,6 +234,8 @@ class NetworkManagerRemote:
         """
         all_known_robots = payload.split(":")
         self.remote.known_robots = {name: MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE for name in all_known_robots}
+        self.remote.neighbors_last_com = {name: 0 for name in all_known_robots}
+        self.remote.is_initialized = True
 
     @staticmethod
     def print_help_commands():

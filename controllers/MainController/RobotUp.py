@@ -25,7 +25,7 @@ class RobotUp:
         self.list_messages: List[Message] = []
 
         # Range of the emitter (CAN BE MODIFIED) |!| IT WON'T CHANGE AUTOMATICALLY THE SPHERE IN THE SIMULATION
-        self.range_emitter = 2
+        self.range_emitter = 5
         # the maximum number of times that a message can be shared (CAN BE MODIFIED)
         self.max_counter = 4
 
@@ -35,8 +35,11 @@ class RobotUp:
         # current task of the robot (free by default)
         self.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
-        # list of nearby robots + self (initialized by the initializer)
+        # list of all robots + self (initialized by the initializer)
         self.known_robots = None
+
+        # dictionary of nearby robots and the last time I received a communication from it (updated in networkManager)
+        self.neighbors_last_com = None
 
         # Next and previous known robot in alphabetical order
         self.next_rob = None
@@ -53,8 +56,6 @@ class RobotUp:
 
         # boolean to know if the robot has been stopped
         self.is_stopped = False
-
-
 
     def getDevice(self, name: str) -> Device:
         """
