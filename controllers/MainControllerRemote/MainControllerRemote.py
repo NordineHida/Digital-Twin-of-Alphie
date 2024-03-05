@@ -9,12 +9,12 @@ Modifications:
 
 from InitialisationManager import *
 from NetworkManagerRemote import *
-from RobotUp import *
+from RobotUpRemote import *
 
 # INITIALIZATION ---------
 
 # The unique allowed creation of robot
-robot = RobotUp()
+robot = RobotUpRemote()
 time_step = robot.getBasicTimeStep()
 
 # Initialisation of robot devices

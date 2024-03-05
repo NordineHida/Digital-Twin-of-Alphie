@@ -24,8 +24,10 @@ class RobotUp:
         self.robot = Robot()
         self.list_messages: List[Message] = []
 
-        # Range of the emitter (can be modified)
+        # Range of the emitter (CAN BE MODIFIED) |!| IT WON'T CHANGE AUTOMATICALLY THE SPHERE IN THE SIMULATION
         self.range_emitter = 2
+        # the maximum number of times that a message can be shared (CAN BE MODIFIED)
+        self.max_counter = 4
 
         # boolean to know if the known_robots list has been initialized by the initializer.
         self.is_initialized = False
@@ -35,8 +37,13 @@ class RobotUp:
 
         # list of nearby robots + self (initialized by the initializer)
         self.known_robots = None
+
+        # Next and previous known robot in alphabetical order
         self.next_rob = None
         self.prev_rob = None
+
+        # first free robot in the known list
+        self.first_free_rob = None
 
         # boolean to remember if the robot has already call rolled
         self.is_callrolling = False
@@ -46,6 +53,8 @@ class RobotUp:
 
         # boolean to know if the robot has been stopped
         self.is_stopped = False
+
+
 
     def getDevice(self, name: str) -> Device:
         """
@@ -117,17 +126,23 @@ class RobotUp:
         # Reset robot_current_task to default value
         self.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
-        # Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
-        if self.known_robots is not None:
-            for key in self.known_robots:
-                self.known_robots[key] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
+        self.reset_known_robot()
 
-        # Reset prev_rob and next_rob to None
+        # Reset prev, next and free rob to None
         self.prev_rob = None
         self.next_rob = None
+        self.first_free_rob = None
 
         # Reset is_callrolling flag
         self.is_callrolling = False
 
         # Clear the list of next coordinates
         self.next_coordinates.clear()
+
+    def reset_known_robot(self):
+        """
+        Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
+        """
+        if self.known_robots is not None:
+            for key in self.known_robots:
+                self.known_robots[key] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE

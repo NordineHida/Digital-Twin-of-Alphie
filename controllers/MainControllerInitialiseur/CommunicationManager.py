@@ -29,24 +29,41 @@ class CommunicationManager:
         self.emitter = robot.getDevice("emitter")
         self.receiver = robot.getDevice("receiver")
         self.time_step = int(self.robot.getBasicTimeStep())
+        self.max_send_counter = 5
 
     def send_message(self, msg: Message):
         """
         Send a message to the appropriate recipient. \n
-        id_sender;message_type;payload
+        id_sender;message_type;payload;recipient
         Args:
             msg (Message): The message to be sent.
         """
         # Construct the message to be sent
-        outgoing_msg = "{};{};{}".format(msg.id_sender, msg.message_type, msg.payload)
+        outgoing_msg = "{};{};{};{};{}".format(msg.id_sender, msg.message_type, msg.send_counter+1, msg.payload, msg.recipient)
         print(self.robot.getName(), " : Send : ", outgoing_msg)
         self.emitter.send(outgoing_msg)
         self.robot.step(self.time_step)
 
+    def send_message_all(self, id_sender: str, message_type: MESSAGE_TYPE_PRIORITY, send_counter: int,
+                         payload: str = ""):
+        """
+        Send the message to all known robots.
+        |!| It didn't mean that they will receive it (they should be in range to receive it)
+
+        Args:
+            id_sender (str): ID of the sender (webots's name).
+            message_type (MESSAGE_TYPE_PRIORITY): Message type from the enumeration MESSAGE_TYPE_PRIORITY.
+            send_counter (int): Number of times the message has been transmitted.
+            payload (str): content of the message ("" by default).
+        """
+        for robot_name in self.robot.known_robots:
+            self.send_message(Message(id_sender, message_type, send_counter, payload, robot_name))
+
     def receive_message(self):
         """
-        Receive a message from the communication channel and add it to the robot list of messages.
-        As soon as it has been read the message is deleted
+        Receive a message from the communication channel.
+        If there is no recipient, or the robot is the recipient, It adds it in its list of messages.
+        As soon as it has been read the message is deleted from the receiver's buffer.
         """
         self.robot.step(self.time_step)
         incoming_msg = ""
@@ -54,14 +71,20 @@ class CommunicationManager:
         if self.receiver.getQueueLength() > 0:
             incoming_msg = self.receiver.getString()
             self.receiver.nextPacket()
-            print(self.robot.getName(), " : Receive : ", incoming_msg)
         try:
             if incoming_msg != "":
                 # Split the incoming message into its three parts
-                id_sender, message_type, payload = incoming_msg.split(";")
+                id_sender, message_type, send_counter, payload, recipient = incoming_msg.split(";")
 
-                # Create and add the Message to the robots list
-                self.robot.list_messages.append(Message(id_sender, message_type, payload))
+                # If there is no recipient, or I'm the recipient or the counter is < Max, I consider the message
+                if recipient == "" or recipient == self.robot.getName() and send_counter < self.max_send_counter:
+
+                    # Print of the message (just to check if everything is fine)
+                    print_message_type = message_type.replace("MESSAGE_TYPE_PRIORITY.", "")
+                    print(self.robot.getName(), " : Receive : ", id_sender, ";", print_message_type, ";", send_counter, ";", payload, ";", recipient)
+
+                    # Create and add the Message to the robots list
+                    self.robot.append(Message(id_sender, message_type, send_counter, payload, recipient))
 
         except ValueError:
             # If there are not enough parts in the message, or it cannot be split properly

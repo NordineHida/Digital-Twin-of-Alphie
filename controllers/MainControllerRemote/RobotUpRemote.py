@@ -1,42 +1,36 @@
 """
-File:           RobotUp.py
+File:           RobotUpRemote.py
 Date:           February 2024
-Description:    Override of webots's robot with extra attributes, like a list of messages to process
+Description:    Override of webots's remote with extra attributes, like a list of messages to process
 Author:         Nordine HIDA
 Modifications:
 """
 
 from controller.robot import *
 from Message import *
-from Coordinates import *
 from typing import List
 
 
-class RobotUp:
+class RobotUpRemote:
     """
-    RobotUp class overrides the webots Robot class with additional attributes and methods.
+    RobotUpRemote class overrides the webots remote class with additional attributes and methods.
     """
 
     def __init__(self):
         """
-        Constructor for RobotUp class. Init all attributes
+        Constructor for RobotUpRemote class. Init all attributes
         """
-        self.robot = Robot()
+        self.remote = Robot()
         self.list_messages: List[Message] = []
 
-        # current task of the robot (free by default)
-        self.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
+        # list of nearby robots
+        self.known_robots = {}
 
-        # list of nearby robots + self
-        self.known_robots = {self.robot.getName(): self.robot_current_task}
-        self.next_rob = None
-        self.prev_rob = None
+        # First free remote in known_robots. Messages will be sent to it
+        self.first_rob = ""
 
-        # boolean to remember if the robot has already call rolled
+        # boolean to remember if the remote has already call rolled
         self.is_callrolling = False
-
-        # List of next coordinates
-        self.next_coordinates: List[Coordinates] = []
 
     def getDevice(self, name: str) -> Device:
         """
@@ -48,7 +42,7 @@ class RobotUp:
         Returns:
             Device: Device object if found, None otherwise.
         """
-        return self.robot.getDevice(name)
+        return self.remote.getDevice(name)
 
     def getBasicTimeStep(self) -> float:
         """
@@ -57,16 +51,16 @@ class RobotUp:
         Returns:
             float: Basic time step value.
         """
-        return self.robot.getBasicTimeStep()
+        return self.remote.getBasicTimeStep()
 
     def getName(self) -> str:
         """
-        Get the name of the robot.
+        Get the name of the remote.
 
         Returns:
-            str: Name of the robot.
+            str: Name of the remote.
         """
-        return self.robot.getName()
+        return self.remote.getName()
 
     def step(self, time_step):
         """
@@ -78,7 +72,7 @@ class RobotUp:
         Returns:
             int: Result of the simulation step.
         """
-        self.robot.step(time_step)
+        self.remote.step(time_step)
 
     def append(self, message: Message):
         """
@@ -96,4 +90,4 @@ class RobotUp:
         """
         Get the keyboard device
         """
-        return self.robot.getKeyboard()
+        return self.remote.getKeyboard()

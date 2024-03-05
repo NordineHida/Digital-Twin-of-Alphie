@@ -43,5 +43,5 @@ print("-------------------------------------------------------------------------
 
 # We send all the robot names in a concatenation separated by ':'
 all_known_robots = ":".join(robot.known_robots.keys())
-message = Message(robot.getName(), MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE, all_known_robots)
+message = Message(robot.getName(), MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE, 0, all_known_robots)
 network_manager.communication.send_message(message)

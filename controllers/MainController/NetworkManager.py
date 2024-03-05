@@ -55,9 +55,15 @@ class NetworkManager:
             # Here the robot has reached its goal, or it has been stopped -> Status free.
             self.robot.robot_current_task = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
-            # If it hasn't been stopped, it sends a message to tell where it were going.
+            # If it hasn't been stopped, it sends a message to the first free robot to tell where it should go.
             if not self.robot.is_stopped:
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_FREE, f"{MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES}:{x}:{y}"))
+                self.update_prev_next_firstfree_robot()
+                recipient = ""
+                if self.robot.first_free_rob:
+                    recipient = self.robot.first_free_rob
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STATUS_FREE, 0,
+                                                        f"{MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES}:{x}:{y}",
+                                                        recipient))
 
         # if I'm already moving, I add new Coordinates to move
         elif self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES:
@@ -117,41 +123,40 @@ class NetworkManager:
             self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
         # If the previous robot just finished going to coordinates, I follow it
-        if id_sender == self.robot.prev_rob and payload.startswith(str(MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES)):
+        if payload.startswith(str(MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES)):
             msg, x, y = payload.split(":")
             if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
                 self.go_to_coordinates(float(x), float(y))
             else:
                 self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
 
-        # If the robot is already on its way to coordinates, check if the sender has already been there
+        # If self robot is already on its way to coordinates, check if the sender has already been there
         elif str(self.robot.robot_current_task).startswith(str(MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES)):
             msg, x, y = payload.split(":")
             me_msg, me_x, me_y = str(self.robot.robot_current_task).split(":")
+            # If a robot has already reached my coordinates, I stop myself
             if x == me_x and y == me_y:
                 self.movement.stop()
                 context_value = MESSAGE_TYPE_PRIORITY.STOP.value
 
-        # If the sender is my predecessor and sends a STOP message, execute the case_STOP
-        elif id_sender == self.robot.prev_rob and payload == "STOP":
+        # If the payload is STOP, execute the case_STOP
+        elif payload == "STOP":
             self.case_STOP(id_sender, payload)
 
         return context_value
 
-    def case_STOP(self, id_sender: str, payload: str):
+    def case_STOP(self, send_counter: int):
         """
-        Handle the STOP message.
-
-        Clear all messages and coordinates in the robot's memory
+        Stop the robot movement and reset it.
+        Clear all messages, coordinates, known_robot in the robot's memory
         Args:
-            id_sender (str): The ID of the sender.
-            payload (str): The payload of the message.
+            send_counter (int): The number of time that this roll call as been sent.
         """
         self.movement.stop()
 
-        # if I have a next I send a stop message
-        if self.robot.next_rob:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, "STOP"))
+        # if I'm not already stopped, I send a stop message
+        if not self.robot.is_stopped:
+            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, send_counter, "STOP"))
 
         self.robot.reset()
         self.robot.is_stopped = True
@@ -167,58 +172,52 @@ class NetworkManager:
         self.robot.is_stopped = False
 
         x, y = payload.split(":")
-        if not self.robot.prev_rob:
-            if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
-                self.go_to_coordinates(float(x), float(y))
-            else:
-                self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
+        if self.robot.robot_current_task == MESSAGE_TYPE_PRIORITY.STATUS_FREE:
+            self.go_to_coordinates(float(x), float(y))
+        else:
+            self.robot.next_coordinates.append(Coordinates(float(x), float(y)))
 
-    def case_REPORT_BEGIN_ROLLCALL(self, id_sender: str, payload: str):
+    def case_REPORT_BEGIN_ROLLCALL(self, id_sender: str, payload: str, send_counter: int):
         """
-        Handle the REPORT_BEGIN_ROLLCALL message.
+        Add the sender to It's known list of robot and send the message if the counter hasn't reached the max.
+        |!| I RESET MY KNOWN ROBOT IF THE COUNTER = 0 (first iteration of the message)
 
         Args:
             id_sender (str): The ID of the sender.
             payload (str): The payload of the message.
+            send_counter (int): The number of time that this roll call as been sent.
         """
-        # If the list of known_robot has been initialized
 
+        # unstopped the robot
         self.robot.is_stopped = False
+        # If it's the first iteration of the message, I reset the list of known robot to forget old neighbor
+        if send_counter == 0:
+            self.robot.reset_known_robot()
 
+        message_rollcall = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, send_counter, str(self.robot.robot_current_task))
+
+        # I add the sender if It's a robot and if I'm initialized (= my list of all robots has been filled)
         if self.robot.is_initialized:
             if id_sender != "Remote" and id_sender != "Initializer":
-                if not self.robot.is_callrolling:
-                    if self.robot.known_robots[id_sender] == MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
-                        self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
-                        self.robot.is_callrolling = True
                 self.robot.known_robots[id_sender] = payload
-            else:
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
-                self.robot.is_callrolling = True
-        else:
-            if not self.robot.is_callrolling:
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, str(self.robot.robot_current_task)))
-                self.robot.is_callrolling = True
 
-    def case_REPORT_END_ROLLCALL(self):
-        """
-        Handle the REPORT_END_ROLLCALL message.
-
-        """
-        if self.robot.is_callrolling:
-            self.robot.is_callrolling = False
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL, ""))
+        # if the counter hasn't reached the max, I send the message
+        if send_counter < self.robot.max_counter:
+            self.communication.send_message(message_rollcall)
 
     def case_STATUS_OUT_RANGE(self, payload: str):
         """
         Get the complete list of robots in the simulation and add it to the robot's known_robot
-
+        Then reset the range of the robot's emitter to the range_emitter value. (Check RobotUp to modify it)
         Args:
             payload (str): The payload of the message composed of all robot's name concatenated and separated by a ':'.
         """
         all_known_robots = payload.split(":")
+        self.robot.reset()
+        self.communication.clear_messages()
         self.robot.known_robots = {name: MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE for name in all_known_robots}
         self.robot.getDevice("emitter").setRange(self.robot.range_emitter)
+
         self.robot.is_initialized = True
 
     def update(self) -> int:
@@ -242,6 +241,7 @@ class NetworkManager:
 
             id_sender = message.id_sender
             message_type = MESSAGE_TYPE_PRIORITY.from_string(message.message_type)
+            send_counter = message.send_counter
             payload = message.payload
 
             case_executed = message_type.value
@@ -260,19 +260,13 @@ class NetworkManager:
                     case_executed = self.case_STATUS_FREE(id_sender, payload)
 
                 case MESSAGE_TYPE_PRIORITY.STOP:
-                    self.case_STOP(id_sender, payload)
+                    self.case_STOP(send_counter)
 
                 case MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES:
                     self.case_GO_TO_COORDINATES(id_sender, payload)
 
                 case MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL:
-                    self.case_REPORT_BEGIN_ROLLCALL(id_sender, payload)
-
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
-                    self.case_REPORT_END_ROLLCALL()
-
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
-                    self.case_REPORT_END_ROLLCALL()
+                    self.case_REPORT_BEGIN_ROLLCALL(id_sender, payload, send_counter)
 
                 case MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
                     self.case_STATUS_OUT_RANGE(payload)
@@ -288,32 +282,34 @@ class NetworkManager:
             self.go_to_coordinates(x, y)
 
         if self.robot.is_initialized:
-            self.update_prev_next_robot()
+            self.update_prev_next_firstfree_robot()
 
-            if self.compteur > 25:
+            if self.compteur > 100:
                 print("-----------------------------------", self.robot.getName(), " :  IT KNOWS ----------------------------")
                 for key, value in self.robot.known_robots.items():
                     print(f"{key}: {value}")
                 print("NEXT :", self.robot.next_rob)
                 print("PREV :", self.robot.prev_rob)
+                print("FIRST FREE :", self.robot.first_free_rob)
                 print("IS CALLROLLING : ", self.robot.is_callrolling)
                 print("IS STOPPED : ", self.robot.is_stopped)
-                print("IS Initialiszed : ", self.robot.is_initialized)
+                print("IS Initialized : ", self.robot.is_initialized)
                 print("-----------------------------------", self.robot.getName(), "------------------------------------- \n ")
                 self.compteur = 0
             else:
                 self.compteur += 1
 
-
         return case_executed
 
-    def update_prev_next_robot(self):
+    def update_prev_next_firstfree_robot(self):
         """
-        Update the previous and next robots based on the robot's name and known_robots dictionary.
+        Update the previous, next and the first free robots based on the robot's name and known_robots dictionary.
         |!| It ignores OUT_RANGE robots !
 
         This method looks into the known_robots dictionary to find the key (robot name) just before and just after
         the current robot's name (self.robot_name). It then updates the prev_rob and next_rob attributes accordingly.
+
+        Then it iterates through the dictionary to find the first available robot (or leaves it as None if no robots are free).
         """
         sorted_robots = sorted(self.robot.known_robots.keys())
         current_index = sorted_robots.index(self.robot_name)
@@ -337,3 +333,15 @@ class NetworkManager:
             next_index += 1
         else:
             self.robot.next_rob = None
+
+        self.robot.first_free_rob = None
+        sorted_known_robots = dict(sorted(self.robot.known_robots.items()))
+        # Iterate through the sorted robots to get the first free robot
+        i = 0
+        while i < len(sorted_known_robots) and self.robot.first_free_rob is None:
+            key = sorted_robots[i]
+            # Check if the value of the key is "STATUS_FREE"
+            if sorted_known_robots[key] == str(MESSAGE_TYPE_PRIORITY.STATUS_FREE):
+                # Update first_rob with the robot's name
+                self.robot.first_free_rob = key
+            i += 1

@@ -27,9 +27,6 @@ class NetworkManagerInitialiseur:
 
         self.communication = CommunicationManager(self.robot)
 
-        # Initialize the keyboard
-        self.keyboard = self.robot.getKeyboard()
-        self.keyboard.enable(10)
         self.started = False
 
     def update(self):
@@ -38,7 +35,7 @@ class NetworkManagerInitialiseur:
         """
 
         if not self.started:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, ""))
+            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, 0, ""))
             self.robot.is_callrolling = True
             self.started = True
 
@@ -60,19 +57,11 @@ class NetworkManagerInitialiseur:
                 case MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL:
                     self.case_REPORT_BEGIN_ROLLCALL(id_sender, payload)
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
-                    self.case_REPORT_END_ROLLCALL()
-
                 case _:
                     print("Unknown message received")
 
     def case_REPORT_BEGIN_ROLLCALL(self, id_sender, payload):
-        if id_sender not in self.robot.known_robots:
-            self.robot.known_robots[id_sender] = payload
-        if self.robot.is_callrolling:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL, ""))
-            self.robot.is_callrolling = False
-
-    def case_REPORT_END_ROLLCALL(self):
-        if self.robot.is_callrolling:
-            self.robot.is_callrolling = False
+        """
+        It listens the answer of other robots and add them to it list of known robot
+        """
+        self.robot.known_robots[id_sender] = payload

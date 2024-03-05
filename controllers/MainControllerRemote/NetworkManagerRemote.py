@@ -15,20 +15,20 @@ class NetworkManagerRemote:
     It sends messages bound to keys and reacts to incoming messages.
     """
 
-    def __init__(self, robot: RobotUp):
+    def __init__(self, remote: RobotUpRemote):
         """
         Initialize the NetworkManager.
 
         Args:
-            robot (Robot): The robot (a remote can be considered as a robot)
+            remote (RobotUpRemote): The remote
         """
-        self.robot = robot
-        self.robot_name = self.robot.getName()
+        self.remote = remote
+        self.robot_name = self.remote.getName()
 
-        self.communication = CommunicationManager(self.robot)
+        self.communication = CommunicationManager(self.remote)
 
         # Initialize the keyboard
-        self.keyboard = self.robot.getKeyboard()
+        self.keyboard = self.remote.getKeyboard()
         self.keyboard.enable(10)
 
     def update(self):
@@ -39,29 +39,35 @@ class NetworkManagerRemote:
         # Check if a key is pressed
         key = self.keyboard.getKey()
         if key != -1:
-            # Home -> REPORT_BEGIN_ROLLCALL
+            # Home -> REPORT_BEGIN_ROLLCALL and reset known_robot
             if key == Keyboard.HOME:
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, ""))
-                self.robot.is_callrolling = True
+                # Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
+                if self.remote.known_robots is not None:
+                    for key in self.remote.known_robots:
+                        self.remote.known_robots[key] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
+                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, 0))
+                self.remote.is_callrolling = True
+
             # END -> STOP
-            if key == Keyboard.END:
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, ""))
+            elif key == Keyboard.END:
+                self.communication.send_message_all(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, 0)
+
             # Arrow keys -> GO_TO_COORDINATES with different coordinates
-            if key == Keyboard.RIGHT:
+            elif key == Keyboard.RIGHT:
                 self.communication.send_message(
-                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "1:1"))
-            if key == Keyboard.UP:
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, 0, "1:1", self.remote.first_rob))
+            elif key == Keyboard.UP:
                 self.communication.send_message(
-                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "1:-1"))
-            if key == Keyboard.LEFT:
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, 0, "1:-1", self.remote.first_rob))
+            elif key == Keyboard.LEFT:
                 self.communication.send_message(
-                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "-1:1"))
-            if key == Keyboard.DOWN:
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, 0, "-1:1", self.remote.first_rob))
+            elif key == Keyboard.DOWN:
                 self.communication.send_message(
-                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, "-1:-1"))
+                    Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, 0, "-1:-1", self.remote.first_rob))
 
             # Page down -> Path which form a circle around (0;0)
-            if key == Keyboard.PAGEDOWN:
+            elif key == Keyboard.PAGEDOWN:
                 import math
 
                 # Center of the circle
@@ -83,24 +89,24 @@ class NetworkManagerRemote:
                     y = round(center_y + radius * math.sin(angle), 3)
 
                     # Sending message to go to coordinates
-                    message = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, f"{x}:{y}")
+                    message = Message(self.robot_name, MESSAGE_TYPE_PRIORITY.GO_TO_COORDINATES, 0, f"{x}:{y}", self.remote.first_rob)
                     self.communication.send_message(message)
 
             else:
                 # Help menu with all commands and their key
                 self.print_help_commands()
 
-        # try to receive a message and add it to the robot's list
+        # try to receive a message and add it to the remote's list
         self.communication.receive_message()
 
         # Check if the list of messages is not empty
-        if self.robot.list_messages:
+        if self.remote.list_messages:
             # Getting the first message and remove it from the list
-            message = self.robot.list_messages[0]
-            self.robot.list_messages.pop(0)
+            message = self.remote.list_messages[0]
+            self.remote.list_messages.pop(0)
 
             id_sender = message.id_sender
-            message_type = MESSAGE_TYPE_PRIORITY.from_string(message.message_type)
+            message_type = MESSAGE_TYPE_PRIORITY.from_string(str(message.message_type))
             payload = message.payload
 
             match message_type:
@@ -125,36 +131,34 @@ class NetworkManagerRemote:
                 case MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL:
                     self.case_REPORT_BEGIN_ROLLCALL(id_sender, payload)
 
-                case MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL:
-                    self.case_REPORT_END_ROLLCALL()
-
                 case MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE:
-                    pass
+                    self.case_STATUS_OUT_RANGE(payload)
 
                 case _:
                     print("Unknown message received")
 
-            self.update_prev_next_robot()
+            self.update_first_rob()
 
-    def update_prev_next_robot(self):
+    def update_first_rob(self):
         """
-        Update the previous and next robots based on the robot's name and known_robots dictionary.
-
-        This method looks into the known_robots dictionary to find the key (robot name) just before and just after
-        the current robot's name (self.robot_name). It then updates the prev_rob and next_rob attributes accordingly.
+        Update first_rob by retrieving the first robot in alphabetical order
+        with value "STATUS_FREE". If none found, set to None.
         """
-        sorted_robots = sorted(self.robot.known_robots.keys())
-        current_index = sorted_robots.index(self.robot_name)
+        # Get the keys of known_robots sorted alphabetically
+        sorted_keys = sorted(self.remote.known_robots.keys())
 
-        if current_index > 0:
-            self.robot.prev_rob = sorted_robots[current_index - 1]
-        else:
-            self.robot.prev_rob = None
+        # Set initial value of first_rob to ""
+        self.remote.first_rob = ""
 
-        if current_index < len(sorted_robots) - 1:
-            self.robot.next_rob = sorted_robots[current_index + 1]
-        else:
-            self.robot.next_rob = None
+        # Iterate through the sorted keys
+        i = 0
+        while i < len(sorted_keys) and self.remote.first_rob == "":
+            key = sorted_keys[i]
+            # Check if the value of the key is "STATUS_FREE"
+            if self.remote.known_robots[key] == str(MESSAGE_TYPE_PRIORITY.STATUS_FREE):
+                # Update first_rob with the robot's name
+                self.remote.first_rob = key
+            i += 1
 
     def case_REPORT_STATUS(self, id_sender, payload):
         # TODO: Implement handling of REPORT_STATUS message
@@ -165,10 +169,10 @@ class NetworkManagerRemote:
         pass
 
     def case_STATUS_GOTOCOORDINATES(self, id_sender):
-        self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES
+        self.remote.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_GOTOCOORDINATES
 
     def case_STATUS_FREE(self, id_sender):
-        self.robot.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
+        self.remote.known_robots[id_sender] = MESSAGE_TYPE_PRIORITY.STATUS_FREE
 
     def case_STOP(self):
         # TODO: Implement handling of STOP message
@@ -179,15 +183,17 @@ class NetworkManagerRemote:
         pass
 
     def case_REPORT_BEGIN_ROLLCALL(self, id_sender, payload):
-        if id_sender not in self.robot.known_robots:
-            self.robot.known_robots[id_sender] = payload
-        if self.robot.is_callrolling:
-            self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_END_ROLLCALL, ""))
-            self.robot.is_callrolling = False
+        if id_sender != "Initializer":
+            self.remote.known_robots[id_sender] = payload
 
-    def case_REPORT_END_ROLLCALL(self):
-        if self.robot.is_callrolling:
-            self.robot.is_callrolling = False
+    def case_STATUS_OUT_RANGE(self, payload: str):
+        """
+        Get the complete list of robots in the simulation and add it to the remote's known_robot
+        Args:
+            payload (str): The payload of the message composed of all remote's name concatenated and separated by a ':'.
+        """
+        all_known_robots = payload.split(":")
+        self.remote.known_robots = {name: MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE for name in all_known_robots}
 
     @staticmethod
     def print_help_commands():
