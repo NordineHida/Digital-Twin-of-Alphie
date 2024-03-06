@@ -61,34 +61,35 @@ class CommunicationManager:
 
     def receive_message(self):
         """
-        Receive a message from the communication channel.
+        Receive messages from the communication channel.
         If there is no recipient, or the robot is the recipient, It adds it in its list of messages.
         As soon as it has been read the message is deleted from the receiver's buffer.
         """
         self.robot.step(self.time_step)
-        incoming_msg = ""
 
-        if self.receiver.getQueueLength() > 0:
+        # Iterate over the received messages based on the queue length
+        for _ in range(self.receiver.getQueueLength()):
             incoming_msg = self.receiver.getString()
             self.receiver.nextPacket()
-        try:
-            if incoming_msg != "":
-                # Split the incoming message into its three parts
-                id_sender, message_type, send_counter, payload, recipient = incoming_msg.split(";")
+            try:
+                if incoming_msg:
+                    # Split the incoming message into its parts
+                    id_sender, message_type, send_counter, payload, recipient = incoming_msg.split(";")
 
-                # If there is no recipient, or I'm the recipient or the counter is < Max, I consider the message
-                if recipient == "" or recipient == self.robot.getName() and send_counter < self.max_send_counter:
+                    send_counter = int(send_counter)
+                    # If there is no recipient, or I'm the recipient or the counter is < Max, consider the message
+                    if recipient == "" or recipient == self.robot.getName() and send_counter < self.max_send_counter:
+                        # Print the message for debugging purposes
+                        print_message_type = message_type.replace("MESSAGE_TYPE_PRIORITY.", "")
+                        print(self.robot.getName(), " : Receive : ", id_sender, ";", print_message_type, ";",
+                              send_counter, ";", payload, ";", recipient)
 
-                    # Print of the message (just to check if everything is fine)
-                    print_message_type = message_type.replace("MESSAGE_TYPE_PRIORITY.", "")
-                    print(self.robot.getName(), " : Receive : ", id_sender, ";", print_message_type, ";", send_counter, ";", payload, ";", recipient)
+                        # Create and add the Message to the robot's list ordered by priority
+                        self.robot.append(Message(id_sender, message_type, send_counter, payload, recipient))
 
-                    # Create and add the Message to the robots list
-                    self.robot.append(Message(id_sender, message_type, send_counter, payload, recipient))
-
-        except ValueError:
-            # If there are not enough parts in the message, or it cannot be split properly
-            raise ValueError("Invalid message format: '{}'".format(incoming_msg))
+            except ValueError:
+                # If there are not enough parts in the message, or it cannot be split properly
+                raise ValueError("Invalid message format: '{}'".format(incoming_msg))
 
     @staticmethod
     def is_the_message_prioritary(msg: Message, current_task: MESSAGE_TYPE_PRIORITY) -> bool:
