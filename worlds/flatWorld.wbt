@@ -10,8 +10,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.011031056218568177 0.9999115182879961 0.00743447333018395 0.4477569909831558
-  position -4.149619992614786 -0.03412348521484519 1.805347350255846
+  orientation 0.00032884311647477085 0.9999875573049145 0.004977659847291559 1.6114880014981978
+  position 1.241884086743862 -0.13763765511788384 24.984224535174747
   exposure 0.3
   followType "None"
   followSmoothness 1
@@ -359,8 +359,8 @@ Robot {
   controller "MainControllerRemote"
 }
 Robot {
-  translation -1.131021081910348 0.930729788536544 -2.606563423388289e-05
-  rotation 4.701005612024587e-05 7.738904115937102e-06 0.9999999988650818 -2.570712246919385
+  translation 3.69035 4.02707 -0.000632711
+  rotation 5.465303438130632e-05 9.681807526731863e-06 0.9999999984596544 -2.5707122471923887
   children [
     Group {
     }
@@ -1141,7 +1141,7 @@ Robot {
     }
     DEF FIRST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18069.5842983962
+        position -18069.584298395195
         axis 0 -1 0
         anchor 0.049 0.0394 0.014
       }
@@ -1156,7 +1156,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 0.0394 0.014
-        rotation 0 -1 0 0.856645052291406
+        rotation 0 -1 0 0.8566450532954885
         name "first left wheel"
         contactMaterial "wheel"
         boundingObject DEF BOUNDING_WHEEL Pose {
@@ -1176,7 +1176,7 @@ Robot {
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16120.74889407009
+        position -16120.748894070615
         axis 0 -1 0
         anchor 0.0245 0.0394 0.014
       }
@@ -1191,7 +1191,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 0.0394 0.014
-        rotation 0 -1 0 1.9046041527293087
+        rotation 0 -0.9999999999999999 0 1.904604152203621
         name "second left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1200,7 +1200,7 @@ Robot {
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18042.5457171639
+        position -18042.545717165358
         axis 0 -1 0
         anchor 0 0.0394 0.014
       }
@@ -1215,7 +1215,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 0.0394 0.014
-        rotation 0 -1 0 2.762485055873263
+        rotation 0 -1 0 2.7624850544144337
         name "third left wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1227,7 +1227,7 @@ Robot {
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18042.545734996747
+        position -18042.545734998206
         axis 0 -1 0
         anchor -0.0245 0.0394 0.014
       }
@@ -1242,7 +1242,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 0.0394 0.014
-        rotation 0 -1 0 2.76246722302502
+        rotation 0 -1 0 2.7624672215661903
         name "fourth left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1251,7 +1251,7 @@ Robot {
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18042.545733418174
+        position -18042.545733419633
         axis 0 -1 0
         anchor -0.049 0.0394 0.014
       }
@@ -1266,7 +1266,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 0.0394 0.014
-        rotation 0 -0.9999999999999999 0 2.762468801598594
+        rotation 0 -1 0 2.7624688001397644
         name "last left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1275,7 +1275,7 @@ Robot {
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -19326.49786564828
+        position -19326.497865646998
         axis 0 -1 0
         anchor 0.049 -0.0394 0.014
       }
@@ -1290,7 +1290,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 -0.0394 0.014
-        rotation 0 -1 0 0.5801392361262713
+        rotation 0 -1 0 0.5801392374104782
         name "first right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1299,7 +1299,7 @@ Robot {
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -19326.497866460737
+        position -19326.497866459453
         axis 0 -1 0
         anchor 0.0245 -0.0394 0.014
       }
@@ -1314,7 +1314,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 -0.0394 0.014
-        rotation 0 -1 0 0.5801384236710161
+        rotation 0 -1 0 0.5801384249552233
         name "second right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1323,7 +1323,7 @@ Robot {
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -19326.497879776474
+        position -19326.49787977519
         axis 0 -1 0
         anchor 0 -0.0394 0.014
       }
@@ -1338,7 +1338,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 -0.0394 0.014
-        rotation 0 -1 0 0.5801251079337111
+        rotation 0 -1 0 0.5801251092179174
         name "third right wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1347,7 +1347,7 @@ Robot {
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -19326.497901924795
+        position -19326.49790192351
         axis 0 -1 0
         anchor -0.0245 -0.0394 0.014
       }
@@ -1362,7 +1362,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 -0.0394 0.014
-        rotation 0 -1 0 0.5801029596131431
+        rotation 0 -1 0 0.5801029608973497
         name "forth right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1371,7 +1371,7 @@ Robot {
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -19326.497910052607
+        position -19326.497910051323
         axis 0 -1 0
         anchor -0.049 -0.0394 0.014
       }
@@ -1386,7 +1386,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 -0.0394 0.014
-        rotation 0 -1 0 0.5800948318009637
+        rotation 0 -1 0 0.5800948330851698
         name "last right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -1423,8 +1423,8 @@ Robot {
   controller "MainController"
 }
 Robot {
-  translation 0.21637644065613248 1.3811641074241159 -2.422770927568152e-05
-  rotation 5.412858741194365e-05 -6.4885909177809474e-06 0.9999999985139971 3.0385651652326575
+  translation 2.63508 3.0914 -0.000250359
+  rotation 5.4039728256615e-05 -6.853918429323721e-06 0.9999999985163659 3.038565165149541
   children [
     Group {
     }
@@ -2206,7 +2206,7 @@ Robot {
     }
     DEF FIRST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -15737.536953180736
+        position -15737.536953181161
         axis 0 -1 0
         anchor 0.049 0.0394 0.014
       }
@@ -2221,7 +2221,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 0.0394 0.014
-        rotation 0 0.9999999999999999 0 4.440944003050971
+        rotation 0 0.9999999999999999 0 4.4409440034766146
         name "first left wheel"
         contactMaterial "wheel"
         boundingObject DEF BOUNDING_WHEEL Pose {
@@ -2241,7 +2241,7 @@ Robot {
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -13788.70154736077
+        position -13788.701547362283
         axis 0 -1 0
         anchor 0.0245 0.0394 0.014
       }
@@ -2256,7 +2256,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 0.0394 0.014
-        rotation 0 1 0 3.3929834087571065
+        rotation 0 1 0 3.3929834102705057
         name "second left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2265,7 +2265,7 @@ Robot {
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -15710.498368320663
+        position -15710.498368319377
         axis 0 -1 0
         anchor 0 0.0394 0.014
       }
@@ -2280,7 +2280,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 0.0394 0.014
-        rotation 0 1 0 2.535100371696656
+        rotation 0 1 0 2.5351003704106305
         name "third left wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2292,7 +2292,7 @@ Robot {
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -15710.49838420535
+        position -15710.498384204066
         axis 0 -1 0
         anchor -0.0245 0.0394 0.014
       }
@@ -2307,7 +2307,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 0.0394 0.014
-        rotation 0 1 0 2.5351162563836014
+        rotation 0 1 0 2.535116255099395
         name "fourth left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2316,7 +2316,7 @@ Robot {
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -15710.498377765072
+        position -15710.498377763788
         axis 0 -1 0
         anchor -0.049 0.0394 0.014
       }
@@ -2331,7 +2331,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 0.0394 0.014
-        rotation 0 1 0 2.535109816106099
+        rotation 0 1 0 2.5351098148218925
         name "last left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2340,7 +2340,7 @@ Robot {
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16285.587836991795
+        position -16285.587836990388
         axis 0 -1 0
         anchor 0.049 -0.0394 0.014
       }
@@ -2355,7 +2355,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 -0.0394 0.014
-        rotation 0 -0.9999999999999999 0 0.42847921769266445
+        rotation 0 -1 0 0.4284792191005615
         name "first right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2364,7 +2364,7 @@ Robot {
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16285.587837623796
+        position -16285.58783762239
         axis 0 -1 0
         anchor 0.0245 -0.0394 0.014
       }
@@ -2379,7 +2379,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 -0.0394 0.014
-        rotation 0 -1 0 0.42847858569207165
+        rotation 0 -1 0 0.4284785870981504
         name "second right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2388,7 +2388,7 @@ Robot {
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16285.587849634227
+        position -16285.58784963282
         axis 0 -1 0
         anchor 0 -0.0394 0.014
       }
@@ -2403,7 +2403,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 -0.0394 0.014
-        rotation 0 -1 0 0.4284665752615623
+        rotation 0 -1 0 0.4284665766676412
         name "third right wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2412,7 +2412,7 @@ Robot {
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16285.587869774636
+        position -16285.58786977323
         axis 0 -1 0
         anchor -0.0245 -0.0394 0.014
       }
@@ -2427,7 +2427,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 -0.0394 0.014
-        rotation 0 -1 0 0.4284464348524564
+        rotation 0 -1 0 0.42844643625853457
         name "forth right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2436,7 +2436,7 @@ Robot {
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16285.58787398169
+        position -16285.587873980285
         axis 0 -1 0
         anchor -0.049 -0.0394 0.014
       }
@@ -2451,7 +2451,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 -0.0394 0.014
-        rotation 0 -1 0 0.42844222779735713
+        rotation 0 -1 0 0.42844222920343633
         name "last right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -2488,8 +2488,8 @@ Robot {
   controller "MainController"
 }
 Robot {
-  translation 0.9795967841509785 1.0101871012656252 -2.574152880283065e-05
-  rotation 5.353748893466173e-05 -2.545583378689533e-05 0.999999998242869 2.441458077362464
+  translation 0.988437 2.65039 9.97592e-05
+  rotation 5.399503692608903e-05 -2.3889820728769774e-05 0.9999999982569061 2.4414580772586554
   children [
     Group {
     }
@@ -3271,7 +3271,7 @@ Robot {
     }
     DEF FIRST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18244.3423602126
+        position -18244.342360213293
         axis 0 -1 0
         anchor 0.049 0.0394 0.014
       }
@@ -3286,7 +3286,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 0.0394 0.014
-        rotation 0 -1 0 2.027771836920551
+        rotation 0 -1 0 2.027771836225697
         name "first left wheel"
         contactMaterial "wheel"
         boundingObject DEF BOUNDING_WHEEL Pose {
@@ -3306,7 +3306,7 @@ Robot {
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16295.506953908076
+        position -16295.506953909637
         axis 0 -1 0
         anchor 0.0245 0.0394 0.014
       }
@@ -3321,7 +3321,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 0.0394 0.014
-        rotation 0 -1 0 3.0757329157713644
+        rotation 0 -1 0 3.0757329142106715
         name "second left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3330,7 +3330,7 @@ Robot {
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18217.303772193383
+        position -18217.30377219228
         axis 0 -1 0
         anchor 0 0.0394 0.014
       }
@@ -3345,7 +3345,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 0.0394 0.014
-        rotation 0 -1 0 3.9336186274174447
+        rotation 0 -1 0 3.9336186285197527
         name "third left wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3357,7 +3357,7 @@ Robot {
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18217.303786742777
+        position -18217.30378674168
         axis 0 -1 0
         anchor -0.0245 0.0394 0.014
       }
@@ -3372,7 +3372,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 0.0394 0.014
-        rotation 0 -1 0 3.933604078023336
+        rotation 0 -1 0 3.9336040791220053
         name "fourth left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3381,7 +3381,7 @@ Robot {
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18217.30378340837
+        position -18217.30378340727
         axis 0 -1 0
         anchor -0.049 0.0394 0.014
       }
@@ -3396,7 +3396,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 0.0394 0.014
-        rotation 0 -1 0 3.9336074124310016
+        rotation 0 -1 0 3.9336074135296712
         name "last left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3405,7 +3405,7 @@ Robot {
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18466.762358028092
+        position -18466.762358029464
         axis 0 -1 0
         anchor 0.049 -0.0394 0.014
       }
@@ -3420,7 +3420,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 -0.0394 0.014
-        rotation 0 -1 0 5.80244507989182
+        rotation 0 -1 0 5.802445078520303
         name "first right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3429,7 +3429,7 @@ Robot {
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18466.762354956543
+        position -18466.762354957915
         axis 0 -1 0
         anchor 0.0245 -0.0394 0.014
       }
@@ -3444,7 +3444,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 -0.0394 0.014
-        rotation 0 -1 0 5.802448151440966
+        rotation 0 -1 0 5.802448150069448
         name "second right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3453,7 +3453,7 @@ Robot {
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18466.762365389794
+        position -18466.762365391165
         axis 0 -1 0
         anchor 0 -0.0394 0.014
       }
@@ -3468,7 +3468,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 -0.0394 0.014
-        rotation 0 -1 0 5.802437718190684
+        rotation 0 -1 0 5.802437716819166
         name "third right wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3477,7 +3477,7 @@ Robot {
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18466.762383587644
+        position -18466.762383589015
         axis 0 -1 0
         anchor -0.0245 -0.0394 0.014
       }
@@ -3492,7 +3492,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 -0.0394 0.014
-        rotation 0 -1 0 5.802419520340389
+        rotation 0 -1 0 5.802419518968871
         name "forth right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3501,7 +3501,7 @@ Robot {
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -18466.762388178708
+        position -18466.762388180076
         axis 0 -1 0
         anchor -0.049 -0.0394 0.014
       }
@@ -3516,7 +3516,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 -0.0394 0.014
-        rotation 0 -1 0 5.802414929276618
+        rotation 0 -1 0 5.802414927908738
         name "last right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -3550,11 +3550,11 @@ Robot {
       0 -6.02166e-06 0
     ]
   }
-  controller "<extern>"
+  controller "MainController"
 }
 Robot {
-  translation 0.9663721956861298 -0.7483042520613504 -3.291361222526254e-05
-  rotation 4.942148649587022e-05 -0.00010941592719949018 0.9999999927928357 0.968352910640948
+  translation 3.29715 0.646559 0.000254356
+  rotation 4.552326980332925e-05 -0.00011126873668100178 0.99999999277345 0.9683529107721941
   children [
     Group {
     }
@@ -4336,7 +4336,7 @@ Robot {
     }
     DEF FIRST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -17593.634603857667
+        position -17593.634603858816
         axis 0 -1 0
         anchor 0.049 0.0394 0.014
       }
@@ -4351,7 +4351,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 0.0394 0.014
-        rotation 0 1 0 0.7157437548245261
+        rotation 0 1 0 0.7157437559741273
         name "first left wheel"
         contactMaterial "wheel"
         boundingObject DEF BOUNDING_WHEEL Pose {
@@ -4371,7 +4371,7 @@ Robot {
     }
     DEF SECOND_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -15644.79919767849
+        position -15644.799197677046
         axis 0 -1 0
         anchor 0.0245 0.0394 0.014
       }
@@ -4386,7 +4386,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 0.0394 0.014
-        rotation 0 -1 0 0.33221719867972777
+        rotation 0 -0.9999999999999999 0 0.33221720012400535
         name "second left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4395,7 +4395,7 @@ Robot {
     }
     DEF THIRD_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -17566.596016312385
+        position -17566.596016311832
         axis 0 -1 0
         anchor 0 0.0394 0.014
       }
@@ -4410,7 +4410,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 0.0394 0.014
-        rotation 0 -1 0 1.1901025617383167
+        rotation 0 -1 0 1.1901025622912895
         name "third left wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4422,7 +4422,7 @@ Robot {
     }
     DEF FOURTH_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -17566.596030374563
+        position -17566.59603037401
         axis 0 -1 0
         anchor -0.0245 0.0394 0.014
       }
@@ -4437,7 +4437,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 0.0394 0.014
-        rotation 0 -1 0 1.1900884995605192
+        rotation 0 -1 0 1.1900885001134924
         name "fourth left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4446,7 +4446,7 @@ Robot {
     }
     DEF LAST_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -17566.596026978696
+        position -17566.596026978143
         axis 0 -1 0
         anchor -0.049 0.0394 0.014
       }
@@ -4461,7 +4461,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 0.0394 0.014
-        rotation 0 -1 0 1.1900918954281987
+        rotation 0 -1 0 1.1900918959811717
         name "last left wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4470,7 +4470,7 @@ Robot {
     }
     DEF FIRST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16824.77838363411
+        position -16824.77838363417
         axis 0 -1 0
         anchor 0.049 -0.0394 0.014
       }
@@ -4485,7 +4485,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.049 -0.0394 0.014
-        rotation 0 -1 0 1.5918689928212069
+        rotation 0 -1 0 1.591868992762999
         name "first right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4494,7 +4494,7 @@ Robot {
     }
     DEF SECOND_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16824.778382542034
+        position -16824.778382542092
         axis 0 -1 0
         anchor 0.0245 -0.0394 0.014
       }
@@ -4509,7 +4509,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0.0245 -0.0394 0.014
-        rotation 0 -1 0 1.591870084898789
+        rotation 0 -0.9999999999999999 0 1.5918700848405811
         name "second right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4518,7 +4518,7 @@ Robot {
     }
     DEF THIRD_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16824.778393816767
+        position -16824.778393816825
         axis 0 -1 0
         anchor 0 -0.0394 0.014
       }
@@ -4533,7 +4533,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 -0.0394 0.014
-        rotation 0 -1 0 1.5918588101658195
+        rotation 0 -1 0 1.5918588101076119
         name "third right wheel"
         contactMaterial "center_wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4542,7 +4542,7 @@ Robot {
     }
     DEF FOURTH_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16824.77841273404
+        position -16824.778412734096
         axis 0 -1 0
         anchor -0.0245 -0.0394 0.014
       }
@@ -4557,7 +4557,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.0245 -0.0394 0.014
-        rotation 0 -1 0 1.5918398928943014
+        rotation 0 -0.9999999999999999 0 1.5918398928360937
         name "forth right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
@@ -4566,7 +4566,7 @@ Robot {
     }
     DEF LAST_RIGHT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -16824.77841738447
+        position -16824.77841738453
         axis 0 -1 0
         anchor -0.049 -0.0394 0.014
       }
@@ -4581,7 +4581,7 @@ Robot {
       ]
       endPoint Solid {
         translation -0.049 -0.0394 0.014
-        rotation 0 -1 0 1.5918352424623543
+        rotation 0 -1 0 1.5918352424041466
         name "last right wheel"
         contactMaterial "wheel"
         boundingObject USE BOUNDING_WHEEL
