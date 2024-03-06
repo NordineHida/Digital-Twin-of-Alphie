@@ -11,7 +11,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.00032884311647477085 0.9999875573049145 0.004977659847291559 1.6114880014981978
-  position 1.241884086743862 -0.13763765511788384 24.984224535174747
+  position 1.8604905857832497 -1.5924696480385498 21.55448591138167
   exposure 0.3
   followType "None"
   followSmoothness 1
@@ -253,7 +253,7 @@ Robot {
     }
   ]
   name "Initializer"
-  controller "MainControllerInitialiseur"
+  controller "MainControllerInitializer"
   supervisor TRUE
 }
 Robot {

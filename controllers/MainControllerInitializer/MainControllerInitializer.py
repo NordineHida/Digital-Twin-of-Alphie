@@ -1,10 +1,10 @@
 """
-File:           MainControllerInitialiseur.py
+File:           MainControllerInitializer.py
 Date:           February 2024
-Description:    This method initializes the robots' known_robots dictionary.
-                It retrieves the roster and then distributes all robot names to populate their lists.
-
-                |!| YOU MUST MODIFY THE NUMBER_ROBOT CONSTANT TO INCLUDE ALL ROBOTS IN YOUR SIMULATION
+Description:    This controller gives a sense of group awareness to each of the robots (+ remote)
+                by initializing the robots' known_robots dictionary.
+                It calls the roll in order to get all robot's name (without the remote)
+                and share the list to all of them (+ the remote).
 Author:         Nordine HIDA
 Modifications:
 """
