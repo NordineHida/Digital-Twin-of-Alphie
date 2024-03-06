@@ -19,7 +19,7 @@ These missions provide a starting point for experimentation and development, and
 
 ## Installation
 
-To get started, simply install [Webots](https://cyberbotics.com/) and launch the world file located in `Alphie > worlds > flatWorld.wbt`. For more detailed instructions, please refer to the user guide located in `Alphie > User Guide`. Happy exploring!
+To get started, simply install [Webots](https://cyberbotics.com/) and launch the world file located in `worlds > flatWorld.wbt`. For more detailed instructions, please refer to the user guide. Happy exploring!
 
 ---
 
