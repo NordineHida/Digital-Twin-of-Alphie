@@ -44,17 +44,8 @@ class NetworkManagerRemote:
         if key != -1:
             self.update_first_rob()
 
-            # Home -> REPORT_BEGIN_ROLLCALL and reset known_robot
-            if key == Keyboard.HOME:
-                # Set all robots in known_robots to "MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE"
-                if self.remote.known_robots is not None:
-                    for key in self.remote.known_robots:
-                        self.remote.known_robots[key] = MESSAGE_TYPE_PRIORITY.STATUS_OUT_RANGE
-                self.communication.send_message(Message(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_BEGIN_ROLLCALL, 0))
-                self.remote.is_callrolling = True
-
             # END -> STOP
-            elif key == Keyboard.END:
+            if key == Keyboard.END:
                 self.communication.send_message_all(self.robot_name, MESSAGE_TYPE_PRIORITY.STOP, 0)
 
             # Arrow keys -> GO_TO_COORDINATES with different coordinates
@@ -245,7 +236,6 @@ class NetworkManagerRemote:
         print("------------------------------------------ COMMANDS ---------------------------------------")
         print("Any key     : Show all commands")
         print("\n")
-        print("HOME        : Call the roll (should be used before any tasks)")
         print("END         : Stop everything and reset robot's data ")
         print("\n")
         print("PAGEDOWN    : Go to coordinates (Circle around the (0;0)) ")

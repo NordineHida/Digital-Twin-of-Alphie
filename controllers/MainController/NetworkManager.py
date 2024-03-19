@@ -280,6 +280,7 @@ class NetworkManager:
                 case _:
                     print("Unknown message received")
                     pass
+
             if self.robot.is_initialized:
                 self.update_neighbors_last_com(id_sender)
                 neighbors_updated = True
@@ -296,14 +297,13 @@ class NetworkManager:
 
             self.update_prev_next_firstfree_robot()
 
+            # If the timer is over, we refresh our neighborhood by asking who's nearby
             if self.timer_asking_neighbor > 50:
                 # Ask who is nearby and send it own current task
                 self.communication.send_message_all(self.robot_name, MESSAGE_TYPE_PRIORITY.REPORT_STATUS, 0, self.robot.robot_current_task)
                 self.timer_asking_neighbor = 0
             else:
                 self.timer_asking_neighbor += 1
-
-
 
         return case_executed
 

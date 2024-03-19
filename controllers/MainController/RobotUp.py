@@ -24,7 +24,7 @@ class RobotUp:
         self.robot = Robot()
         self.list_messages: List[Message] = []
 
-        # Range of the emitter (CAN BE MODIFIED) |!| IT WON'T CHANGE AUTOMATICALLY THE SPHERE IN THE SIMULATION
+        # Range of the emitter (CAN BE MODIFIED)
         self.range_emitter = 5
         # the maximum number of times that a message can be shared (CAN BE MODIFIED)
         self.max_counter = 4

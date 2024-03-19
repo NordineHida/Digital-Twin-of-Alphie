@@ -39,7 +39,7 @@ class RobotUpInitializer:
     def getNumberOfRobots(self) -> int:
         """
         Get the number of robots in the simulation.
-        |!| (WITHOUT THE INITIALIZER AND THE REMOTE)
+        |!| (IT DOESN'T COUNT THE INITIALIZER AND THE REMOTE)
 
         Returns:
             int: Number of robots in the simulation.

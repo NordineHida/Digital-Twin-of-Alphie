@@ -1,7 +1,7 @@
 """
-File:           CommunicationManager.py
+File:           CommunicationManager.py (for Remote Controller)
 Date:           February 2024
-Description:    Manage communication between entities (remote, remote, ...)
+Description:    Manage communication between entities (remote, robots, ...)
                 Send, receive, order messages.
 Author:         Nordine HIDA
 Modifications:
