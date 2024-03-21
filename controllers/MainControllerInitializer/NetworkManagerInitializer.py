@@ -1,5 +1,5 @@
 """
-File:           NetworkManagerInitialiseur.py
+File:           NetworkManagerInitializer.py
 Date:           February 2024
 Description:    Call the roll in order to get all robot's name in the simulation.
 Author:         Nordine HIDA

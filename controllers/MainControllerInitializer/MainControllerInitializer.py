@@ -10,7 +10,7 @@ Modifications:
 """
 
 from InitialisationManager import *
-from NetworkManagerInitialiseur import *
+from NetworkManagerInitializer import *
 from RobotUpInitializer import *
 
 # INITIALIZATION ---------
